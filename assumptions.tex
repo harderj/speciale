@@ -1,0 +1,80 @@
+
+\subsection{Assumption 1: Holder Smoothness} %todo spell Holder properly
+
+\begin{defn}
+	For $s,V \in \R$ a (s,V)-\textbf{Sparse ReLU Network} is an ANN $f$
+	with any structure $\{d_i\}_{i\in [L+1]}$,
+	all activation functions being \emph{ReLU} i.e. $\sigma_{ij} = \max(\cdot, 0)$
+	and any weights $(W_\ell, v_\ell)$
+	satisfying
+	\begin{itemize}
+		\item $\max_{\ell \in [L+1]} \norm{\widetilde{W}_\ell}_\infty \leq 1$
+		\item $\sum_{\ell = 1}^{L+1} \norm{\widetilde{W}_\ell}_0 \leq s$
+		\item $\max_{j \in [d_{L+1}]} \norm{f_j}_\infty \leq V$
+	\end{itemize}
+	Here $\widetilde{W}_\ell = (W_\ell, v_\ell)$.
+	
+	The set of them we denote $\Cal{F}(s,V)$.
+\end{defn}
+
+\begin{defn}
+	Let $\Cal{D}\subseteq \R^r$ be compact and $\beta,H>0$. A function $f:\Cal{D}\to \R$
+	we call Holder smooth if
+	\[ \sum_{{\alpha} : |{\alpha}| < \beta}
+		\norm{\partial^{\alpha}f}_\infty +
+		\sum_{{\alpha} : \norm{{\alpha}}_1 = \floor{\beta}}
+		\sup_{x \neq y} \frac{|\partial^\alpha (f(x) - f(y))|}
+		{\norm{x-y}_\infty^{\beta-\floor{\beta}}} \leq H \] 
+	Where $\alpha = (\alpha_1, \dots, \alpha_r) \in \N^r$.
+	We write $f \in C_r(\Cal{D}, \beta, H)$.
+\end{defn}
+
+\begin{defn}
+	Let $t_j, p_j \in \N$, $t_j\leq p_j$ and $H_j, \beta_j > 0$ for $j \in [q]$.
+	We say that $f$ is a \emph{Composition of Holder smooth Functions} when
+	\[ f = g_q \circ \dots \circ g_1 \]
+	for some functions $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
+	that only depend on $t_j$ of their inputs
+	for each of their components $g_{jk}$,
+	and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^t_j, \beta_j, H_j)$, 
+	i.e. they are Holder smooth.
+	We denote the class of these functions
+	\[ \Cal{G}(\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}) \]
+\end{defn}
+
+\begin{defn}
+	Define
+	\[ \Cal{F}_0 = \{ f : \Cal{S} \times \Cal{A} \to \R
+	\mid f(\cdot, a) \in \Cal{F}(s, V) \; \forall a \in \Cal{A} \} \]
+	and
+	\[ \Cal{G}_0 = \{ f : \Cal{S} \times \Cal{A} \to \R
+	\mid f(\cdot, a) = \Cal{G}(\{p_j, t_j, \beta_t, H_j\}_{j \in [q]})
+	\; \forall a \in \Cal{A} \} \]
+\end{defn}
+
+\begin{asm}\label{asm:A1}
+	It is assumed that $T f \in \Cal{G}_0$ for any $f \in \Cal{F}_0$.
+
+	I.e. when using the Bellman optimality operator on our sparse ReLU networks,
+	we should stay in the class of compositions of Holder smooth functions.
+\end{asm}
+
+\subsection{Assumption 2: Concentration Coefficients}
+
+\begin{defn}
+	Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
+	absolutely continuous w.r.t. $m_{\lambda}$
+	Define
+	\[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m}
+		\left[ \E_{v_2} \left( \frac{\mathrm{d} (P^{\pi_m} \dots P^{\pi_1} \nu_1)}
+		{\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
+\end{defn}
+
+\begin{asm}\label{asm:A2}
+	Let $\nu$ be the sampling distribution from the algorithm, and $\mu$ the distribution
+	over which we measure the error in the main theorem, then we assume
+	\[ (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
+		= \phi_{\mu, \nu} < \infty \]
+\end{asm}
+
+

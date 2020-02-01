@@ -4,7 +4,7 @@ for an agent in some environment.
 Typically (also in the case of Q-learning) this environment is a
 Markov decision process
 
-\begin{Definition}
+\begin{defn}
 	A Markov decision process (MDP) $(\Cal{S}, \Cal{A}, P, R, \gamma)$
 	consists of
 \begin{itemize}
@@ -14,7 +14,7 @@ Markov decision process
 \item $R : \Cal{S} \times \Cal{A} \to \Cal{P}(\R)$ its immediate reward distribution
 \item $\gamma \in (0,1)$ the discount factor
 \end{itemize}
-\end{Definition}
+\end{defn}
 
 A policy (for an MDP) is a function
 \[\pi : \Cal{S} \to \Cal{P}(\Cal{A})\]
@@ -52,17 +52,17 @@ and 0 otherwise.
 \[ (T Q)(s, a) = T^{\pi_Q} Q \]
 called the Bellman optimality operator.
 
-The Bellman optimality equation is says that $Q^* = TQ^*$.
+The Bellman optimality equation can then be written $Q^* = TQ^*$.
 
 \subsection{Artificial Neural Networks}
 
-\begin{Definition}\label{def_ANN}
+\begin{defn}\label{def_ANN}
 	An \textbf{ANN} (Artificial Neural Network) with structure
 	$\{ d_i \}_{i=0}^{L+1} \subseteq \N$,
 	activation functions $\sigma_i = (\sigma_{ij} : \R \to \R)_{j=1}^{d_i}$
 	and weights $\{ W_i \in M^{d_i \times d_{i-1}}, v_i \in \R^{d_i} \}_{i=1}^{L+1}$
 	is the function $F:\R^{d_0} \to \R^{d_{L+1}}$ 
-	\[ F(x) = w_{L+1} \circ \sigma_L \circ w_L \circ \sigma_{L-1} \circ \dots \circ w_1 x \]
+	\[ F = w_{L+1} \circ \sigma_L \circ w_L \circ \sigma_{L-1} \circ \dots \circ w_1 \]
 	where $w_i$ is the affine function $x \mapsto W_i x + v_i$ for all $i$.
 
 	Here $\sigma_i(x_1, \dots, x_{d_i})
@@ -71,7 +71,7 @@ The Bellman optimality equation is says that $Q^* = TQ^*$.
 	$L \in \N_0$ is called the number of hidden layers.
 
 	$d_i$ is the number of neurons or nodes in layer $i$.
-\end{Definition}
+\end{defn}
 
 An ANN is called \emph{deep} if there are two or more hidden layers.
 
@@ -79,7 +79,7 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
 
 We here present the algorithm which everything in this paper revolves around:
 
-\begin{algorithm}[H]
+\begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
 	\caption{Fitted Q-Iteration Algorithm}
 	\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
 		sampling distribution $\nu$, number of iterations $K$,
@@ -97,74 +97,5 @@ We here present the algorithm which everything in this paper revolves around:
 	\KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
 \end{algorithm}
 
-\subsection{Assumption 1: Holder Smoothness} %todo spell Holder properly
-\begin{Definition}
-	Let $\Cal{D}\subseteq \R^r$ be compact and $\beta,H>0$. A function $f:\Cal{D}\to \R$
-	we call Holder smooth if
-	\[ \sum_{{\alpha} : |{\alpha}| < \beta}
-		\norm{\partial^{\alpha}f}_\infty +
-		\sum_{{\alpha} : \norm{{\alpha}}_1 = \floor{\beta}}
-		\sup_{x \neq y} \frac{|\partial^\alpha (f(x) - f(y))|}
-		{\norm{x-y}_\infty^{\beta-\floor{\beta}}} \leq H \] 
-	Where $\alpha = (\alpha_1, \dots, \alpha_r) \in \N^r$.
-	We write $f \in C_r(\Cal{D}, \beta, H)$.
-\end{Definition}
 
-\begin{Definition}
-	We consider families of \emph{Compositions of Holder Functions}
-	\[ \Cal{G}(\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}) \]
-	where $t_j, p_j \in \N$, $t_j\leq p_j$ and $H_j, \beta_j > 0$,
-	defined as containing $f$ when $f = g_q \circ \dots \circ g_1$
-	for $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
-	functions on some real hypercubes that only depend on $t_j$ of their inputs
-	for each of their components $g_{jk}$,
-	and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^t_j, \beta_j, H_j)$.
-\end{Definition}
-
-\begin{Assumption}\label{asm:A1}
-	Let
-	\[ \Cal{G}_0 = \{ f : \Cal{S} \times \Cal{A} \to \R : f(\cdot, a) \in
-		\Cal{G}(\{p_j, t_j, \beta_j, H_j \}_{j \in [q]} ), \forall a\in \Cal{A} \} \]
-	
-	It is assumed that $T f \in \Cal{G}_0$ for any $f \in \Cal{F}_0$.
-
-	I.e. when using the Bellman optimality operator on our sparse ReLU networks,
-	we should stay in the class of compositions of Holder smooth functions.
-\end{Assumption}
-
-\subsection{Assumption 2: Concentration Coefficients}
-\begin{Assumption}\label{asm:A2}
-	Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
-	Lebesgue- absolutely continuous in $\Cal{S}$
-	Define
-	\[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m}
-		\left[ \E_{v_2} \left( \frac{\mathrm{d} (P^{\pi_m} \dots P^{\pi_1} \nu_1)}
-		{\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
-	Let $\nu$ be the sampling distribution from the algorithm, and $mu$ the distribution
-	over which we measure the error in the main theorem, then we assume
-	\[ (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
-		= \phi_{\mu, \nu} < \infty \]
-\end{Assumption}
-
-\subsection{The Main Theorem}
-\begin{Theorem}[Yang, Xie, Wang]
-	For any $K \in \N$ let $Q^{\pi_K}$ be the action-value function
-	corresponding to policy $\pi_K$ which is return by Algorithm 1,
-	when run with a sparse ReLU network on the form
-	\[ \Cal{F}_0 = \{f(\cdot, a) \in \Cal{F}(L^*, \{d_j^*\}_{j=0}^{L^*+1},s^*)
-		\mid a \in \Cal{A} \} \]
-	where
-	\[ L^* \lesssim (\log n)^{\xi'}, d_0 = r, d_j^*, d_{L+1}=1, \lesssim n^{\xi'},
-		s^* \asymp n^{\alpha^*} \cdot (\log n)^{\xi'} \]
-	Let $\mu$ be any distribution over $\Cal{S} \times \Cal{A}$.
-	Under assumptions \cref{asm:A1, asm:A2} 
-	\resizebox{\textwidth}{!}{ 
-		$ \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq C \cdot \frac{\phi_{\mu,\nu}
-			\cdot \gamma}{(1-\gamma)^2}
-			\cdot |\Cal{A}| \cdot (\log n)^{\xi^*} \cdot n^{(\alpha^* - 1)/2} 
-			+ \frac{4 \gamma^{K+1}}{(1-\gamma)^2} \cdot R_{\max} $ }
-	Here $\alpha^* \in (0,1), C, \xi', \xi^*, \phi_{\mu,\nu} \in \R_{+}$
-	are constants depending on the assumptions
-	and $R_{\max}$ the maximum possible reward.
-\end{Theorem}
 

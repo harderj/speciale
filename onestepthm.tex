@@ -1,0 +1,26 @@
+
+\begin{thm}[One-step Approximation Error]
+	Let
+	\begin{itemize}
+		\item $\Cal{F} \subseteq \Cal{B}(\Cal{S}\times\Cal{A}, V_{\max})$ be a class of
+			bounded measurable functions
+		\item $\nu \in \Cal{P}(\Cal{S},\Cal{A})$ be a probability measure
+		\item $(S_i, A_i)_{i\in[n]}$ be $n$ i.i.d. samples following $\nu$
+		\item $(R_i, S'_i)_{i\in[n]}$ be the rewards and next states
+			corresponding to the samples
+		\item $Q \in \Cal{F}$ be fixed
+		\item $Y_i = R_i + \gamma \max_{a \in \Cal{A}} Q(S'_i, a)$
+		\item $\wh{Q} = \argmin_{f \in \Cal{F}} \frac{1}{n}
+			\sum (f(S_i, A_i) - Y_i)^2$
+		\item $\epsilon \in (0,1],\; \delta > 0$ be fixed
+		\item $\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)$ a minimal $\delta$-covering
+			of $\Cal{F}$ w.r.t. $\norm{\cdot}_\infty$
+		\item $N_\delta = \abs{\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)}$
+			the number of elements in this covering
+	\end{itemize}
+	Then
+	\[ (1+\epsilon)^2 + \omega(\Cal{F}) + C \cdot V_{\max}^2/(n+\epsilon) \cdot N_\delta
+	+ C' \cdot V_{\max} \cdot \delta \]
+	where $C = 64, C'=8$ and
+	\[ \omega(\Cal{F}) = \sup_{g\in \Cal{F}} \inf_{f \in \Cal{F}} \norm{f - T g}_{2, \nu}^2 \]
+\end{thm}

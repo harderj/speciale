@@ -1,4 +1,5 @@
-
+% preamble speciale Jacob Harder
+% 31. jan. 2020
 
 %packages
 
@@ -11,8 +12,10 @@
 \usepackage{mathtools} %for \mathclap (stacking under sums)
 \usepackage{dsfont} %for boldface numbers
 \usepackage{bm} %vectors in bold
-\usepackage{cleveref}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{cleveref}
+\usepackage{ifthen}
+\usepackage{commath}
 
 %commands
 \newcommand{\Cal}{\mathcal}
@@ -24,9 +27,9 @@
 \newcommand{\C}{\bb{C}}
 \newcommand{\E}{\bb{E}}
 \newcommand{\idc}{\mathds{1}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\ve}{\varepsilon} %abbreviation for epsilon
 \newcommand{\wt}{\widetilde}
+\newcommand{\wh}{\widehat}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \DeclareMathOperator*{\argmax}{argmax}
@@ -34,10 +37,14 @@
 
 %theorems
 \theoremstyle{definition}
-\newtheorem{Definition}{Definition}
-\newtheorem{Theorem}{Theorem}
-\newtheorem{Remark}{Remark}
-\newtheorem{Proposition}{Proposition}
-\newtheorem{Example}{Example}
-\newtheorem{Assumption}{Assumption}
-\crefname{assumption}{assumption}{assumptions}
+\newtheorem{lem}{Lemma}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{rem}{Remark}
+\newtheorem{prop}{Proposition}
+\newtheorem{asm}{Assumption}
+
+%cref
+\crefname{algocf}{alg.}{algs.}
+\Crefname{algocf}{Algorithm}{Algorithms}

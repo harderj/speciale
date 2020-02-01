@@ -1,38 +1,3 @@
-% Speciale Jacob Harder:
-% A Theoretical Analysis of Fitted Q-Iteration
-% 22. jan. 2020
-
-\documentclass{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{cleveref}
-\usepackage{mathtools}
-\usepackage{ifthen}
-\usepackage{commath}
-
-\theoremstyle{definition}
-\newtheorem{lem}{Lemma}
-\newtheorem{defn}{Definition}
-\newtheorem{thm}{Theorem}
-\newtheorem{cor}{Corollary}
-\newtheorem{rem}{Remark}
-\newtheorem{prop}{Proposition}
-
-\newcommand{\bb}{\mathbb}
-\newcommand{\Cal}{\mathcal}
-\newcommand{\E}{\bb{E}}
-\newcommand{\R}{\bb{R}}
-\newcommand{\C}{\bb{C}}
-\newcommand{\N}{\bb{N}}
-\newcommand{\Q}{\bb{Q}}
-\newcommand{\wt}{\widetilde}
-%\DeclarePairedDelimiter\abs{\lvert}{\rvert}% already defined in commath
-%\DeclarePairedDelimiter\norm{\lVert}{\rVert}% --||--
-
-\begin{document}
 
 \begin{lem}\label{lem:tlemma}
   $T Q \geq T^\pi Q$ for any policy $\pi : \Cal{S} \to \Cal{P}(\Cal{A})$
@@ -85,22 +50,7 @@
   and \cref{eq:cspost} is Cauchy-Schwarz.
 \end{proof}
 
-\begin{thm}[Error Propagation]
-  Let $\{\wt{Q}_i\}_{0\leq i\leq K}$ be the iterates of [ref to Algo1].
-  %todo insert reference
-  Then
-  \begin{equation*}
-    \norm{Q^* - Q^{\pi_K}}_{1, \mu}
-    \leq \frac{2 \phi_{\mu,\nu} \gamma}{(1-\gamma)^2} \cdot \varepsilon_{\max}
-    + \frac{4 \gamma^{K+1}}{(1-\gamma)^2} \cdot R_{\max}
-  \end{equation*}
-  Where
-  \[ \varepsilon_{\max}
-  = \max_{k \in [K]} \norm{T\wt{Q}_{k-1} - \wt{Q}_k}_{2,\nu} \]
-  \label{thm:errorpropagation}
-\end{thm}
-
-\begin{proof}[Proof of \cref{thm:errorpropagation}] 
+\begin{proof}[Proof of \cref{thm:errorprop}] 
   First some things to keep in mind during the proof.
   Recall that $V_{\max} = R_{\max} / (1 - \gamma)$ and that
   $\pi_Q$ is the greedy policy w.r.t. $Q$.
@@ -295,7 +245,5 @@ Combining \cref{eq:Qsk_high} and \cref{eq:Qsk_low} with \cref{eq:qq1} we get
     + \frac{4\gamma^{K+1}}{(1-\gamma)^2} \cdot R_{\max}
   \end{equation}
 \end{proof}
-
-\end{document}
 
 
