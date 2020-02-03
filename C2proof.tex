@@ -24,6 +24,7 @@
   \end{align*}
   For any measure $\nu \in \Cal{P}(\Cal{S}\times\Cal{A})$ which is
   absolutely continuous w.r.t. $(P^{\tau_m} \dots P^{\tau_1})(\mu)$.
+	Here $\kappa$ is the concentration coefficients defined in \cref{defn:ccoefs}.
 \end{lem}
 \begin{proof}
   Recall that
@@ -73,7 +74,7 @@
 
   \textbf{Step 1}
   We start by relating $Q^* - Q^{\pi_K}$, the quantity of interest,
-  to $Q^* - \wt{Q}_K$, which is computed in the algorithm.
+  to $Q^* - \wt{Q}_K$, which is more related to the output of the algorithm.
   Using \cref{lem:tlemma} we can make the upper bound
   \begin{align}
     Q^* - Q^{\pi_K} &= T^{\pi^*} Q^* - T^{\pi_K} Q^{\pi_K} \notag
@@ -236,7 +237,7 @@ Combining \cref{eq:Qsk_high} and \cref{eq:Qsk_low} with \cref{eq:qq1} we get
     \\ &\leq \frac{1}{1-\gamma^{K+1}(1-\gamma)} \phi_{\mu,\nu}
     \label{eq:step4_3}
   \end{align}
-  Where the last inequality is due to [missing reference: assump. 2].
+  Where the last inequality is due to \cref{asm:A2}.
   %todo reference assumption 2 (concentration coefficients)
   Combining \cref{eq:step4_2} and \cref{eq:step4_3} we arrive at
   \begin{equation}
