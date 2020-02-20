@@ -1,0 +1,60 @@
+MASTER THESIS
+Jacob Harder
+Title: 'On Theoretical Analyses of Deep Q-Learning'
+Advisor: Stefan Horst Sommer
+
+LEARNING OBJECTIVES:
+
+- Describe setup, definitions, and theoretical aspects of reinforcement
+  learning and Q-Learning.
+- Describe mathematical aspects of Artificial Neural Networks in relation to Q-Learning.
+- Describe and analyze the function space foundation in the topics mentioned above.
+- Survey existing mathemathical results on Q-Learning using deep neural
+  networks, e.g. relating to success and convergence rates
+- Analyze assumptions of these results and investigate if they can be changed
+- Compare with similar results in the neural network litterature
+- Perspectivize the theory to empirical results
+
+PROJECT FORMULATION:
+
+Strong empirical results of Articifial Neural Networks (ANN) and Q-Learning
+(QL) for certain problems, such as image recognition and board game
+strategies, have appeared during the last 15 years. Mathematical explaination
+of these results have generally been sparse, however recent attempts aim to
+remedy this. The project will survey and analyze recent mathematical results
+on ANN and QL performance, discussing their strength and relevance as well as
+the possibility of their improvement. In the course of this, the function
+space foundations of the methods will be described and analyzed in detail.
+Finally the theorical results will be put in context of the empirical results
+that motivated the project.
+
+SCHEDULE:
+
+Beginning: 30. November 2019 
+Ending: 30. June 2020
+
+Blok 3
+Week 1:
+- Describe setup, definitions, and theoretical aspects of reinforcement
+  learning and Q-Learning.
+Weeks 2-3:
+- Describe mathematical aspects of Artificial Neural Networks in relation to Q-Learning.
+weeks 4-5:
+- Describe and analyze the function space foundation in the topics mentioned above.
+Weeks 6-8:
+- Survey existing mathemathical results on Q-Learning using deep neural
+  networks, e.g. relating to success and convergence rates
+
+Blok 4
+Weeks 1-3:
+- Analyze assumptions of these results and investigate if they can be changed
+Week 4:
+- Compare with similar results in the neural network litterature
+Week 5:
+- Perspectivize the theory to empirical results
+Weeks 6-8:
+- Rereading, error correction and hand-in of project
+Weeks 9-10:
+- Presentation and defense
+
+The project will be written along side researching, reading and generating the results it discusses.

@@ -1,0 +1,23 @@
+
+Learning objectives:
+- Describe setup, definitions, and theoretical aspects of reinforcement
+  learning and Q-Learning.
+- Describe mathematical aspects of Artificial Neural Networks in relation to Q-Learning.
+- Describe and analyze the function space foundation in the topics mentioned above.
+- Survey existing mathemathical results on Q-Learning using deep neural
+  networks, e.g. relating to success and convergence rates
+- Analyze assumptions of these results and investigate if they can be changed
+- Compare with similar results in the neural network litterature
+- Perspectivize the theory to empirical results
+
+Project formulation:
+Strong empirical results of Articifial Neural Networks (ANN) and Q-Learning
+(QL) for certain problems, such as image recognition and board game
+strategies, have appeared during the last 15 years. Mathematical explaination
+of these results have generally been sparse, however recent attempts aim to
+remedy this. The project will survey and analyze recent mathematical results
+on ANN and QL performance, discussing their strength and relevance as well as
+the possibility of their improvement. In the course of this, the function
+space foundations of the methods will be described and analyzed in detail.
+Finally the theorical results will be put in context of the empirical results
+that motivated the project.

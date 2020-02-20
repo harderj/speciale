@@ -1,0 +1,32 @@
+Schedule for Master Thesis,
+'On Theorical Analyses of Deep Q-Learning',
+Jacob Harder, 2020
+
+Beginning: 30. November 2019 
+Ending: 30. June 2020
+
+Blok 3
+Week 1:
+- Describe setup, definitions, and theoretical aspects of reinforcement
+  learning and Q-Learning.
+Weeks 2-3:
+- Describe mathematical aspects of Artificial Neural Networks in relation to Q-Learning.
+weeks 4-5:
+- Describe and analyze the function space foundation in the topics mentioned above.
+Weeks 6-8:
+- Survey existing mathemathical results on Q-Learning using deep neural
+  networks, e.g. relating to success and convergence rates
+
+Blok 4
+Weeks 1-3:
+- Analyze assumptions of these results and investigate if they can be changed
+Week 4:
+- Compare with similar results in the neural network litterature
+Week 5:
+- Perspectivize the theory to empirical results
+Weeks 6-8:
+- Rereading, error correction and hand-in of project
+Weeks 9-10:
+- Presentation and defense
+
+The project will be written along side researching, reading and generating the results it discusses.
