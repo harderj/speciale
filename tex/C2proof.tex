@@ -1,250 +1,118 @@
+% Proof of Theorem 6.2 (section C.2, page 36 in YangXieWang)
+% Questions to ponder:
+% Should we have two 'delta's?
 
-\begin{lem}\label{lem:tlemma}
-  $T Q \geq T^\pi Q$ for any policy $\pi : \Cal{S} \to \Cal{P}(\Cal{A})$
-  and any action value function $Q: \Cal{S} \times \Cal{A} \to \R$.
-\end{lem}
+\begin{prop}
+  $Y_i(\Prob)$ and $TQ(X_i)(\Prob)$ are i.i.d.
+  \label{lem:YTQ}
+\end{prop}
 \begin{proof}
+  Recall that $X_i = (S_i, A_i)$,
   \begin{align*}
-    (TQ)(s, a) &= \E \left( R(s, a) + \gamma \max_{a'} Q(S', a')
-    \mid S' \sim P(\cdot \mid s, a) \right)
-    \\ &\geq \E \left( R(s, a) + \gamma Q(S', A')
-    \mid S' \sim P(\cdot \mid s, a), A' \sim \pi(\cdot \mid S') \right)
-    \\ &= T^\pi Q(s,a)
+    Y_i = \E R(X_i) + \gamma \max_{a \in \Cal{A}} Q(S_{i+1}, a)
   \end{align*}
+  where $S_{i+1} \sim P(X_i)$, and
+  \begin{align*}
+    TQ(X_i) = \E R(X_i) + \gamma \E_{S'} Q(S', \argmax_{a \in \Cal{A}} Q(S', a))
+  \end{align*}
+  where $S' \sim P(X_i)$.
+  It is a fundamental assumption/definition that $S'$ and $S_{i+1}$ are
+  i.i.d.
 \end{proof}
 
-\begin{lem}\label{lem:MRN}
-  Let $f:\Cal{S}\times\Cal{A} \to \R$ be an action-value function,
-  $\tau_1, \dots, \tau_m$ be policies
-  and $\mu \in \Cal{P}(\Cal{S}\times\Cal{A})$ be a probability measure.
-  Then
-  \begin{align*}
-    \E_\mu [(P^{\tau_m} \dots P^{\tau_1})(f)]
-    \leq \kappa(k - i + j; \mu, \nu) \norm{f}_{2,\nu}
-  \end{align*}
-  For any measure $\nu \in \Cal{P}(\Cal{S}\times\Cal{A})$ which is
-  absolutely continuous w.r.t. $(P^{\tau_m} \dots P^{\tau_1})(\mu)$.
-	Here $\kappa$ is the concentration coefficients defined in \cref{defn:ccoefs}.
-\end{lem}
-\begin{proof}
-  Recall that
-  \begin{align*}
-    \kappa(m; \mu, \nu) := \sup_{\pi_1, \dots, \pi_m} \left[
-      \E_{\nu} \abs{\frac{\dif (P^{\pi_m}\dots P^{\pi_1}\mu)}{\dif \nu}}^2
-      \right]^{1/2}
-      \\ = \sup_{\pi_1, \dots, \pi_m}
-      \norm{\frac{\dif (P^{\pi_m}\dots P^{\pi_1}\mu)}{\dif \nu}}_{2, \nu}
-  \end{align*}
-  Thus
-  \begin{align}
-    \E_\mu [(P^{\tau_m} \dots P^{\tau_1})(f)]
-    &= \int (P^{\tau_m} \dots P^{\tau_1})(f) \dif \mu
-    \\ &= \int f \dif (P^{\tau_m} \dots P^{\tau_1} \mu)
-    \label{eq:preradniko}
-    \\ &= \int f \frac{\dif(P^{\tau_m} \dots P^{\tau_1} \mu)}{\dif \nu} \dif \nu
-    \label{eq:postradniko}
-    \\ &\leq \norm{\frac{\dif(P^{\tau_m} \dots P^{\tau_1} \mu)}{\dif \nu}}_{2,\nu}
-    \cdot \norm{f}_{2, \nu} \label{eq:cspost}
-    \\ &\leq \kappa(m, \mu, \nu) \norm{f}_{2,\nu}
-  \end{align}
-  Where \cref{eq:postradniko} is due to the Radon-Nikodym theorem
-  and \cref{eq:cspost} is Cauchy-Schwarz.
-\end{proof}
-
-\begin{proof}[Proof of \cref{thm:errorprop}] 
-  First some things to keep in mind during the proof.
-  Recall that $V_{\max} = R_{\max} / (1 - \gamma)$ and that
-  $\pi_Q$ is the greedy policy w.r.t. $Q$.
-  Denote 
-  \[ \pi_i = \pi_{\wt{Q}_i},
-    \; Q_{i+1} = T \wt{Q}_{i},
-  \; \varrho_{i} = Q_{i} - \wt{Q}_{i},
-\; \mbox{ for } i \in \{0,\dots,K+1\} \]
-  Note that for any policy $\pi$,
-  $P^{\pi}$ is linear and 1-contrative on
-  $\Cal{L}^\infty(\Cal{S} \times \Cal{A})$. %todo: proof
-  Also \[ T^{\pi} Q^{\pi} = Q^{\pi}, \;
-    T Q = T^{\pi_Q} Q, \;
-  T Q^* = Q^* = Q^{\pi^*} \]
-  where $\pi^*$ is greedy w.r.t. $Q^*$. 
-  If $f > f'$ for $f,f':\Cal{S}\times \Cal{A} \to \R$
-  then $P^{\pi} f \geq P^{\pi} f'$. %nice-to-have proof
+\begin{proof}[Proof of \cref{thm:oneStep}]
+  First some introductory fixing of notation and variables.
+  Fix a minimal $\delta$-covering of $\Cal{F}$
+  with centers $f_1, \dots, f_{N_\delta}$.
+  Define
+  \[ \wt{Q} := \argmin_{f \in \Cal{F}} \norm{f - TQ}_{\nu}^2 \]
+  \[ k^* := \argmin_{k \in [N_\delta]} \norm{f_k - \wh{Q}}_\infty \]
+  and $ X_i := (S_i, A_i) $.
+  Notice that $\wt{Q}$ differs from $\wh{Q}$ in that
+  $\wt{Q}$ approximates $TQ$ w.r.t. $\norm{\cdot}^2_\nu$ while
+  $\wh{Q}$ approximates $Y = (Y_1, \dots, Y_n)$ in mean squared error over
+  $X = (X_1, \dots, X_n)$.
+  %We define a shorthand for the average by
+  %$\ol{f(X)} := 1/n \cdot \sum_{i=1}^n f(X_i)$.
+  %In general we shall loosely write \emph{vectored} equations like
+  %$ Y = R + \gamma \max_{a \in \Cal{A}} Q(S',a) $ 
+  %(this is then meant to be equivalent to the definition of $Y$).
+  We shall be loose about applying functions to vectors
+  (of random variables)
+  in the sense that they are applied entry-wise.
+  We use $\norm{\cdot}_p$ to denote the (finite dimensional) $p$-norm
+  ($p$ ommitted when $p=2$).
+  When talking about $p$-norms on the random variables we always specify
+  the distribution (e.g. $\norm{\cdot}_\nu$).
+  When the sample (e.g. $X$) is clear from context we omit it writing
+  $\norm{f} = \norm{f(X)}$.
   
-  The proof consists of four steps.
-
   \textbf{Step 1}
-  We start by relating $Q^* - Q^{\pi_K}$, the quantity of interest,
-  to $Q^* - \wt{Q}_K$, which is more related to the output of the algorithm.
-  Using \cref{lem:tlemma} we can make the upper bound
-  \begin{align}
-    Q^* - Q^{\pi_K} &= T^{\pi^*} Q^* - T^{\pi_K} Q^{\pi_K} \notag
-    \\ &= T^{\pi^*} Q^* + (T^{\pi^*} \wt{Q}_K - T^{\pi^*} \wt{Q}_K)
-    + (T \wt{Q}_K - T \wt{Q}_K)- T^{\pi_K} Q^{\pi_K} \notag
-    \\ &= (T^{\pi^*} \wt{Q}_K - T \wt{Q}_K)
-    + (T^{\pi^*} Q^* - T^{\pi^*} \wt{Q}_K) 
-    + (T \wt{Q}_K - T^{\pi_K} Q^{\pi_K}) \notag
-    \\ &\leq (T^{\pi^*} Q^* - T^{\pi^*} \wt{Q}_K) 
-    + (T \wt{Q}_K - T^{\pi_K} Q^{\pi_K}) \notag
-    \\ &= (T^{\pi^*} Q^* - T^{\pi^*} \wt{Q}_K) 
-    + (T^{\pi_K} \wt{Q}_K - T^{\pi_K} Q^{\pi_K}) \notag
-    \\ &= \gamma P^{\pi^*} (Q^* - \wt{Q}_K)
-    + \gamma P^{\pi_K} (\wt{Q}_K - Q^{\pi_K}) \notag
-    \\ &= \gamma (P^{\pi^*} - P^{\pi_K})(Q^* - \wt{Q}_K)
-    + \gamma P^{\pi_K} (Q^* - Q^{\pi_K}) \label{preU}
-  \end{align}
-  This implies
-  \[ (I - \gamma P^{\pi_K})(Q^* - Q^{\pi_K})
-  \leq \gamma (P^{\pi^*} - P^{\pi_K})(Q^* - \wt{Q}_K) \]
-  Since $\gamma P^{\pi_K}$ is $\gamma$-contractive,
-  $U = (I - \gamma P^{\pi_K})^{-1}$ exists as a bounded operator on
-  $\Cal{L}^\infty(\Cal{S}\times \Cal{A})$ and equals
-  \[ U = \sum_{i=0}^\infty \gamma^i (P^{\pi_K})^i \] 
-  From this we also see that $f \geq f' \implies U f \geq U f'$ for any
-  $f, f' : \Cal{S}\times \Cal{A} \to \R$.
-  Therefore we can apply $U$ on both sides of \cref{preU} to obtain 
-  \begin{equation} Q^* - Q^{\pi_K} \leq \gamma U^{-1}(P^{\pi^*}(Q^* - \wt{Q}_K)
-  - P^{\pi_K} (Q^* - \wt{Q}_K)) \label{eq:qq1} \end{equation} 
-
-  \textbf{Step 2}
-  Using \cref{lem:tlemma} for any $i \in [K]$ we can get an upper bound
-  \begin{align}
-    Q^* - \wt{Q}_{i+1} &= Q^* + (T\wt{Q}_i - T \wt{Q}_i) - \wt{Q}_{i+1}
-    + (T^{\pi^*}\wt{Q}_i - T^{\pi^*}\wt{Q}_i) \notag
-    \\ &= (Q^* - T^{\pi^*} \wt{Q}_i) + (T \wt{Q}_i - \wt{Q}_{i+1})
-    + (T^{\pi^*}\wt{Q}_i - T \wt{Q}_i) \notag
-    \\ &= (T^{\pi^*} Q^* - T^{\pi^*} \wt{Q}_i) + \varrho_{i+1}
-    + (T^{\pi^*}\wt{Q}_i - T \wt{Q}_i) \notag
-    \\ &\leq T^{\pi^*} Q^* - T^{\pi^*} \wt{Q}_i + \varrho_{i+1} \notag
-    \\ &= \gamma P^{\pi^*} (Q^* - \wt{Q}_i) + \varrho_{i+1} \label{Qst_high}
-  \end{align}
-  and a lower bound
-  \begin{align}
-    Q^* - \wt{Q}_{i+1} &= Q^* + (T\wt{Q}_i - T \wt{Q}_i) - \wt{Q}_{i+1}
-    + (T^{\pi_i}Q^* - T^{\pi_i}Q^*) \notag
-    \\ &= (T^{\pi_i}Q^* - T^{\pi_i} \wt{Q}_i) + \varrho_{i+1}
-    + (T Q^* - T^{\pi_i} Q^*) \notag
-    \\ &\geq T^{\pi_i}Q^* - T^{\pi_i} \wt{Q}_i + \varrho_{i+1} \notag
-    \\ &= \gamma P^{\pi_i} (Q^* - \wt{Q}_i) + \varrho_{i+1} \label{Qst_low}
-  \end{align}
-  Applying \cref{Qst_high} and \cref{Qst_low} iteratively we get  
-  \begin{align}
-    Q^* - \wt{Q}_K \leq \gamma^K (P^{\pi^*})^K (Q^* - \wt{Q}_0)
-    + \sum_{i=0}^{K-1} \gamma^{K-1-i} (P^{\pi^*})^{K-1-i} \varrho_{i+1}
-    \label{eq:Qsk_high}
-  \end{align}
-  and
-  \begin{align}
-    Q^* - \wt{Q}_K \geq \gamma^K (P^{\pi_{K-1}} \dots P^{\pi_0})(Q^* - \wt{Q}_0)
-    + \sum_{i=0}^{K-1}\gamma^{K-1-i}(P^{\pi_{K-1}}\dots P^{\pi_{i+1}})
-    \varrho_{i+1} \label{eq:Qsk_low}
-  \end{align}
-
-  \textbf{Step 3}
-Combining \cref{eq:Qsk_high} and \cref{eq:Qsk_low} with \cref{eq:qq1} we get
+  By definion (of $\wh{Q}$) for all $f \in \Cal{F}$ we have
+  $\norm{\wh{Q}(X) - Y}^2 \leq \norm{f(X) - Y}^2$, leading to
+  \begin{align*}
+    & \norm{Y}^2 + \norm{\wh{Q}}^2 - 2 Y\cdot Q
+    \leq \norm{Y}^2 + \norm{f}^2 - 2 Y\cdot f
+    \\ \iff & \norm{\wh{Q}}^2 + \norm{TQ}^2 - 2 \wh{Q}\cdot TQ 
+    \leq \norm{f}^2 + \norm{TQ}^2 - 2 f\cdot TQ + 2 Y\cdot \wh{Q}
+    - 2 Y \cdot f - 2 \wh{Q}\cdot TQ + 2f\cdot TQ
+    \\ \iff & \norm{Q - TQ}^2
+    \leq \norm{f - TQ}^2 + 2(Y - TQ)\cdot(\wh{Q} - f) 
+    \\ \iff & \norm{Q - TQ}^2
+    \leq \norm{f - TQ}^2 + 2 \xi \cdot (\wh{Q} - f)
+  \end{align*}
+  Where $ \xi_i := Y_i - TQ(X_i) $ and $\xi := (\xi_1, \dots, \xi_n)$.
+  By \cref{lem:YTQ} we have that $Y_i$ and $TQ(X_i)$ are i.i.d. So 
+  satisfy $\E(\xi_i \mid X_i) = 0$.
+  Therefore $\E(\xi_i g(X_i)) = 0$ for any function $g:\R\to \R$.
+  So
   \begin{equation}
-    \begin{split}
-      Q^* - Q^{\pi_K} \leq U^{-1} \bigg(
-	\gamma^{K+1}((P^{\pi^*})^{K+1} - P^{\pi_K} \dots P^{\pi_0})(Q^* - \wt{Q}_0)
-	\\ + \sum_{i=0}^{K-1} \gamma^{K-i}
-      ((P^*)^{K-i} - P^{\pi_K} \dots P^{\pi_{i+1}}) \varrho_{i+1} \bigg)
-    \end{split}
-    \label{eq:step3_1}
+    \E \xi \cdot (\wh{Q} - f) = \E \xi \cdot (\wh{Q} - TQ)
   \end{equation}
-  For shorthand define constants
-  \begin{equation} \alpha_i = \frac{(1-\gamma) \gamma^{K-i-1}}{1 - \gamma^{K+1}}
-    \; \mbox{ for } 0 \leq i \leq K-1 \mbox{ and }
-    \alpha_K = \frac{(1-\gamma) \gamma^K}{1 - \gamma^{K+1}}
-  \end{equation}
-  (note that $\sum_{i=0}^K \alpha_i = 1$) and operators
-  \begin{align}
-    O_i = (1-\gamma)/2 U^{-1} [(P^{\pi^*})^{K-i}
-    + (P^{\pi_K} \dots P^{\pi_{i+1}})]
-    \\ O_K = (1-\gamma)/2 U^{-1} [(P^{\pi^*})^{K+1}
-    + (P^{\pi_K} \dots P^{\pi_0})]
-  \end{align}
-  Then by \cref{eq:step3_1}
-  \begin{align}
-    \abs{Q^* - Q^{\pi_K}} \leq \frac{2 \gamma (1- \gamma^{K+1})}{(1-\gamma)^2}
-    \left[ \sum_{i=0}^{K-1} \alpha_i O_i \abs{\varrho_{i+1}}
-    + \alpha_K O_K \abs{Q^* - \wt{Q}_0} \right]
-  \end{align}
-  So by linearity of expectation
-  \begin{align}
-    \norm{Q^* - Q^{\pi_K}}_{1, \mu} &= \E_\mu \abs{Q^* - Q^{\pi_K}}
-    \\ &\leq \frac{2 \gamma (1- \gamma^{K+1})}{(1-\gamma)^2}
-    \left[ \sum_{i=0}^{K-1} \alpha_i \E_\mu (O_i \abs{\varrho_{i+1}})
-    + \alpha_K \E_\mu (O_K \abs{Q^* - \wt{Q}_0}) \right]
-    \label{eq:step3_final}
-  \end{align}
-  With the bound on rewards we (crudely) estimate
+  To bound this we insert $f_{k^*}$ by the triangle inequality
   \begin{equation}
-    \E_\mu O_K \abs{Q^* - \wt{Q}_0} \leq 2 V_{\max} = 2 R_{\max} / (1-\gamma)
-    \label{eq:step3_crude}
+    \abs{\E \xi \cdot (\wh{Q} - TQ) }
+    \leq \abs{\E \xi \cdot (\wh{Q} - f_{k^*}) } 
+    + \abs{\E \xi \cdot (f_{k^*} - TQ) }
+    \label{eq:c2triangle1}
   \end{equation}
-  The remaining difficulty lies in $\E_\mu(O_i\abs{\varrho_{i+1}})$.
-
-  \textbf{Step 4}
-  Using the sum expansion of $U^{-1}$ we get
-  \begin{align}
-    & \E_\mu (O_i \abs{\varrho_{i+1}})
-    \\ &= \frac{1 - \gamma}{2} \E_\mu \left( U^{-1} [(P^{\pi_K})^{K-i} +
-    P^{\pi_K} \dots P^{\pi_{i+1}}] \abs{\varrho_{i+1}} \right)
-    \\ &= \frac{1 - \gamma}{2} \E_\mu \left( \sum_{j=0}^\infty
-      [(P^{\pi_K})^j (P^{\pi_K})^{K-i}
-      + (P^{\pi_K})^{j+1} P^{\pi_{K-1}} \dots P^{\pi_{i+1}}]
-    \abs{\varrho_{i+1}} \right)
-    \\ &= \frac{1 - \gamma}{2} \sum_{j=0}^\infty
-      \E_\mu \left( [(P^{\pi_K})^j (P^{\pi_K})^{K-i}
-      + (P^{\pi_K})^{j+1} P^{\pi_{K-1}} \dots P^{\pi_{i+1}}] 
-      \abs{\varrho_{i+1}} \right)
-  \end{align}
-  Notice that there are $K-i+j$ $P$-operators on both terms
-  in the sum. Therefore were can employ \cref{lem:MRN} twice.
-  Moreover define
-  $\varepsilon_{\max} = \max_{i \in [K]} \norm{\varrho_i}_{2,\nu}$.
+  We now bound these two terms. The first by Cauchy-Schwarz
+  \begin{equation}
+    \abs{\E \xi \cdot (\wh{Q} - f_{k^*})}
+    \leq \E \left( \norm{\xi} \norm{\wh{Q} - f_{k^*}} \right)
+    \leq \E (\norm{\xi}) \sqrt{n} \delta
+    \leq 2 n V_{\max} \delta
+  \end{equation}
+  where we have used that $\norm{\wh{Q} - f_{k^*}}_\infty \leq \delta$ so
+  \begin{equation}
+    \norm{\wh{Q} - f_{k^*}}^2
+    = \sum_{i=1}^n (\wh{Q}(X_i) - f_{k^*}(X_i))^2
+    \leq \sum_{i=1}^n \delta^2
+    = n \delta^2
+  \end{equation}
+  and that $\abs{Y_i}, TQ(X_i) \leq V_{\max}$ so
+  \begin{equation}
+    \norm{\xi}^2 = \sum_{i=1}^n (Y_i - TQ(X_i))^2 
+    \leq \sum_{i=1}^n (2 V_{\max})^2
+    = 4 V_{\max}^2 n
+  \end{equation}
+  To bound the second term in \cref{eq:c2triangle1} define
+  \begin{equation}
+  Z_j := \sqrt{n} \; \xi \cdot (f_j - TQ) \norm{f_j - TQ}_1^{-1}
+  \end{equation}
+  %TODO more steps here probably
   Then
-  \begin{align}
-    \E_\mu(O_i \abs{\varrho_{i+1}}) &\leq (1-\gamma)
-    \sum_{j=0}^\infty \gamma^j \kappa(K-i+j;\mu,\nu) \norm{\varrho_{i+1}}_{2,\nu}
-    \notag
-    \\ &\leq \varepsilon_{\max} (1-\gamma)
-    \sum_{j=0}^\infty \gamma^j \kappa(K-i+j;\mu,\nu) 
-    \label{eq:step4_1}
-  \end{align} 
-  Using \cref{eq:step3_final}, \cref{eq:step3_crude} and \cref{eq:step4_1}
-  \begin{equation}
-    \begin{split}
-    \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
-    \frac{2 \gamma (1- \gamma^{K+1})}{1-\gamma} 
-    \left[ \sum_{i=0}^{K-1} \sum_{j=0}^\infty
-    \alpha_i \gamma^j \kappa(K-i+j; \mu, \nu) \right] \varepsilon_{\max}
-    \\ + \frac{4 \gamma (1-\gamma^{K+1})}{(1-\gamma)^3} \alpha_K R_{\max}
-  \end{split}
-  \label{eq:step4_2}
-  \end{equation} 
-  Focusing on the first term on RHS of \cref{eq:step4_2}, if we 
-  then we can take the norm out of the sum as a constant. We are left with
-  \begin{align}
-    & \sum_{i=0}^{K-1} \sum_{j=0}^\infty \alpha_i \gamma^j \kappa(K-i+j;\mu,\nu)
-    \notag
-    \\ &= \sum_{i=0}^{K-1} \sum_{j=0}^\infty  
-    \frac{(1-\gamma) \gamma^{K-i+j-1}}{1-\gamma^{K+1}} \kappa(K-i+j;\mu,\nu)
-    \notag
-    \\ &= \frac{1-\gamma}{1-\gamma^{K+1}} \sum_{j=0}^\infty \sum_{i=0}^{K-1} 
-    \gamma^{K-i+j-1} \kappa(K-i+j;\mu,\nu) \notag
-    \\ &\leq \frac{1-\gamma}{1-\gamma^{K+1}} \sum_{m=0}^\infty
-    \gamma^{m-1} \cdot m \cdot \kappa(m; \mu, \nu) \notag
-    \\ &\leq \frac{1}{1-\gamma^{K+1}(1-\gamma)} \phi_{\mu,\nu}
-    \label{eq:step4_3}
-  \end{align}
-  Where the last inequality is due to \cref{asm:A2}.
-  %todo reference assumption 2 (concentration coefficients)
-  Combining \cref{eq:step4_2} and \cref{eq:step4_3} we arrive at
-  \begin{equation}
-    \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
-    \frac{2\gamma \cdot \phi_{\mu,\nu}}{(1-\gamma)^2} \cdot \varepsilon_{\max}
-    + \frac{4\gamma^{K+1}}{(1-\gamma)^2} \cdot R_{\max}
-  \end{equation}
-\end{proof}
+  \begin{align*}
+    \E ( \xi \cdot (f_{k^*} - TQ) )
+    &= \frac{1}{\sqrt{n}} \E (\norm{f_{k^*} - TQ}_1 \abs{Z_{k^*}})
+    \\ &\leq \frac{1}{\sqrt{n}}
+    \E \left( \left(\norm{\wh{Q} -TQ}_1 + \norm{\wh{Q} - f_{k^*}}_1 \right)
+    \abs{Z_{k^*}} \right)
+    \\ &\leq \frac{1}{\sqrt{n}}
+    \E \left( \left(\norm{\wh{Q} -TQ}_1 + \delta \right)
+    \abs{Z_{k^*}} \right)
+  \end{align*}
 
+
+\end{proof}
 

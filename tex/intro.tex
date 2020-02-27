@@ -46,9 +46,10 @@ This operator adjust the $Q$ function to look more like $Q^\pi$ making one
 "iteration" of "propagation of rewards" discounting with $\gamma$.
 Indeed it is easily seen that $Q^\pi$ is a fixed point for $T^\pi$.
 
-A \emph{greedy} policy $\pi$ with respect to a state-action value function
-$Q$ is a policy which deterministically chooses an action with maximal value of $Q$,
-for each state. That is $\pi(s) = \delta_{\{a\}}$ for some $a \in \argmax_a Q(s,a)$.
+A \emph{greedy} policy $\pi$ with respect to a state-action value function $Q$
+is a policy which deterministically chooses an action with maximal value of $Q$
+for each state.
+That is $\pi(s) = \delta_a$ for some $a \in \argmax_a Q(s,a)$.
 We then write $\pi = \pi_Q$. With this we can define the operator $T$:
 \[ T Q = T^{\pi_Q} Q \]
 called the Bellman \emph{optimality} operator.
