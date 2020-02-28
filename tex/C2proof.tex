@@ -104,13 +104,16 @@
   Then
   \begin{align*}
     \E ( \xi \cdot (f_{k^*} - TQ) )
-    &= \frac{1}{\sqrt{n}} \E (\norm{f_{k^*} - TQ}_1 \abs{Z_{k^*}})
+    &= \frac{1}{\sqrt{n}} \E \left( \norm{f_{k^*} - TQ}_1 \abs{Z_{k^*}} \right)
     \\ &\leq \frac{1}{\sqrt{n}}
     \E \left( \left(\norm{\wh{Q} -TQ}_1 + \norm{\wh{Q} - f_{k^*}}_1 \right)
     \abs{Z_{k^*}} \right)
     \\ &\leq \frac{1}{\sqrt{n}}
-    \E \left( \left(\norm{\wh{Q} -TQ}_1 + \delta \right)
+    \E \left( \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)
     \abs{Z_{k^*}} \right)
+    \\ &\leq \frac{1}{\sqrt{n}}
+    \left( \E \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)^2 \right)^{1/2}
+    \left( \E Z_{k^*}^2 \right)^{1/2}
   \end{align*}
 
 
