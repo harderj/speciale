@@ -124,58 +124,52 @@
   \end{equation}
   To bound the second term in \cref{eq:c2triangle1} define
   \begin{equation}
-  Z_j := \sqrt{n} \; \xi \cdot (f_j - TQ) \norm{f_j - TQ}_1^{-1}
+  Z_j := \xi \cdot (f_j - TQ) \norm{f_j - TQ}^{-1}
   \end{equation}
   %TODO more steps here probably
   Then
   \begin{align}
     \E \left( \xi \cdot (f_{k^*} - TQ) \right)
-    &= \frac{1}{\sqrt{n}} \E \left( \norm{f_{k^*} - TQ}_1 \abs{Z_{k^*}} \right)
+    &= \E \left( \norm{f_{k^*} - TQ} \abs{Z_{k^*}} \right)
     \label{eq:long1_1}
-    \\ &\leq \frac{1}{\sqrt{n}}
-    \E \left( \left(\norm{\wh{Q} -TQ}_1 + \norm{\wh{Q} - f_{k^*}}_1 \right)
+    \\ &\leq 
+    \E \left( \left(\norm{\wh{Q} - TQ} + \norm{\wh{Q} - f_{k^*}} \right)
     \abs{Z_{k^*}} \right) 
     \label{eq:long1_2}
-    \\ &\leq \frac{1}{\sqrt{n}}
-    \E \left( \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)
+    \\ &\leq 
+    \E \left( \left(\norm{\wh{Q} - TQ} + n \delta \right)
     \abs{Z_{k^*}} \right) 
     \label{eq:long1_3}
-    \\ &\leq \frac{1}{\sqrt{n}}
-    \left( \E \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)^2 \right)^{1/2}
+    \\ &\leq 
+    \left( \E \left(\norm{\wh{Q} - TQ} + n \delta \right)^2 \right)^{1/2}
     \left( \E Z_{k^*}^2 \right)^{1/2} 
     \label{eq:long1_4}
-    \\ &\leq \frac{1}{\sqrt{n}}
-    \E \left(\norm{\wh{Q} -TQ}_1 + n \delta \right) 
+    \\ &\leq 
+    \E \left(\norm{\wh{Q} - TQ} + n \delta \right) 
     \left( \E Z_{k^*}^2 \right)^{1/2} 
     \label{eq:long1_5}
-    \\ &\leq \frac{1}{\sqrt{n}}
-    \left(\sqrt{n} \sqrt{ \E \norm{\wh{Q} -TQ}_2^2 } + n \delta \right) 
+    \\ &\leq 
+    \left(\sqrt{ \E \norm{\wh{Q} -TQ}_2^2 } + n \delta \right) 
     \left( \E Z_{k^*}^2 \right)^{1/2} 
     \label{eq:long1_6}
-    \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + \sqrt{n} \delta \right) 
-    \left( \E Z_{k^*}^2 \right)^{1/2}
-    \label{eq:long1_7}
-    \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + \sqrt{n} \delta \right)
-    2 V_{\max} \sqrt{n}
+    \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + n \delta \right)
+    2 V_{\max} 
     \label{eq:long1_8}
   \end{align}
   Where \cref{eq:long1_1} to \cref{eq:long1_2} is by the triangle inequality,
   \cref{eq:long1_5} to \cref{eq:long1_6} is \cref{lem:norm12ineq}
-  and \cref{eq:long1_7} to \cref{eq:long1_8} is due to the following
+  and \cref{eq:long1_6} to \cref{eq:long1_8} is due to the following
   \begin{prop}
-    \[ |Z_j| \leq 2 V_{\max} \sqrt{n} \]
+    \[ |Z_j| \leq 2 V_{\max} \]
   \end{prop}
   \begin{proof} For any $i \in [n]$
     \[ |\xi_i| = |Y_i - \wh{Q}(X_i)| \leq |Y_i| + |\wh{Q}(X_i)|
     \leq 2 V_{\max} \]
     Thus
     \begin{align*}
-      \sqrt{n} \xi \cdot (f_j - TQ)
-      & \leq \sqrt{n} 2 V_{\max} \sum_{i=1}^n \abs{f_j(X_i) - (TQ)(X_i)}
-      \norm{f_j - TQ}_1^{-1}
-      \\ & \leq 2 V_{\max} \sqrt{n} \norm{f_j - (TQ)}_1
-      \norm{f_j - TQ}_1^{-1}
-      \\ & \leq 2 V_{\max} \sqrt{n}
+      \xi \cdot (f_j - TQ)
+      & \leq \norm{\xi} \cdot \norm{f_j - TQ} \cdot \norm{f_j - TQ}^{-1}
+      \\ & \leq 2 V_{\max} 
     \end{align*}
   \end{proof}
   Combining \cref{eq:c2first}, \cref{eq:c2triangle1},
@@ -183,13 +177,15 @@
   \begin{align}
     \E \norm{\wh{Q} - TQ}^2 & \leq \E \norm{f - TQ}^2 + 4 n V_{\max} \delta
     + \left( \sqrt{\E \norm{\wh{Q} - TQ}^2} + \sqrt{n} \delta \right)
-    2 V_{\max} \sqrt{n}
-    \\ & = 2 \sqrt{\E \norm{\wh{Q} - TQ}^2} V_{\max} \sqrt{n}
+    2 V_{\max} 
+    \\ & = 2 \sqrt{\E \norm{\wh{Q} - TQ}^2} V_{\max} 
     + 6 n \delta V_{\max} + \E \norm{f - TQ}^2
+    \label{eq:c2step1comb}
   \end{align}
   \begin{lem} Let $a,b>0, \kappa \in (0,1]$ then
     \[ a^2 \leq 2ab + c \implies a^2 \leq (1 + \kappa)^2 b^2 / \kappa
     + (1 + \kappa) c \]
+    \label{lem:abc}
   \end{lem}
   \begin{proof} $0 \leq (x - y) = x^2 + y^2 - 2xy \implies 2xy \leq x^2 + y^2$
     for any $x, y \in \R$ so
@@ -198,15 +194,66 @@
       \\ & \leq \frac{\kappa}{1+\kappa} a^2 + \frac{1 + \kappa}{\kappa} b^2
     \end{align*}
   \end{proof}
+  By \cref{lem:abc} applied to \cref{eq:c2step1comb}
   \begin{align}
-    \frac{1}{n} \E \norm{\wh{Q} - TQ}^2 \leq
-    \frac{(1+\kappa)^2}{\kappa} 4 V_{\max}^2
+    \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
+    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
     + (1 + \kappa) \left( 6 \delta V_{\max}
     + \frac{1}{n} \E \norm{f - TQ}^2 \right)
+    \label{eq:c2step1final0}
+    \\ & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
+    + (1 + \kappa) \left( 6 \delta V_{\max}
+    + \inf_{f \in \Cal{F}} \frac{1}{n} \E \norm{f - TQ}^2 \right)
     \label{eq:c2step1final}
   \end{align}
-  \textbf{Step 2}
+  Here we can take infimum since
+  \cref{eq:c2step1final0} holds for all $f \in \Cal{F}$.
 
+  \textbf{Step 2} Here we link up $\norm{\wh{Q} - TQ}_{\sigma}^2$ 
+  with $\E \frac{1}{n} \norm{\wh{Q} -TQ}^2$.
+  \begin{align}
+    \abs{ \left( \wh{Q}(x) - TQ(x) \right)^2
+    - \left( f_{k^*}(x) - TQ(x) \right)^2 }
+    &= \abs{ \wh{Q}(x) - f_{k^*}(x) } \cdot
+    \abs{ \wh{Q}(x) + f_{k^*}(x) - 2 TQ(x) }
+    \\ & \leq 4 V_{\max} \delta
+  \end{align}
+  Using this twice we can say
+  \begin{align}
+    & (\wh{Q}(\wh{X}_i) - TQ(\wh{X}_i)^2 
+    \\ \leq {} & (\wh{Q}(\wt{X}_i) - TQ(\wt{X}_i))^2
+    - (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2
+    + (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2 
+    \\ \leq {} & (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2 
+    + (\wh{Q}(X_i) - TQ(X_i))^2
+    - (\wh{Q}(X_i) - TQ(X_i))^2
+    \notag \\ & + (f_{k^*}(X_i) - TQ(X_i))^2
+    - (f_{k^*}(X_i) - TQ(X_i))^2 + 4 V_{\max} \delta
+    \\ \leq {} & (\wh{Q}(X_i) - TQ(X_i))^2
+    + (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2
+    - (f_{k^*}(X_i) - TQ(X_i))^2
+    + 8 V_{\max} \delta
+    \label{eq:c2step2long1}
+  \end{align}
+  Thus we get
+  \begin{align}
+    & \norm{\wh{Q} - TQ}_\sigma^2
+    \\ = {} & \E \frac{1}{n} \sum_{i=1}^n (\wh{Q}(\wt{X}_i) - TQ(\wt{X}_i))^2
+    \\ \leq {} & \E \frac{1}{n} \sum_{i=1}^n \left( (\wh{Q}(X_i) - TQ(X_i))^2 
+      + (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2
+    - (f_{k^*}(X_i) - TQ(X_i))^2 \right)
+    + 8 V_{\max} \delta 
+    \\ = {} & \frac{1}{n} \norm{\wh{Q} - TQ}^2
+    + \frac{1}{n} \sum_{i=1}^n h_{k^*}(X_i, \wt{X}_i)
+    + 8 V_{\max}
+  \end{align}
+  Where we define
+  \begin{equation}
+    h_j(x, y) \defeq \left( f_j(y) - TQ(y) \right)^2
+    - \left( f_j(x) - TQ(x) \right)^2
+    \label{eq:c2step2hdef}
+  \end{equation}
+  
 \end{proof}
 
 

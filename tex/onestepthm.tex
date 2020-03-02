@@ -3,7 +3,7 @@
   Let
   \begin{itemize}
     \item $\Cal{F} \subseteq \Cal{B}(\Cal{S}\times\Cal{A}, V_{\max})$
-      be a class ofbounded measurable functions
+      be a class of bounded measurable functions
     \item $\nu \in \Cal{P}(\Cal{S},\Cal{A})$ be a probability measure
     \item $(S_i, A_i)_{i\in[n]}$ be $n$ i.i.d. samples following $\nu$
     \item $(R_i, S'_i)_{i\in[n]}$ be the rewards and next states
@@ -12,7 +12,7 @@
     \item $Y_i = R_i + \gamma \max_{a \in \Cal{A}} Q(S'_i, a)$
     \item $\wh{Q} = \argmin_{f \in \Cal{F}} \frac{1}{n}
       \sum_{i=1}^n (f(S_i, A_i) - Y_i)^2$
-    \item $\epsilon \in (0,1],\; \delta > 0$ be fixed
+    \item $\kappa \in (0,1],\; \delta > 0$ be fixed
     \item $\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)$
       a minimal $\delta$-covering of $\Cal{F}$ w.r.t. $\norm{\cdot}_\infty$
     \item $N_\delta = \abs{\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)}$
