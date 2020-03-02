@@ -2,22 +2,22 @@
 % Questions to ponder:
 % Should we have two 'delta's?
 
+
+
 \begin{prop}
-  $Y_i(\Prob)$ and $TQ(X_i)(\Prob)$ are i.i.d.
-  \label{lem:YTQ}
+  \label{lem:norm12ineq}
+  Let $v$ be a random vector in $\R^n$ then
+  \[ \E \norm{v}_1 \leq \sqrt{n} \sqrt{ \E \norm{v}_2^2 } \]
 \end{prop}
+
 \begin{proof}
-  Recall that $X_i = (S_i, A_i)$,
-  \begin{align*}
-    Y_i = \E R(X_i) + \gamma \max_{a \in \Cal{A}} Q(S_{i+1}, a)
-  \end{align*}
-  where $S_{i+1} \sim P(X_i)$, and
-  \begin{align*}
-    TQ(X_i) = \E R(X_i) + \gamma \E_{S'} Q(S', \argmax_{a \in \Cal{A}} Q(S', a))
-  \end{align*}
-  where $S' \sim P(X_i)$.
-  It is a fundamental assumption/definition that $S'$ and $S_{i+1}$ are
-  i.i.d.
+  Denote $v$'s coordinates $v=(v_1, \dots, v_n)$.
+  Cauchy-Schwarz applied to some vector $w$ and $(1, \dots, 1)$ yields
+  \[ \norm{w}_1 \leq \sqrt{n} \norm{w}_2 \]
+  Now let $w = (\E v_1, \dots, \E v_n)$.
+  Then by linearity of expectation and Jensens inequality
+  \[ \E \norm{v} = \norm{w} \leq \sqrt{n} \sqrt{\sum_{i=1}^n (\E v_i)^2}
+  \leq \sqrt{n} \sqrt{\E \sum_{i=1}^n v_i^2} = \sqrt{n} \sqrt{\E \norm{v}_2^2} \]
 \end{proof}
 
 \begin{proof}[Proof of \cref{thm:oneStep}]
@@ -50,30 +50,55 @@
   \textbf{Step 1}
   By definion (of $\wh{Q}$) for all $f \in \Cal{F}$ we have
   $\norm{\wh{Q}(X) - Y}^2 \leq \norm{f(X) - Y}^2$, leading to
-  \begin{align*}
-    & \norm{Y}^2 + \norm{\wh{Q}}^2 - 2 Y\cdot Q
+  \begin{align}
+    & \norm{Y}^2 + \norm{\wh{Q}}^2 - 2 Y\cdot \wh{Q}
     \leq \norm{Y}^2 + \norm{f}^2 - 2 Y\cdot f
     \\ \iff & \norm{\wh{Q}}^2 + \norm{TQ}^2 - 2 \wh{Q}\cdot TQ 
     \leq \norm{f}^2 + \norm{TQ}^2 - 2 f\cdot TQ + 2 Y\cdot \wh{Q}
     - 2 Y \cdot f - 2 \wh{Q}\cdot TQ + 2f\cdot TQ
-    \\ \iff & \norm{Q - TQ}^2
+    \\ \iff & \norm{\wh{Q} - TQ}^2
     \leq \norm{f - TQ}^2 + 2(Y - TQ)\cdot(\wh{Q} - f) 
-    \\ \iff & \norm{Q - TQ}^2
+    \\ \iff & \norm{\wh{Q} - TQ}^2
     \leq \norm{f - TQ}^2 + 2 \xi \cdot (\wh{Q} - f)
-  \end{align*}
+    \label{eq:c2first}
+  \end{align}
   Where $ \xi_i := Y_i - TQ(X_i) $ and $\xi := (\xi_1, \dots, \xi_n)$.
-  By \cref{lem:YTQ} we have that $Y_i$ and $TQ(X_i)$ are i.i.d. So 
-  satisfy $\E(\xi_i \mid X_i) = 0$.
-  Therefore $\E(\xi_i g(X_i)) = 0$ for any function $g:\R\to \R$.
-  So
+  Now we proof a minor lemma
+  \begin{prop}
+    $\E(\xi_i g(X_i)) = 0$ for any function $g:\R\to \R$.
+    \label{lem:YTQ}
+  \end{prop}
+  \begin{proof}
+    Recall that $X_i = (S_i, A_i)$,
+    \begin{align*}
+      Y_i = R_i + \gamma \max_{a \in \Cal{A}} Q(S_{i+1}, a)
+    \end{align*}
+    where $S_{i+1} \sim P(X_i)$, $R_i \sim R(X_i)$ and
+    \begin{align*}
+      TQ(X_i) = \E_{X_i} R'_i
+      + \gamma \E_{X_i} Q(S', \argmax_{a \in \Cal{A}} Q(S', a))
+    \end{align*}
+    where $S' \sim P(X_i)$, $R'_i \sim R(X_i)$.
+    Since $S'$ and $S_{i+1}$ are i.i.d.
+    \begin{align*}
+      \E_{X_i} \xi_i & = \E_{X_i} \left( Y_i - TQ(X_i) \right)
+      \\ & = \E_{X_i} R_i - \E_{X_i} R'_i
+      + \gamma \left( \E_{X_i} \left( \max_{a \in\Cal{A}} Q(S_{i+1}, a) \right)
+      - \E_{X_i} \argmax_{a \in \Cal{A}} \left(  Q(S', a) \right) \right)
+      \\ & = 0 
+    \end{align*}
+    Therefore $\E(\xi_i g(X_i)) = 0$.
+  \end{proof}
+  By this lemma we can deduce
   \begin{equation}
-    \E \xi \cdot (\wh{Q} - f) = \E \xi \cdot (\wh{Q} - TQ)
+    \E \left( \xi \cdot (\wh{Q} - f) \right)
+    = \E \left( \xi \cdot (\wh{Q} - TQ) \right)
   \end{equation}
   To bound this we insert $f_{k^*}$ by the triangle inequality
   \begin{equation}
-    \abs{\E \xi \cdot (\wh{Q} - TQ) }
-    \leq \abs{\E \xi \cdot (\wh{Q} - f_{k^*}) } 
-    + \abs{\E \xi \cdot (f_{k^*} - TQ) }
+    \abs{\E \left( \xi \cdot (\wh{Q} - TQ) \right) }
+    \leq \abs{\E \left( \xi \cdot (\wh{Q} - f_{k^*}) \right) } 
+    + \abs{\E \left( \xi \cdot (f_{k^*} - TQ) \right) }
     \label{eq:c2triangle1}
   \end{equation}
   We now bound these two terms. The first by Cauchy-Schwarz
@@ -82,6 +107,7 @@
     \leq \E \left( \norm{\xi} \norm{\wh{Q} - f_{k^*}} \right)
     \leq \E (\norm{\xi}) \sqrt{n} \delta
     \leq 2 n V_{\max} \delta
+    \label{eq:c2firstcs}
   \end{equation}
   where we have used that $\norm{\wh{Q} - f_{k^*}}_\infty \leq \delta$ so
   \begin{equation}
@@ -102,20 +128,86 @@
   \end{equation}
   %TODO more steps here probably
   Then
-  \begin{align*}
-    \E ( \xi \cdot (f_{k^*} - TQ) )
+  \begin{align}
+    \E \left( \xi \cdot (f_{k^*} - TQ) \right)
     &= \frac{1}{\sqrt{n}} \E \left( \norm{f_{k^*} - TQ}_1 \abs{Z_{k^*}} \right)
+    \label{eq:long1_1}
     \\ &\leq \frac{1}{\sqrt{n}}
     \E \left( \left(\norm{\wh{Q} -TQ}_1 + \norm{\wh{Q} - f_{k^*}}_1 \right)
-    \abs{Z_{k^*}} \right)
+    \abs{Z_{k^*}} \right) 
+    \label{eq:long1_2}
     \\ &\leq \frac{1}{\sqrt{n}}
     \E \left( \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)
-    \abs{Z_{k^*}} \right)
+    \abs{Z_{k^*}} \right) 
+    \label{eq:long1_3}
     \\ &\leq \frac{1}{\sqrt{n}}
     \left( \E \left(\norm{\wh{Q} -TQ}_1 + n \delta \right)^2 \right)^{1/2}
+    \left( \E Z_{k^*}^2 \right)^{1/2} 
+    \label{eq:long1_4}
+    \\ &\leq \frac{1}{\sqrt{n}}
+    \E \left(\norm{\wh{Q} -TQ}_1 + n \delta \right) 
+    \left( \E Z_{k^*}^2 \right)^{1/2} 
+    \label{eq:long1_5}
+    \\ &\leq \frac{1}{\sqrt{n}}
+    \left(\sqrt{n} \sqrt{ \E \norm{\wh{Q} -TQ}_2^2 } + n \delta \right) 
+    \left( \E Z_{k^*}^2 \right)^{1/2} 
+    \label{eq:long1_6}
+    \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + \sqrt{n} \delta \right) 
     \left( \E Z_{k^*}^2 \right)^{1/2}
-  \end{align*}
-
+    \label{eq:long1_7}
+    \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + \sqrt{n} \delta \right)
+    2 V_{\max} \sqrt{n}
+    \label{eq:long1_8}
+  \end{align}
+  Where \cref{eq:long1_1} to \cref{eq:long1_2} is by the triangle inequality,
+  \cref{eq:long1_5} to \cref{eq:long1_6} is \cref{lem:norm12ineq}
+  and \cref{eq:long1_7} to \cref{eq:long1_8} is due to the following
+  \begin{prop}
+    \[ |Z_j| \leq 2 V_{\max} \sqrt{n} \]
+  \end{prop}
+  \begin{proof} For any $i \in [n]$
+    \[ |\xi_i| = |Y_i - \wh{Q}(X_i)| \leq |Y_i| + |\wh{Q}(X_i)|
+    \leq 2 V_{\max} \]
+    Thus
+    \begin{align*}
+      \sqrt{n} \xi \cdot (f_j - TQ)
+      & \leq \sqrt{n} 2 V_{\max} \sum_{i=1}^n \abs{f_j(X_i) - (TQ)(X_i)}
+      \norm{f_j - TQ}_1^{-1}
+      \\ & \leq 2 V_{\max} \sqrt{n} \norm{f_j - (TQ)}_1
+      \norm{f_j - TQ}_1^{-1}
+      \\ & \leq 2 V_{\max} \sqrt{n}
+    \end{align*}
+  \end{proof}
+  Combining \cref{eq:c2first}, \cref{eq:c2triangle1},
+  \cref{eq:c2firstcs} and \cref{eq:long1_8}
+  \begin{align}
+    \E \norm{\wh{Q} - TQ}^2 & \leq \E \norm{f - TQ}^2 + 4 n V_{\max} \delta
+    + \left( \sqrt{\E \norm{\wh{Q} - TQ}^2} + \sqrt{n} \delta \right)
+    2 V_{\max} \sqrt{n}
+    \\ & = 2 \sqrt{\E \norm{\wh{Q} - TQ}^2} V_{\max} \sqrt{n}
+    + 6 n \delta V_{\max} + \E \norm{f - TQ}^2
+  \end{align}
+  \begin{lem} Let $a,b>0, \kappa \in (0,1]$ then
+    \[ a^2 \leq 2ab + c \implies a^2 \leq (1 + \kappa)^2 b^2 / \kappa
+    + (1 + \kappa) c \]
+  \end{lem}
+  \begin{proof} $0 \leq (x - y) = x^2 + y^2 - 2xy \implies 2xy \leq x^2 + y^2$
+    for any $x, y \in \R$ so
+    \begin{align*}
+      2ab & = 2 \sqrt{\frac{\kappa}{1+\kappa}} a \sqrt{\frac{1+\kappa}{\kappa}} b
+      \\ & \leq \frac{\kappa}{1+\kappa} a^2 + \frac{1 + \kappa}{\kappa} b^2
+    \end{align*}
+  \end{proof}
+  \begin{align}
+    \frac{1}{n} \E \norm{\wh{Q} - TQ}^2 \leq
+    \frac{(1+\kappa)^2}{\kappa} 4 V_{\max}^2
+    + (1 + \kappa) \left( 6 \delta V_{\max}
+    + \frac{1}{n} \E \norm{f - TQ}^2 \right)
+    \label{eq:c2step1final}
+  \end{align}
+  \textbf{Step 2}
 
 \end{proof}
+
+
 
