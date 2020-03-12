@@ -1,0 +1,20 @@
+Hi Zhuoran Yang,
+
+Thanks for your answer
+I now understand better the existential nature of your results.
+
+I have now a different question regarding a detail in the proof p. 38 bottom.
+Here you use a lemma 5.15 [Vershynin 2010] on Z_j^2 to bound its mgf.
+which means it has got to be centered. This however I cannot prove.
+
+I have tried getting past this by centering and a few other schemes
+but in every case I get a bound on E(Z_k^2) which is O(n).
+This would invalidate the convergence because you end up with a
+constant term greater than V_max^2 in the final bound.
+
+I have checked the rest of the proof in detail and rewritten it for me thesis.
+So far I did not find anything else that caused me trouble.
+I hope you can spare another few moments to help me clarify this in my project.
+
+Best regards,
+Jacob Harder

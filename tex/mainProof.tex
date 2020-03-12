@@ -3,23 +3,67 @@
 
 
 
-\begin{proof}[Proof of main theorem]
-	%todo write intro
-	Using \cref{thm:errorprop} we get
-	\begin{equation}
-		\norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
-		2 \frac{\phi_{\mu, \nu}}{(1-\gamma)^2} +
-		\frac{4 \gamma^{K+1}}{(1-\gamma)^2} R_{\max}
-	\end{equation}
-	where $\varepsilon_{\max} =
-	\max_{k \in [K]} \norm{T \wt{Q}_{k-1} - \wt{Q}_k}_{2, \nu}$.
-	Using \cref{thm:onestep} with $Q = \wt{Q}_{k-1}$, 
-	$\Cal{F} = \Cal{F}_0$, $\epsilon = 1$
-	and $\delta = 1/n$, we get 
-	\begin{equation}
-		\varepsilon_{\max} \leq 4 \omega(\Cal{F}_0)
-		+ C \cdot V_{\max}^2/n \cdot \log N_0
-	\end{equation}
-	where $C = 64 + 8 / V_{\max}$
-	and $N_0 = \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}$.
+\begin{proof}[Proof of main theorem] %todo write intro
+  Using \cref{thm:errorprop} we get
+  \begin{equation}
+    \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
+    \frac{2 \phi_{\mu, \nu} \gamma}{(1-\gamma)^2} +
+    \frac{4 \gamma^{K+1}}{(1-\gamma)^2} R_{\max}
+    \label{eq:mp1}
+  \end{equation}
+  where $\varepsilon_{\max} =
+  \max_{k \in [K]} \norm{T \wt{Q}_{k-1} - \wt{Q}_k}_{2, \nu}$.
+  %todo: specify constants for \Cal{F}_0 !
+  Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$, 
+  $\Cal{F} = \Cal{F}_0$, $\epsilon = 1$ and $\delta = 1/n$, we get 
+  \begin{align}
+    \varepsilon_{\max} \leq & 4 n^{-1} V_{\max}^2
+    + 12 \delta V_{\max}
+    + 2 \omega(\Cal{F}_0)
+    + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_0}
+    + 16 V_{\max} n^{-1}
+    \label{eq:mp2}
+  \end{align}
+  where $N_0 = \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}$.
+  To bound $\omega(\Cal{F}_0)$
+  we want to employ the following lemma by %todo: ref to Schmidt-Hieber
+  \begin{lem}[Approximation of Hölder Smooth Functions]
+    Let $m,M \in \N$ with $N\geq \max\{(\beta + 1)^r, (H+1)\}$,
+    $L = 8 + (m + 5) (1 + \ceil{\log_2 r})$, 
+    $d_0 = r, d_j = 12 r N, d_{L+1} = 1$.
+    Then for any $g \in \Cal{C}_r([0,1]^r, \beta, H)$
+    there exists a ReLU network
+    $f \in \Cal{F}(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max})$
+    with $s \leq 94 r^2 (\beta + 1)^{2r} N (m+6)(1+\ceil{\log_2 r})$
+    such that
+    \begin{equation*}
+      \norm{f - g}_\infty \leq (2 H + 1) 3^{r+1} N 2^{-m} + H 2^\beta N^{-\beta/r}
+    \end{equation*}
+    %todo: decide whether to do this proof
+  \end{lem} 
+  Therefore the first step is to refit our
+  Hölder Smooth compositions in $\Cal{G}_0$ to be defined on a hyper-cube instead.
+  This is a relatively simple procedure:
+
+  Let $f \in \Cal{G}_0$ then $f(\cdot, a) \in
+  \Cal{G}(\{p_j, t_j, \beta_j, H_j\})$
+  so let $f(\cdot, a) = g_q \circ \dots \circ g_1$ where
+  $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$
+  for each $j \in [q]$ and $k \in [p_{j+1}]$.
+  Define
+  \begin{align}
+    h_1 = & g_1/(2H_1) + 1/2
+    \\ h_j(u) = & g_j(2H_{j-1} u - H_{j-1})/(2H_j) + 1/2,
+    \qquad j \in \{2, \dots, q-1\}
+    \\ h_q(u) = & g_q(2H_{q-1}u - H_{q-1})
+  \end{align}
+  Then $g_q \circ \dots \circ g_1 = h_q \circ \dots \circ h_1$ and
+  \begin{align}
+    h_{1k} \in & C_{t_1}([0,1]^{t_1}, \beta_1, 1)
+    \\ h_{jk} \in & C_{t_j}([0,1]^{t_j}, \beta_j, (2H_{j-1})^{\beta_j})
+    \\ h_q \in & C_{t_q}([0,1]^{t_q}, \beta_q, H_q(2H_{q-1})^{\beta_q})
+  \end{align}
+
+
+
 \end{proof}

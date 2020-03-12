@@ -1,0 +1,17 @@
+% this should explain measure theoretic issues in the project
+
+We are mostly concerned with
+a random process
+\begin{equation}
+(Z_i)_{i=1}^K
+= (S_i, A_i, R_i)_{i=1}^K \in (\Cal{S}\times\Cal{A}\times(0,R_{\max}))^K
+\end{equation}
+where $\Cal{S} \subseteq \R^d$ is compact and $\Cal{A}$ is finite,
+so we can model this as a discrete (and finite) time random process in a compact
+subset of $\R^{d+1}$ having the Markov property, namely that
+\begin{equation}
+  \Prob(Z_j \in A \mid Z_{j-1}, \dots, Z_1) = \Prob(Z_j \in A \mid Z_{j-1})
+  \label{eq:MarkovProperty}
+\end{equation}
+These random variables live on some background probability space, denote this
+$(\Omega, \Cal{H}, \Prob)$.
