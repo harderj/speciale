@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\input{preamble}
+
+\begin{document}
+\noindent
+Continuing from p. 38 bottom \dots 
+By Lemma 5.9 [Vershynin, 2010] the $\psi_2$-norm of $Z_j$ satisfies
+\begin{equation}
+  \norm{Z_j}_{\psi_2} \leq C H_\xi V_{\max}
+\end{equation}
+where $C>0$ is an positive absolute constant
+and so is sub-gaussian. Thus by [Vershynin 2010, p. 11, Lemma 5.5]
+\begin{equation}
+  \E \exp \left(c Z_j^2/\norm{Z_j}_{\psi_2}^2 \right) \leq e
+\end{equation}
+so
+\begin{align}
+  \E \max_{j \in N_\delta} Z_j^2
+  = &\; \frac{\max_{j \in [N_\delta]} \norm{Z_j}_{\psi_2}^2}{c}
+  \E \left( \max_{j \in [N_\delta]} \frac{  c Z_j^2 } 
+  {\max_{k \in [N_\delta]} \norm{Z_k}_{\psi_2}} \right)
+  \\ \leq &\; \frac{C^2 H_\xi^2 V_{\max}^2}{c}
+  \E \left( \max_{j \in N_\delta} \frac{  c Z_j^2 } 
+  {\norm{Z_j}_{\psi_2}} \right)
+  \\ \leq &\; \frac{C^2 H_\xi^2 V_{\max}^2}{c}
+  \log \left( \E \max_{j \in N_\delta} \exp \left( \frac{  c Z_j^2 } 
+  {\norm{Z_j}_{\psi_2}} \right) \right)
+  \\ \leq &\; \frac{C^2 H_\xi^2 V_{\max}^2}{c}
+  \log \left( \sum_{j \in [N_\delta]} \E \exp \left( \frac{  c Z_j^2 } 
+  {\norm{Z_j}_{\psi_2}} \right) \right)
+  \\ \leq &\; \frac{C^2 H_\xi^2 V_{\max}^2}{c}
+  \log \left( e N_\delta \right)
+\end{align}
+
+\end{document}
+

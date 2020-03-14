@@ -2,6 +2,7 @@
 % Questions to ponder:
 % Should we have two 'delta's?
 
+
 \begin{lem}[Rotation invariance]
   Let $(X_i)_{i=1}^n$ be independent, centered and sub-gaussian. Then
   $\sum_{i=1}^n X_i$ is centered and sub-gaussian with
@@ -11,7 +12,28 @@
   \label{lem:vershynin5_9}
 \end{lem}
 \begin{proof}
-  See [Vershynin 2010]. %todo reference
+  See [Vershynin 2010, p. 12]. %todo reference
+\end{proof}
+
+\begin{defn}[Sub-exponential norm]
+  For a random variable define
+  \begin{equation*}
+    \norm{X}_{\psi_1} = \sup_{p\geq 1} p^{-1} \norm{X}_p
+  \end{equation*}
+  called the sub-exponential norm, said to 'exist' if finite.
+  In that case $X$ is said to be 'sub-exponential'.
+\end{defn}
+
+\begin{lem}[Sub-gaussian squared is sub-exponential]
+  A random variable $X$ is sub-gaussian if and only if $X^2$ is sub-exponential
+  and
+  \begin{equation*}
+    \norm{X}^2_{\psi_2} \leq \norm{X^2}_{\psi_1} \leq 2 \norm{X}_{\psi_2}^2
+  \end{equation*}
+  \label{lem:vershynin5_14}
+\end{lem}
+\begin{proof}
+  See [Vershynin 2010, p. 14]
 \end{proof}
 
 \begin{prop}
@@ -150,7 +172,7 @@
   \end{equation}
   Note that since $\xi_i$ are centered $Z_j$.
   For a sub-$\sigma$-algebra $\Sigma$ define the \emph{sub-gaussian} norm by
-  \begin{defn}[Subgaussian norm]
+  \begin{defn}[Sub-gaussian norm]
     \[ \norm{W}_{\psi_2,\Sigma} \defeq
     \sup_{p\geq 1} p^{-1/2} \left( \E_{\Sigma} \abs{W}^p \right)^{1/p} \]
   \end{defn}
@@ -162,19 +184,25 @@
   \end{align}
   Therefore by \cref{lem:vershynin5_9}
   \begin{align}
-    \norm{Z_i}_{\psi_2, \Sigma}^2
+    \norm{Z_j}_{\psi_2, \Sigma}^2
     \leq & \norm{f_j - TQ}^{-2}
     \norm{\sum_{i=1}^n \xi_i (f_j(X_i) - TQ(X_i))}_{\psi_2, \Sigma}^2
     \\ \leq &\; \norm{f_j - TQ}^{-2}
     C_1 \sum_{i=1}^n \norm{\xi_i(f_j(X_i) - TQ(X_i))}_{\psi_2, \Sigma}^2
     \\ \leq &\; \norm{f_j - TQ}^{-2}
     C_1 \sum_{i=1}^n 4 V_{\max} \abs{f_j(X_i) - TQ(X_i)}^2
+    \\ = &\; 4 V_{\max}^2 C_1
   \end{align}
+  Observe that $\norm{X}_p \leq \sqrt{p} \; \sup_{p\geq 1} \norm{X}_{\psi_2}$.
+  Therefore by \cref{lem:vershynin5_14} we can say
   \begin{align}
-    \E Z_{k^*}^2 = &\; \E \max_{j \in [N_\delta]} Z_j^2
-    \\ \leq &\; 32 C_1^2 V_{\max}^4
+    \E Z_{k^*}^2 = &\; \E \left( \E_\Sigma Z_{k^*}^2 \right)
+    \\ \leq &\; \E \left( \max_{j \in [N_\delta]} \E_\Sigma Z_j^2 \right)
+    \\ \leq &\; \E \left( \sqrt{2} \norm{Z_j^2}_{\psi_2, \Sigma} \right)
+    \\ \leq &\; 2 \sqrt{2} \E \norm{Z_j}_{\psi_2, \Sigma}^2
+    \\ \leq &\; 8 \sqrt{2} V_{\max}^2 C_1
   \end{align}
-  Then
+  So now we can bound
   \begin{align}
     \E \left( \xi \cdot (f_{k^*} - TQ) \right)
     &= \E \left( \norm{f_{k^*} - TQ} \abs{Z_{k^*}} \right)
@@ -200,9 +228,10 @@
     \left( \E Z_{k^*}^2 \right)^{1/2} 
     \label{eq:long1_6}
     \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + n \delta \right)
-    2 V_{\max} \sqrt{n}
+    2^{7/4} V_{\max} \sqrt{C_1}
     \label{eq:long1_8}
   \end{align}
+  %TODO correct the rest of the proof with right constants..
   Where \cref{eq:long1_1} to \cref{eq:long1_2} is by the triangle inequality,
   \cref{eq:long1_5} to \cref{eq:long1_6} is \cref{lem:norm12ineq}
   and \cref{eq:long1_6} to \cref{eq:long1_8} is due to that
