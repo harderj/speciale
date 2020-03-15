@@ -194,15 +194,31 @@
     \\ = &\; 4 V_{\max}^2 C_1
   \end{align}
   Observe that $\norm{X}_p \leq \sqrt{p} \; \sup_{p\geq 1} \norm{X}_{\psi_2}$.
-  Therefore by \cref{lem:vershynin5_14} we can say
+  Thus by [Vershynin 2010, p. 11 and Lemma 5.5]
+  \begin{equation}
+    \E \exp \left(c Z_j^2/\norm{Z_j}_{\psi_2}^2 \right) \leq e
+  \end{equation}
+  so
   \begin{align}
-    \E Z_{k^*}^2 = &\; \E \left( \E_\Sigma Z_{k^*}^2 \right)
-    \\ \leq &\; \E \left( \max_{j \in [N_\delta]} \E_\Sigma Z_j^2 \right)
-    \\ \leq &\; \E \left( \sqrt{2} \norm{Z_j^2}_{\psi_2, \Sigma} \right)
-    \\ \leq &\; 2 \sqrt{2} \E \norm{Z_j}_{\psi_2, \Sigma}^2
-    \\ \leq &\; 8 \sqrt{2} V_{\max}^2 C_1
+    \E \max_{j \in N_\delta} Z_j^2
+    = &\; \frac{\max_{j \in [N_\delta]} \norm{Z_j}_{\psi_2}^2}{c}
+    \E \left( \max_{j \in [N_\delta]} \frac{  c Z_j^2 } 
+    {\max_{k \in [N_\delta]} \norm{Z_k}_{\psi_2}} \right)
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \E \left( \max_{j \in N_\delta} \frac{  c Z_j^2 } 
+    {\norm{Z_j}_{\psi_2}} \right)
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \log \left( \E \max_{j \in N_\delta} \exp \left( \frac{  c Z_j^2 } 
+    {\norm{Z_j}_{\psi_2}} \right) \right)
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \log \left( \sum_{j \in [N_\delta]} \E \exp \left( \frac{  c Z_j^2 } 
+    {\norm{Z_j}_{\psi_2}} \right) \right)
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \log \left( e N_\delta \right)
+    \\ \leq &\; C_2^2 V_{\max}^2 \log(N_\delta)
   \end{align}
-  So now we can bound
+  Where $C_2 \defeq \sqrt{8 C_1/c}$.
+  Now we can bound
   \begin{align}
     \E \left( \xi \cdot (f_{k^*} - TQ) \right)
     &= \E \left( \norm{f_{k^*} - TQ} \abs{Z_{k^*}} \right)
@@ -228,21 +244,19 @@
     \left( \E Z_{k^*}^2 \right)^{1/2} 
     \label{eq:long1_6}
     \\ &\leq \left(\sqrt{\E \norm{\wh{Q} -TQ}_2^2} + n \delta \right)
-    2^{7/4} V_{\max} \sqrt{C_1}
+    C_2^2 V_{\max}^2 \log(N_\delta)
     \label{eq:long1_8}
   \end{align}
-  %TODO correct the rest of the proof with right constants..
-  Where \cref{eq:long1_1} to \cref{eq:long1_2} is by the triangle inequality,
-  \cref{eq:long1_5} to \cref{eq:long1_6} is \cref{lem:norm12ineq}
-  and \cref{eq:long1_6} to \cref{eq:long1_8} is due to that
+  Where \cref{eq:long1_1} to \cref{eq:long1_2} is by the triangle inequality
+  and \cref{eq:long1_5} to \cref{eq:long1_6} is \cref{lem:norm12ineq}.
   Combining \cref{eq:c2first}, \cref{eq:c2triangle1},
   \cref{eq:c2firstcs} and \cref{eq:long1_8}
   \begin{align}
     \E \norm{\wh{Q} - TQ}^2 & \leq \E \norm{f - TQ}^2 + 4 n V_{\max} \delta
     + \left( \sqrt{\E \norm{\wh{Q} - TQ}^2} + \sqrt{n} \delta \right)
-    2 V_{\max} 
-    \\ & = 2 V_{\max} \sqrt{n} \sqrt{\E \norm{\wh{Q} - TQ}^2}
-    + 6 n \delta V_{\max} + \E \norm{f - TQ}^2
+    C_2 V_{\max} \sqrt{\log(N_\delta)}
+    \\ & = C_2 V_{\max} \sqrt{n \log(N_\delta)} \sqrt{\E \norm{\wh{Q} - TQ}^2}
+    + n C_2^2 \delta V_{\max}^2 \log(N_\delta) + \E \norm{f - TQ}^2
     \label{eq:c2step1comb}
   \end{align}
   \begin{lem} Let $a,b>0, \kappa \in (0,1]$ then
@@ -260,20 +274,23 @@
   By \cref{lem:abc} applied to \cref{eq:c2step1comb}
   \begin{align}
     \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
-    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
-    + (1 + \kappa) \left( 6 \delta V_{\max}
+    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} C_2^2 V_{\max}^2 \log(N_\delta)
+    + (1 + \kappa) \left( \delta C_2^2 V_{\max}^2 \log(N_\delta)
     + \frac{1}{n} \E \norm{f - TQ}^2 \right)
     \label{eq:c2step1final0}
   \end{align}
   Since this holds for any $f \in \Cal{F}$ we can further say
   \begin{align}
     \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
-    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
-    + (1 + \kappa) \left( 6 \delta V_{\max}
+    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
+    C_2^2 V_{\max}^2 \log(N_\delta)
+    \\ &\; + (1 + \kappa) \left( C_2^2 V_{\max}^2 \log(N_\delta)
       + \inf_{f \in \Cal{F}}
     \frac{1}{n} \E \norm{f - TQ}^2 \right)
-    \\ & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
-    + (1 + \kappa) \left( 6 \delta V_{\max}
+    \notag
+    \\ & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
+    C_2^2 V_{\max}^2 \log(N_\delta)
+    + (1 + \kappa) \left( C_2^2 V_{\max}^2 \log(N_\delta)
     + \omega(\Cal{F}) \right)
     \label{eq:c2step1final}
   \end{align}
@@ -385,8 +402,9 @@
     \norm{\wh{Q} - TQ}^2_\nu \leq & \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
     + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_\delta}
     + 8 V_{\max} (n^{-1} + \delta)
-    \\ \leq & \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} V_{\max}^2
-    + (1 + \kappa) \left( 6 \delta V_{\max}
+    \\ \leq & \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
+    C_2^2 V_{\max}^2 \log(N_\delta)
+    + (1 + \kappa) \left( \delta C_2^2 V_{\max}^2 \log(N_\delta)
     + \omega(\Cal{F}) \right) 
     \notag
     \\ & + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_\delta}

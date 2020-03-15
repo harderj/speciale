@@ -14,56 +14,128 @@
   where $\varepsilon_{\max} =
   \max_{k \in [K]} \norm{T \wt{Q}_{k-1} - \wt{Q}_k}_{2, \nu}$.
   %todo: specify constants for \Cal{F}_0 !
-  Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$, 
-  $\Cal{F} = \Cal{F}_0$, $\epsilon = 1$ and $\delta = 1/n$, we get 
+  Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$,
+  $\Cal{F} = \Cal{F}_0$, $\epsilon = 1$ and $\delta = 1/n$, we get
   \begin{align}
-    \varepsilon_{\max} \leq & 4 n^{-1} V_{\max}^2
-    + 12 \delta V_{\max}
+    \varepsilon_{\max} \leq & 6 n^{-1} C_2^2 V_{\max}^2 \log(N_\delta)
     + 2 \omega(\Cal{F}_0)
     + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_0}
     + 16 V_{\max} n^{-1}
     \label{eq:mp2}
   \end{align}
   where $N_0 = \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}$.
-  To bound $\omega(\Cal{F}_0)$
-  we want to employ the following lemma by %todo: ref to Schmidt-Hieber
+  The remains only to wound $\omega(\Cal{F}_0)$ and $N_0$,
+  starting with $\omega(\Cal{F}_0)$.
+
+  \textbf{Step 1}. %todo: proper ref below
+  We want to employ the following lemma by [Schmidt-Hieber 2019, thm. 5, p. 22]
   \begin{lem}[Approximation of Hölder Smooth Functions]
-    Let $m,M \in \N$ with $N\geq \max\{(\beta + 1)^r, (H+1)\}$,
-    $L = 8 + (m + 5) (1 + \ceil{\log_2 r})$, 
-    $d_0 = r, d_j = 12 r N, d_{L+1} = 1$.
-    Then for any $g \in \Cal{C}_r([0,1]^r, \beta, H)$
+    Let $m,M \in \Z_+$ with $N \geq \max\{(\beta + 1)^r, (H + 1) e^r\}$,
+    $L = 8 + (m + 5) (1 + \ceil{\log_2(r + \beta)})$, 
+    $d_0 = r, d_j = 6(r + \ceil{\beta}) N, d_{L+1} = 1$.
+    Then for any $g \in \Cal{C}_r \left( [0,1]^r, \beta, H \right)$
     there exists a ReLU network
-    $f \in \Cal{F}(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max})$
-    with $s \leq 94 r^2 (\beta + 1)^{2r} N (m+6)(1+\ceil{\log_2 r})$
+    $f \in \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, \infty \right)$
+    with $s \leq 141 (r + \beta + 1)^{3 + r} N (m+6)$
     such that
     \begin{equation*}
-      \norm{f - g}_\infty \leq (2 H + 1) 3^{r+1} N 2^{-m} + H 2^\beta N^{-\beta/r}
+      \norm{f - g}_\infty \leq (2 H + 1) 6^r N (1 + r^2 + \beta^2) 2^{-m}
+      + H 3^{\beta} N^{-\beta/r}
     \end{equation*}
+    \label{lem:holderapprox} 
     %todo: decide whether to do this proof
   \end{lem} 
+  \vspace*{-\baselineskip}
+  to each Hölder smooth part of $g$ and then piece it together somehow,
+  using that ReLU networks are easily stitched together into bigger
+  ReLU networks.
   Therefore the first step is to refit our
   Hölder Smooth compositions in $\Cal{G}_0$ to be defined on a hyper-cube instead.
   This is a relatively simple procedure:
 
   Let $f \in \Cal{G}_0$ then $f(\cdot, a) \in
-  \Cal{G}(\{p_j, t_j, \beta_j, H_j\})$
-  so let $f(\cdot, a) = g_q \circ \dots \circ g_1$ where
-  $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$
-  for each $j \in [q]$ and $k \in [p_{j+1}]$.
+  \Cal{G}(\{p_j, t_j, \beta_j, H_j\})$ for all $a \in \Cal{A}$.
+  Therefore $f(\cdot, a) = g_q \circ \dots \circ g_1$ where
+  the (sub-)components $(g_{jk})_{k=1}^{p_{j+1}} = g_j$ satisfy
+  \begin{equation}
+    g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)
+    , \qquad j \in [q], k \in [p_{j+1}]
+  \end{equation}
+  Here $a_1 = 0, b_1=1$ and,
+  $a_j < b_j \in \R$ are some real numbers for $2 \leq j \leq q$.
+  Notice that the Hölder smooth condition implies that
+  $g_{jk}([a_j, b_j]^{t_j}) \subseteq [-H_j, H_j]$.
   Define
   \begin{align}
-    h_1 = & g_1/(2H_1) + 1/2
+    h_1 = & g_1/(2H_1) + 1/2 \notag
     \\ h_j(u) = & g_j(2H_{j-1} u - H_{j-1})/(2H_j) + 1/2,
-    \qquad j \in \{2, \dots, q-1\}
+    & j \in \{2, \dots, q-1\} \notag
     \\ h_q(u) = & g_q(2H_{q-1}u - H_{q-1})
   \end{align}
   Then $g_q \circ \dots \circ g_1 = h_q \circ \dots \circ h_1$ and
   \begin{align}
-    h_{1k} \in & C_{t_1}([0,1]^{t_1}, \beta_1, 1)
-    \\ h_{jk} \in & C_{t_j}([0,1]^{t_j}, \beta_j, (2H_{j-1})^{\beta_j})
-    \\ h_q \in & C_{t_q}([0,1]^{t_q}, \beta_q, H_q(2H_{q-1})^{\beta_q})
+    h_{1k} \in &\; C_{t_1}([0,1]^{t_1}, \beta_1, 1) \notag
+    \\ h_{jk} \in &\; C_{t_j}([0,1]^{t_j}, \beta_j, (2H_{j-1})^{\beta_j}),
+    & j \in \{2, \dots, q-1\} \notag
+    \\ h_q \in &\; C_{t_q}([0,1]^{t_q}, \beta_q, H_q(2H_{q-1})^{\beta_q})
+  \end{align}
+  Define %todo: define N
+  $\eta = \log\left((2W + 1) 6^{t_j} N / (W 3^{\beta_j} N^{-\beta_j/t_j}) \right)$,
+  and $m = \eta \ceil{\log_2 n}$ 
+  \begin{equation}
+    W \defeq \max \left( \left\{ (2 H_{j-1})^{\beta_j} \mid 1\leq j\leq q-1 \right\}
+    \cup \left\{ H_q(2H_{q-1})^{\beta_q}, 1\right\} \right)
+  \end{equation}
+  By \cref{lem:holderapprox} there exists a ReLU network
+  \begin{equation}
+    \wh{h}_{jk} \in \Cal{F} \left( L_j + 2, \left\{ t_j, \wt{d}_j p_{j+1}, \dots,
+    \wt{d}_j p_{j+1}, p_{j+1} \right\}, (\wt{s}_j + 4) \cdot p_{j+1} \right)
+  \end{equation}
+  where $\wt{d}_j = 6(t_j + \ceil{\beta_j})N$ and
+  $\wt{s}_j \leq 141 (t_j + \beta_j + 1)^{3 + t_j} N (m + 6)$
+  such that
+  \begin{equation}
+    \norm{\wh{h}_{jk} - h_{jk}}_\infty \leq (2 W + 1) 6^{t_j} N 2^{-m}
+    + W 3^{\beta_j} N^{-\beta_j/t_j} \leq 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
+    \label{eq:hhatbound}
+  \end{equation} 
+  since $n\leq 4 > e$.
+  Since $h_{j+1}$ is defined on $[0, 1]^{t_{j+1}}$ but $\wt{h}_j$ takes values
+  in $\R$ we need to restrict $\wt{h}_j$ somehow to stitch
+  the two together (by function composition). This is easily done by
+  \begin{lem}
+    Restriction to $[0, 1]$ is expressible as a two-layer ReLU network
+    with 4 non-zero weights.
+  \end{lem}
+  \begin{proof}
+    Namely $\tau(u) = 1 - (1 - u)_+ = \min \left\{
+    \max \left\{ u, 0 \right\}, 1 \right\}$. %todo elaborate
+  \end{proof}
+  Now define
+  $\wt{h}_{jk} = \tau \circ \wh{h}_{jk}$
+  (and $\wt{h}_{j} = (\wt{h}_{jk})_{k \in [p_{j + 1}]}$).
+  Then
+  \begin{equation}
+    \wt{h}_{jk} \in \Cal{F}\left( L_j + 2, \left\{ t_j,
+  \wt{d}_j, \dots, \wt{d}_j, 1 \right\}, (\wt{s}_j + 4) p_{j+1} \right)
+  \end{equation}
+  and since $h_{jk}([0, 1]^{t_j}) \in [0, 1]$ by \cref{eq:hhatbound}
+  \begin{align}
+    \norm{\wt{h}_{jk} - h_{jk}}_\infty
+    = &\; \norm{\tau \circ \wh{h}_{jk} - \tau \circ h_{jk}}_\infty
+    \\ \leq &\; \norm{\wh{h}_{jk} - h_{jk}}_\infty
+    \\ \leq &\; 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
   \end{align}
 
-
+  \textbf{Step 2}.
+  Now define $\wt{f}:\Cal{S} \to \R$
+  as $\wt{f} = \wt{h}_1 \circ \dots \circ \wh{h}_1$.
+  If we set
+  $\wt{L} \defeq \sum_{j=1}^q (L_j + 2)$,
+  $\wt{d} \defeq \max{j \in [q]} \wt{d}_j p_{j+1}$
+  and $\wt{s} \defeq \sum_{j=1}^q (\wt{s}_j + 4) p_{j+1}$.
+  Then $\wt{f} \in \Cal{F}\left( \wt{L}, \left\{ 
+  r, \wt{d}, \dots, \wt{d}, 1\right\}, \wt{s} \right)$.
+  %TODO: continue from here
 
 \end{proof}
