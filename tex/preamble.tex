@@ -18,6 +18,8 @@
 \usepackage{commath}
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 \usepackage{upgreek}
+%\usepackage[inline]{enumitem}
+\usepackage{multicol}
 %\usepackage{fancyhdr} %maybe later..
 %\pagestyle{fancy}
 
@@ -39,11 +41,14 @@
 \newcommand{\wt}{\widetilde}
 \newcommand{\wh}{\widehat}
 \newcommand{\ol}{\overline}
+\newcommand{\Mid}{\;\middle\vert\;}
+\newcommand{\defemph}[1]{\textbf{#1}} %first-mentions of names
+\newcommand{\id}{\text{id}}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
-\newcommand{\defeq}{\vcentcolon=} % definition equality symbol
+\newcommand{\defeq}{\vcentcolon=} %definition equality symbol
 
 %theorems
 \theoremstyle{definition}

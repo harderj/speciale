@@ -8,51 +8,141 @@ Markov decision process
 	A Markov decision process (MDP) $(\Cal{S}, \Cal{A}, P, R, \gamma)$
 	consists of
 \begin{itemize}
-\item $\Cal{S}$ a set of states
-\item $\Cal{A}$ a set of actions
-\item $P : \Cal{S} \times \Cal{A} \to \Cal{P}(\Cal{S})$ its Markov transition kernel
-\item $R : \Cal{S} \times \Cal{A} \to \Cal{P}(\R)$ its immediate reward distribution
-\item $\gamma \in (0,1)$ the discount factor
+  \item $(\Cal{S}, \Sigma_{\Cal{S}})$ a measurable space of \defemph{states}.
+  \item $(\Cal{A}, \Sigma_{\Cal{A}})$ a measurable space of \defemph{actions}.
+  \item $P(\cdot \mid \cdot) : \Sigma_{\Cal{S}} \times (\Cal{S} \times \Cal{A})
+    \to [0,1]$ a probability kernel (of \defemph{transition} probabilities).
+  \item $R(\cdot \mid \cdot) : \bb{B} \times (\Cal{S} \times \Cal{A})
+    \to [0,1]$ a probability kernel (of \defemph{reward} probabilities).
+  \item $\gamma \in (0,1)$ a \defemph{discount} factor.
 \end{itemize}
 \end{defn}
 
-A policy (for an MDP) is a function
-\[\pi : \Cal{S} \to \Cal{P}(\Cal{A})\]
-With this we can define the state-value function $V^\pi : \Cal{S} \to \R$
-\[ V^\pi(s) = \E \left( \sum_{t \geq 0} \gamma^t R_t \mid
-R_t \sim R(S_t, A_t), S_t \sim P(S_{t-1}, A_{t-1}), A_t \sim \pi(S_t), S_0 = s
-\right) \]
-And the state-action-value (Q-) function $Q^\pi : \Cal{S} \times \Cal{A} \to \R$
-\[ Q^\pi(s, a) = \E (R(s, a) + \gamma V^\pi(S_0) \mid S_0 \sim P(s, a)) \]
-The optimal Q-function is defined as
-\[ Q^*(s, a) = \sup_\pi Q^\pi(s, a) \]
-One can show that there is a policy $\pi^*$ such that $Q^* = Q^{\pi^*}$.
-This is the optimal policy - the goal of RL. 
+In order for this to make sense we here include
+\begin{defn}[Probability kernel]
+  Let $(X, \Sigma_X), (Y, \Sigma_Y)$ be measurable spaces.
+  A function $\kappa(\cdot \mid \cdot) : \Sigma_Y \times X \to [0,1]$
+  is a \defemph{probability kernel} provided
+  \begin{itemize}
+    \item $B \mapsto \kappa(B \mid x) \in \Cal{P}(\Sigma_Y)$
+      that is $\kappa(\cdot \mid x)$ is a probability measure
+      for any $x \in X$.
+    \item $x \mapsto \kappa(B \mid x) \in \Cal{M}(\Sigma_X, \Sigma_Y)$
+      that is $\kappa(B \mid \cdot)$ is ($\Sigma_X/\Sigma_Y$-) measurable
+      for any $B \in \Sigma_Y$.
+  \end{itemize}
+\end{defn}
 
-Note that $V^\pi$, $Q^\pi$ and $Q^*$ are usually infeasible to calculate to
-machine precision, unless $\Cal{S} \times \Cal{A}$ is finite and not very big.
+Note that both $P$ and $R$ to be stochastic
+and that $R$ can depend on the action as well as the state.
+This is perhaps the most general way to define an MDP,
+generalizing some definitions. Common variations include that
+$R$ depends on $\Cal{S}$ only,
+$R$ is deterministic, or
+$P$ is deterministic. %todo backup this claim by a reference or three
+\begin{defn}[Policy]
+A (\defemph{randomized}, \defemph{stationary}) \defemph{policy}
+$\pi$ is probability kernel
+\[\pi(\cdot \mid \cdot) : \Sigma_{\Cal{A}} \times \Cal{S} \to [0,1] \]
+\end{defn}
+
+An MDP together with a policy and an initial distribution
+$\mu \in \Cal{P}(\Cal{S})$
+give rise to a countable stochastic process,
+$ (X_i)_{i\in \N} = (S_i, A_i, R_i)_{i\in \N}$ 
+that is a probability measure $P^\pi_\mu$. on
+$(\Cal{S} \times \Cal{A} \times \R)^\N $.
+See [ref. to Feinberg On Meas. and Repr. of Str. Meas. p. 31-32,
+and pos. Ionescu Tulcea] %todo ref
+for full details of how this is constructed.
+Intuitively $S_1$ is drawn from $\mu$,
+then for all $i \in \N$
+$A_i$ is drawn from $\pi(\cdot \mid S_i)$,
+a reward is then drawn from $R(\cdot \mid S_i, A_i)$,
+then $S_{i+1}$ is drawn from $P(\cdot \mid S_i, A_i)$ and so on.
+%todo: explain more about measures
+We let $E^\pi_\mu$ denote the expectation taken w.r.t $P^\pi_\mu$.
+When $\mu$ is a Dirac measure $\delta_x$, i.e. $\mu(\{x\}) = 1$ for some $x$,
+we shall generally write $x$ instead of $\mu$,
+E.g. $\E^\pi_s$ the expectation taken with respect to $P^\pi_{\delta_s}$
 
 \subsection{Q-Learning}
 
-Let $\pi: \Cal{S} \to \Cal{P}(\Cal{A})$ be a policy. We define the operator
-\[ (P^\pi Q)(s, a) = \E (Q(S', A') \mid S' \sim P(s, a), A' \sim \pi(S')) \]
+Fix an MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$ and a policy $\pi$.
+
+Generally in value iteration and Q-learning,
+any function $\Cal{S} \to \R$ is called a (\defemph{state})
+\defemph{value} function. Similarly any function
+$\Cal{S} \times \Cal{A} \to \R$ is called a (\defemph{state})
+\defemph{action value} or \defemph{Q}- function.
+The idea behind such functions are (usually) to estimate the cumulated
+rewards associated with a state or state-action pair.
+One has the reduced the problem of finding a good strategy
+to a one step problem of choosing the action that leads to the
+highest value. Of course this value of a state will depend
+strongly on the policy being followed. 
+
+The \defemph{ideal} value function
+w.r.t. $\pi$,
+$V^\pi : \Cal{S} \to \R$
+\[ V^\pi(s) \defeq \E^\pi_s \sum_{t = 1}^\infty \gamma^t R_t \]
+where $R_t$ are the projections of the random process generated from the
+MDP with starting distribution $\delta_s$. The value function gives the expected 
+accumulated reward when starting in state $s$ and following policy $\pi$.
+
+The \defemph{ideal} Q-function 
+w.r.t. $\pi$,
+$Q^\pi : \Cal{S} \times \Cal{A} \to \R$
+\[ Q^\pi(s, a) \defeq r(s, a) +
+\gamma \E (V^\pi(S) \mid S \sim P(\cdot \mid s, a)) \]
+where $r(s,a) \defeq \E(R \mid R \sim R(\cdot \mid s, a))$.
+
+One could think that it is a bit superfluous to define both a value and an
+action value function. 
+%todo: prove something about the equivalence
+According to [todo: ref] the main reason to work with Q-functions
+is that it is more difficult to work with value function for several reasons.
+Firstly to know what is the best action $a^*$ given a state $s$
+and a value function $V$, one has to calculate for each action $a$
+the distribution of the next state $s'$ and take expectation over
+$V(s')$. This either requires full knowledge of the transition kernel
+(this falls outside the so called model-free approaches)
+or some way of estimating it, and in both cases at computational cost.
+Whereas Q-functions simply requires finding
+$\argmax_{a \in \Cal{A}} Q(s,a)$.
+
+We define the operator
+\[ (P^\pi Q)(s, a) \defeq \E (Q(S', A') \mid S' \sim P(\cdot \mid s, a),
+A' \sim \pi(\cdot \mid S')) \]
 Intuitively this operator yields the expected state-action-value function
 when looking \emph{one step ahead} following the policy $\pi$ and taking
 expectation of $Q$.
 
 We define the operator $T^\pi$ called the Bellman operator by
-\[ (T^\pi Q)(s, a) = \E R(s, a) + \gamma (P^\pi Q)(s, a) \]
+\[ (T^\pi Q)(s, a) \defeq r(s, a) + \gamma (P^\pi Q)(s, a) \]
 This operator adjust the $Q$ function to look more like $Q^\pi$ making one
-"iteration" of "propagation of rewards" discounting with $\gamma$.
+iteration of reward-propagation discounting with $\gamma$.
 Indeed it is easily seen that $Q^\pi$ is a fixed point for $T^\pi$.
+%todo: prove this
 
 A \emph{greedy} policy $\pi$ with respect to a state-action value function $Q$
 is a policy which deterministically chooses an action with maximal value of $Q$
 for each state.
 That is $\pi(s) = \delta_a$ for some $a \in \argmax_a Q(s,a)$.
 We then write $\pi = \pi_Q$. With this we can define the operator $T$:
-\[ T Q = T^{\pi_Q} Q \]
+\[ T Q \defeq T^{\pi_Q} Q \]
 called the Bellman \emph{optimality} operator.
+
+The optimal Q-function is defined as
+\[ Q^*(s, a) \defeq \sup_\pi Q^\pi(s, a) \]
+where the supremum is taken over all policies.
+
+One can show that there is a policy $\pi^*$ such that $Q^* = Q^{\pi^*}$.
+This is the optimal policy - the goal of RL. 
+
+Note that $V^\pi$, $Q^\pi$ and $Q^*$ are usually infeasible to calculate to
+machine precision, unless $\Cal{S} \times \Cal{A}$ is finite and not very big.
+
 
 The Bellman optimality \emph{equation} can then be written $Q^* = TQ^*$.
 
@@ -78,6 +168,23 @@ The Bellman optimality \emph{equation} can then be written $Q^* = TQ^*$.
 \end{defn}
 
 An ANN is called \emph{deep} if there are two or more hidden layers.
+
+\begin{defn}[Sparse ReLU Networks]
+  For $s,V \in \R$ a (s,V)-\defemph{Sparse ReLU Network} is an ANN $f$
+  with any structure $\{d_i\}_{i\in [L+1]}$,
+  all activation functions being \emph{ReLU} i.e. $\sigma_{ij} = \max(\cdot, 0)$
+  and any weights $(W_\ell, v_\ell)$
+  satisfying
+  \begin{multicols}{3}
+    \begin{itemize}
+      \item $\max_{\ell \in [L+1]} \norm{\widetilde{W}_\ell}_\infty \leq 1$
+      \item $\sum_{\ell = 1}^{L+1} \norm{\widetilde{W}_\ell}_0 \leq s$
+      \item $\max_{j \in [d_{L+1}]} \norm{f_j}_\infty \leq V$
+    \end{itemize}
+  \end{multicols}
+  Here $\widetilde{W}_\ell = (W_\ell, v_\ell)$.
+  The set of them we denote $\Cal{F}(s,V)$.
+\end{defn}
 
 \subsection{Fitted Q-Iteration}
 
