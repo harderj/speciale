@@ -279,14 +279,26 @@
     + \frac{1}{n} \E \norm{f - TQ}^2 \right)
     \label{eq:c2step1final0}
   \end{align}
-  Since this holds for any $f \in \Cal{F}$ we can further say
+
+  We now take a closer look at the last term. Since $f$ and $TQ$ doesn't
+  depend on the $X_i$'s we have
+  \begin{align*}
+    \frac{1}{n} \E \norm{f- TQ}^2
+    = & \; \frac{1}{n} \sum_{i=1}^n \E (f(X_i) - TQ(X_i))^2
+    \\ = & \; \E (f(X_i) - TQ(X_i))^2
+    \\ = & \; \norm{f - TQ}^2_\nu
+  \end{align*}
+
+  Now since \cref{eq:c2step1final0} holds
+  for any $f \in \Cal{F}$ we can further say
   \begin{align}
     \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
-    & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
+    & \leq \frac{(1+\kappa)^2}{\kappa} \delta
     C_2^2 V_{\max}^2 \log(N_\delta)
+    \notag
     \\ &\; + (1 + \kappa) \left( C_2^2 V_{\max}^2 \log(N_\delta)
-      + \inf_{f \in \Cal{F}}
-    \frac{1}{n} \E \norm{f - TQ}^2 \right)
+      + \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}}
+    \norm{f - g}^2_\nu \right)
     \notag
     \\ & \leq \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
     C_2^2 V_{\max}^2 \log(N_\delta)
@@ -294,7 +306,7 @@
     + \omega(\Cal{F}) \right)
     \label{eq:c2step1final}
   \end{align}
-  Where we take the supremum over $\Cal{G}$ (recall $TQ \in \Cal{G}$).
+  where we take the supremum over $\Cal{G}$ (recall $TQ \in \Cal{G}$).
 
   \textbf{Step 2} Here we link up $\norm{\wh{Q} - TQ}_{\sigma}^2$ 
   with $\E \frac{1}{n} \norm{\wh{Q} -TQ}^2$.

@@ -7,7 +7,7 @@
   Using \cref{thm:errorprop} we get
   \begin{equation}
     \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
-    \frac{2 \phi_{\mu, \nu} \gamma}{(1-\gamma)^2} +
+    \frac{2 \phi_{\mu, \nu} \gamma}{(1-\gamma)^2}\varepsilon_{\max} +
     \frac{4 \gamma^{K+1}}{(1-\gamma)^2} R_{\max}
     \label{eq:mp1}
   \end{equation}
@@ -17,7 +17,7 @@
   Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$,
   $\Cal{F} = \Cal{F}_0$, $\epsilon = 1$ and $\delta = 1/n$, we get
   \begin{align}
-    \varepsilon_{\max} \leq & 6 n^{-1} C_2^2 V_{\max}^2 \log(N_\delta)
+    \varepsilon_{\max} \leq & 6 n^{-1} C_2^2 V_{\max}^2 \log(N_0)
     + 2 \omega(\Cal{F}_0)
     + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_0}
     + 16 V_{\max} n^{-1}
@@ -80,8 +80,13 @@
     \\ h_q \in &\; C_{t_q}([0,1]^{t_q}, \beta_q, H_q(2H_{q-1})^{\beta_q})
   \end{align}
   Define %todo: define N
-  $\eta = \log\left((2W + 1) 6^{t_j} N / (W 3^{\beta_j} N^{-\beta_j/t_j}) \right)$,
-  and $m = \eta \ceil{\log_2 n}$ 
+  $N \defeq \max_{j \in [q]} n^{t_j/(2 \beta^*_j + t_j)}$
+  $\eta \defeq \log \left((2W + 1) 6^{t_j} N
+  / (W 3^{\beta_j} N^{-\beta_j/t_j}) \right)$,
+  and $m \defeq \eta \ceil{\log_2 n}$,
+  and assume $n$ is sufficiently large such that
+  $N \geq \max \left\{ (\beta_j + 1)^{t_j},
+  (H_j+1)e^{t_j} \mid j \in [q] \right\}$.
   \begin{equation}
     W \defeq \max \left( \left\{ (2 H_{j-1})^{\beta_j} \mid 1\leq j\leq q-1 \right\}
     \cup \left\{ H_q(2H_{q-1})^{\beta_q}, 1\right\} \right)
@@ -96,10 +101,9 @@
   such that
   \begin{equation}
     \norm{\wh{h}_{jk} - h_{jk}}_\infty \leq (2 W + 1) 6^{t_j} N 2^{-m}
-    + W 3^{\beta_j} N^{-\beta_j/t_j} \leq 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
+    + W 3^{\beta_j} N^{-\beta_j/t_j} \leq 2 W 3^{\beta_j} N^{-\beta_j/t_j}
     \label{eq:hhatbound}
   \end{equation} 
-  since $n\leq 4 > e$.
   Since $h_{j+1}$ is defined on $[0, 1]^{t_{j+1}}$ but $\wt{h}_j$ takes values
   in $\R$ we need to restrict $\wt{h}_j$ somehow to stitch
   the two together (by function composition). This is easily done by
@@ -132,11 +136,147 @@
   as $\wt{f} = \wt{h}_1 \circ \dots \circ \wh{h}_1$.
   If we set
   $\wt{L} \defeq \sum_{j=1}^q (L_j + 2)$,
-  $\wt{d} \defeq \max{j \in [q]} \wt{d}_j p_{j+1}$
+  $\wt{d} \defeq \max_{j \in [q]} \wt{d}_j p_{j+1}$
   and $\wt{s} \defeq \sum_{j=1}^q (\wt{s}_j + 4) p_{j+1}$.
   Then $\wt{f} \in \Cal{F}\left( \wt{L}, \left\{ 
   r, \wt{d}, \dots, \wt{d}, 1\right\}, \wt{s} \right)$.
-  %TODO: continue from here
-   	
-
+  We now take a moment to verify the size 
+  of the constants involved in the network.
+  Starting with $\wt{L}$.
+  \begin{align*}
+    \wt{L} \leq & \; \sum_{j=1}^q (L_j + 2)
+    \\ = & \; \sum_{j=1}^q (8 + (\eta \ceil{\log_2 n} + 5)
+    (1 + \ceil{\log_2(\beta_j + t_j)}))
+    \\ \leq & \; \sum_{j=1}^q (8 + (\eta \log_2 n + \eta + 5)
+    (2 + \log_2(\beta_j + t_j)))
+    \\ \leq & \; 8q + (2 \eta + 5) \log_2(n)
+    \sum_{j=1}^q (2 + \log_2(\beta_j + t_j)) 
+    \\ \leq & \; 8q + (2 \eta + 5) \log_2(n)
+    (2q + \log(n)^\xi) 
+    \\ \leq & \; (10q + 1) (2 \eta + 5) \log_2(e) \log(n)^{1 + \xi}
+    \\ \leq & \; C_{\wt{L}} \log(n)^{1 + 2\xi}
+  \end{align*}
+  where $C_{\wt{L}} = (10q + 1)(2\eta + 5)\log_2(e)$.
+  For $\wt{d}$ we have
+  \begin{align*}
+    \wt{d} = & \; \max_{j \in [q]} \wt{d}_j p_{j+1}
+    \\ = & \; \max_{j \in [q]} 6(t_j + \beta_j + 1) N p_{j+1}
+    \\ \leq & \; 6 N (\max_{j \in [q]} p_j)
+    (\max_{j \in [q]} (t_j + \beta_j + 1))
+    \\ \leq & \; 6 N (\log n)^{2 \xi}
+    \\ \leq & \; 6 n^{\alpha^*} (\log n)^{\xi^*}
+  \end{align*}
+  and for $\wt{s}$
+  \begin{align*}
+    \wt{s} = & \; \sum_{j=1}^q (\wt{s}_j + 4) p_{j+1}
+    \\ \leq & \; \sum_{j=1}^q (141 N (m + 6)
+    (t_j + \beta_j + 1)^{3 + t_j} + 4) p_{j+1}
+    \\ \leq & \; 142 N (\log n)^\xi (2 \eta + 6) \log_2(n)
+    \sum_{j=1}^q (t_j + \beta_j + 1)^{3 + t_j}
+    \\ \leq & \; 142 N (\log n)^\xi (2 \eta + 6) \log_2(e) \log(n)
+    (\log n)^\xi
+    \\ = & \; 142 N (2 \eta + 6) \log_2(e) (\log n)^{1+ 2\xi}
+    \\ = & \; C_{\wt{s}} n^{a^*} (\log n)^{\xi^*}
+  \end{align*}
+  where $C_{\wt{s}} = 142(2 \eta + 6) \log_2(e)$.
+  Now we bound $\norm{\wt{f} - f(\cdot, a)}_\infty$.
+  Define $G_j = h_j \circ \dots \circ h_1$
+  , $\wt{G}_j = \wt{h}_j \circ \dots \circ \wt{h}_1$
+  for $j \in [q]$,
+  $\lambda_j = \prod_{\ell=j+1}^q (\beta_\ell \land 1)$
+  for all $j \in [q-1]$ and $\lambda_q = 1$. We have
+  \begin{align*}
+    \norm{G_j - \wt{G}_j}_\infty
+    = & \; \norm{h_j \circ G_{j-1} - h_j \circ \wt{G}_{j-1}
+    + h_j \circ \wt{G}_{j-1} - \wt{h}_j \circ \wt{G}_{j-1}}
+    \\ \leq & \; \norm{h_j \circ \wt{G}_{j-1} - h_j \circ G_{j-1}}_\infty
+    + \norm{h_j \circ \wt{G}_{j-1} - h_j \circ G_{j-1}}_\infty
+    \\ \leq & \; W \norm{G_{j-1} - \wt{G}_{j-1}}_\infty^{\beta_j \land 1}
+    + \norm{\wt{h}_j - h_j}_\infty^{\lambda_j}
+  \end{align*}
+  so by induction and \cref{eq:hhatbound}
+  \begin{align*}
+    \norm{f(\cdot, a) - \wt{f}}_\infty = & \; \norm{G_q - \wt{G}_q}_\infty
+    \\ \leq & \; W^q \sum_{j-1}^q \norm{\wt{h}_j - h_j}_\infty^{\lambda_j}
+    \\ \leq & \; W^q \sum_{j-1}^q
+    \left( 2 W 3^{\beta_j} N^{-\beta_j/t_j} \right)^{\lambda_j}
+    \\ \leq & \; 2 q 3^{\max_{j \in [q]} \beta^*_j} W^{q+1} 
+    \max_{j \in [q]} N^{-\beta^*_j/t_j}
+    \\ \leq & \; c_N^{1/2} \max_{j \in [q]} n^{-\alpha^* \beta^*_j / t_j}
+    \\ \leq & \; c_N^{1/2} n^{-\alpha^* \min_{j \in [q]} \beta^*_j / t_j}
+  \end{align*}
+  and therefore
+  \begin{align*}
+    \omega(\Cal{F}_0) = & \; \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}} 
+    \\ \leq & \; C_N n^{-2 \alpha^* \min_{j \in [q]} \beta^*_j / t_j}
+    \\ \leq & \; C_N n^{-2 \alpha^* \kappa^*}
+    \numberthis \label{eq:boundOmega}
+  \end{align*}
+  where we define $\kappa^* = \min_{j \in [q]} \beta^*_j/t_j$.
+  
+  \textbf{Step 3}.
+  Finally what is left is to bound the covering number of $\Cal{F}_0$.
+  Denote by $\Cal{N}_\delta$ the $\delta$-covering of
+  $\Cal{F}\left( \wt{L}, \{ \wt{d}_j \}_{j=1}^{\wt{L} + 1}, \wt{s}\right)$ by
+  \[ \Cal{N}_\delta \defeq \Cal{N} \left( \delta,
+      \Cal{F}\left(\wt{L}, \{ \wt{d}_j \}_{j=1}^{\wt{L} + 1}, \wt{s} \right),
+  \norm{\cdot}_\infty \right) \]
+  Since $\Cal{N}_\delta$ is a covering, for any $f \in \Cal{F}_0$
+  and $a \in \Cal{A}$ you can find a $g_a \in \Cal{N}_\delta$ such that
+  $\norm{f(\cdot, a) - g_a}_\infty < \delta$. Now let
+  $g:\Cal{S} \times \Cal{A} \to \R = (s, a) \mapsto g_a(s)$.
+  Then $\norm{f - g}_\infty < \delta$, so we can bound the covering number
+  of $\Cal{F}_0$ by
+  \[ \abs{\Cal{N}(\delta, \Cal{F_0},  \norm{\cdot}_\infty)}
+  \leq \abs{\Cal{N}_\delta}^{\abs{\Cal{A}}} \]
+  We now utilize a lemma found in [todo: ref to Anthony Bartlett 2009]
+  \begin{lem}[Covering Number of ReLU Networks]
+    Consider the family of ReLU networks
+    \[ \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max}\right) \]
+    where $\Cal{F}$ is defined in \cref{def:sparseReLU}.
+  Let $D \defeq \prod_{\ell=1}^{L+1} (d_\ell + 1))$. Then for any $\delta > 0$
+  \[ \Cal{N} \left(\delta,
+      \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max}\right),
+  \norm{\cdot}_\infty \right) \leq (2 (L+1) D^2 / \delta)^{s + 1} \]
+  \label{lem:ABcovering}
+  \end{lem}
+  \begin{proof}
+    We refer to theorem $14.5$ in [todo: ref to Anthony Bartlett, thm. 14.5].
+  \end{proof}
+  With \cref{lem:ABcovering} and $n$ sufficiently large we can bound
+  \begin{align*}
+    \log N_0 = & \; \log \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}
+    \\ \leq & \; \abs{\Cal{A}} \cdot \log \abs{\Cal{N}_{1/n}}
+    \\ \leq & \; \abs{\Cal{A}} (\wt{s} + 1) \log (2 (\wt{L} + 1) \wt{D}^2 n)
+    \\ \leq & \; \abs{\Cal{A}} (c_{\wt{s}} n^{\alpha^*} \log(n)^{\xi^*} + 1)
+    2 \log \left(2 (c_{\wt{L}} \log(n)^{\xi^*} + 1) \prod_{\ell=1}^{\wt{L} + 1}
+    (\wt{d} + 1) \right)
+    \\ \leq & \; 2 \abs{\Cal{A}} (c_{\wt{s}} n^{\alpha^*} \log(n)^{\xi^*} + 1)
+    \log \left(2 (c_{\wt{L}} \log(n)^{\xi^*} + 1)
+    (6 n^{\alpha^*} \log(n)^{\xi^*} + 1)^{\wt{L} + 1} \right)
+    \\ \leq & \; 4 \abs{\Cal{A}} c_{\wt{s}} n^{\alpha^*} \log(n)^{\xi^*}
+    (\wt{L} + 1) \log \left(24 c_{\wt{L}} \log(n)^{\xi^*}
+    n^{\alpha^*} \log(n)^{\xi^*} \right)
+    \\ \leq & \; 8 \abs{\Cal{A}} c_{\wt{s}} n^{\alpha^*} \log(n)^{\xi^*}
+    c_{\wt{L}} \log(n)^{\xi^*} (\alpha^* + 2) \log(n)
+    \\ = & \; 8 c_{\wt{s}} c_{\wt{L}} (\alpha^* + 2)
+    n^{\alpha^*} \log(n)^{1 + 2\xi^*}
+    \numberthis \label{eq:boundN0}
+  \end{align*}
+  Finally, combining
+  \cref{eq:mp1}, \cref{eq:mp2}, \cref{eq:boundOmega}, \cref{eq:boundN0}
+  and fiddling around with constants one obtains
+  \begin{align*}
+    \norm{Q^* - Q^{\pi_K}}_{1, \mu} \leq & \;
+    C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
+    n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
+    + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K
+  \end{align*}
+  where
+  \begin{align*}
+    C_{\varepsilon} = 160 C_2^2 C_{\wt{s}} C_{\wt{L}} (\alpha^* + 2)
+    + 4 C_N + 32
+  \end{align*}
+  only depends on the constants in \cref{asm:A2}
+  finishing the proof.
 \end{proof}

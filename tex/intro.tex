@@ -268,7 +268,8 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
     \end{itemize}
   \end{multicols}
   Here $\widetilde{W}_\ell = (W_\ell, v_\ell)$.
-  The set of them we denote $\Cal{F}(s,V)$.
+  The set of them we denote $\Cal{F}\left(L, \{d_i\}_{i=0}^{L+1},s,V \right)$.
+  \label{def:sparseReLU}
 \end{defn}
 
 \subsection{Fitted Q-Iteration}
@@ -276,21 +277,22 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
 We here present the algorithm which everything in this paper revolves around:
 
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
-	\caption{Fitted Q-Iteration Algorithm}
-	\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
-		sampling distribution $\nu$, number of iterations $K$,
-		number of samples $n$, initial estimator $\widetilde{Q}_0$}
-	\For{$k = 0,1,2,\dots,K-1$}{
-		Sample i.i.d. observations $\{(S_i, A_i), i \in [n]\}$ from $\nu$
-		obtain $R_i \sim R(S_i, A_i)$ and $S'_i \sim P(S_i, A_i)$ \\
-		Let $Y_i = R_i + \gamma \cdot \max_{a \in \Cal{A}} \widetilde{Q}_k(S'_i, a)$ \\
-		Update action-value function:
-		\[ \widetilde{Q}_{k+1} \leftarrow
-			\argmin_{f \in \Cal{F}} \frac{1}{n}
-			\sum_{i=1}^n (Y_i - f(S_i, A_i))^2 \]
-	}
-	Define $\pi_K$ as the greedy policy w.r.t. $\widetilde{Q}_K$ \\
-	\KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+  \caption{Fitted Q-Iteration Algorithm}
+  \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
+    sampling distribution $\nu$, number of iterations $K$,
+  number of samples $n$, initial estimator $\widetilde{Q}_0$}
+  \For{$k = 0,1,2,\dots,K-1$}{
+    Sample i.i.d. observations $\{(S_i, A_i), i \in [n]\}$ from $\nu$
+    obtain $R_i \sim R(S_i, A_i)$ and $S'_i \sim P(S_i, A_i)$ \\
+    Let $Y_i = R_i + \gamma \cdot \max_{a \in \Cal{A}} \widetilde{Q}_k(S'_i, a)$ \\
+    Update action-value function:
+    \[ \widetilde{Q}_{k+1} \leftarrow
+      \argmin_{f \in \Cal{F}} \frac{1}{n}
+    \sum_{i=1}^n (Y_i - f(S_i, A_i))^2 \]
+  }
+  Define $\pi_K$ as the greedy policy w.r.t. $\widetilde{Q}_K$ \\
+  \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+  \label{alg:fqi}
 \end{algorithm}
 
 
