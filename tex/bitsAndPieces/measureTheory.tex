@@ -1,0 +1,224 @@
+
+\documentclass{article}
+
+\input{../preamble}
+
+\begin{document}
+
+We work with a background probability space $(\Omega, \Sigma_\Omega, \Prob)$.
+For a measurable space $(\Cal{X}, \Sigma_{\Cal{X}})$ we denote
+the set of probability measures on this space $\Cal{P}(\Sigma_\Cal{X})$ or
+simply $\Cal{P}(\Cal{X})$ when the $\sigma$-algebra is unambiguous.
+When taking cartesian products $\Cal{X} \times \Cal{Y}$ of measurable spaces
+$(\Cal{X}, \Sigma_\Cal{X}), (\Cal{Y}, \Sigma_\Cal{Y})$ we always endow such
+with the product $\sigma$-algebra $\Sigma_\Cal{X} \otimes \Sigma_\Cal{Y}$,
+unless otherwise specified.
+A map $f: \Cal{X} \to \Cal{Y}$ is called $\Sigma_{\Cal{X}}$-$\Sigma_{\Cal{Y}}$
+measurable provided $f^{-1}(\Sigma_{\Cal{Y}}) \subseteq \Sigma_{\Cal{X}}$
+and we denote the set of such functions $\Cal{M}(\Sigma_{\Cal{X}},
+\Sigma_{\Cal{Y}})$.
+By a random variable $X$ on $(\Cal{X}, \Sigma_{\Cal{X}})$ mean a
+$\Sigma_\Omega$-$\Sigma_{\Cal{X}}$ measurable map.
+
+
+\begin{defn}[Probability kernel]
+  Let $(\Cal{X}, \Sigma_\Cal{X}), (Y, \Sigma_\Cal{Y})$ be measurable spaces.
+  A function
+  \[ \kappa(\cdot \mid \cdot) : \Sigma_\Cal{Y} \times \Cal{X} \to [0,1] \]
+  is a $(\Cal{X}, \Sigma_\Cal{X})$-\defemph{probability kernel}
+  on $(\Cal{Y}, \Sigma_\Cal{Y})$ provided
+  \begin{enumerate}
+    \item $B \mapsto \kappa(B \mid x) \in \Cal{P}(\Sigma_\Cal{Y})$
+      that is $\kappa(\cdot \mid x)$ is a probability measure
+      for any $x \in \Cal{X}$.
+    \item
+      $x \mapsto \kappa(B \mid x) \in \Cal{M}(\Sigma_\Cal{X}, \Sigma_\Cal{Y})$
+      that is $\kappa(B \mid \cdot)$ is ($\Sigma_\Cal{X}$-$\Sigma_\Cal{Y}$)
+      measurable for any $B \in \Sigma_\Cal{Y}$.
+  \end{enumerate}
+  When the $\sigma$-algebras are unambiguous we shall simply say an
+  $\Cal{X} \leadsto \Cal{Y}$ kernel.
+  For any $x \in \Cal{X}$ and $f \in \Cal{L}_1(\kappa(\cdot \mid x))$
+  we write the integral of $f$ over $\kappa(\cdot \mid x)$ as
+  $\int f(y) \difd \kappa(y \mid x)$.
+  \label{defn:probKer}
+\end{defn}
+
+\begin{defn}[Dynamic programming model]
+  A general dynamic programming model is determined by
+  \begin{enumerate}
+    \item $(\Cal{S}_n, \Sigma_{\Cal{S}_n})_{n \in \N}$ a 
+      measurable space of \defemph{states} for each timestep.
+    \item $(\Cal{A}_n, \Sigma_{\Cal{A}_n})_{n \in \N}$ a 
+      measurable space of \defemph{actions} for each timestep.
+  \end{enumerate}
+  for each $n \in \N$ write $\Cal{H}_n = \Cal{S}_1 \times \Cal{A}_1
+  \times \dots \times \Cal{S}_n$, $\Cal{H}_\infty = \Cal{S}_1
+  \times \Cal{A}_1 \times \dots$,
+  with associated $\sigma$-algebras $ \Sigma_{\Cal{H}_n} \defeq \left(
+    \bigotimes_{i=1}^{n-1} (\Sigma_{\Cal{S}_i} \otimes \Sigma_{\Cal{A}_i})
+  \right) \otimes \Sigma_{\Cal{S}_n}$ and
+  $\Sigma_{\Cal{H}_\infty} \defeq 
+  \bigotimes_{i=1}^{\infty} (\Sigma_{\Cal{S}_i} \otimes \Sigma_{\Cal{A}_i})$.
+  These are called the \defemph{history} spaces.
+  \begin{enumerate} \setcounter{enumi}{2}
+    \item $(P_n)_{n \in \N}$ a sequence of
+      $\Cal{H}_n \times \Cal{A}_n \leadsto \Cal{S}_{n+1}$ kernels
+      called the \defemph{transition} kernels.
+    \item $(R_n)_{n \in \N}$ a sequence of
+      $\Cal{H}_{n+1} \leadsto \R$ kernels
+      called the \defemph{reward} kernels.
+  \end{enumerate}
+\end{defn}
+
+For such a model we can define
+\begin{defn}[Policy]
+  A (randomized) \defemph{policy} $\pi = (\pi_n)_{n \in \N}$
+  is a sequence of $\Cal{H}_n \leadsto \Cal{A}_n$ kernels.
+  The set of all policies we denote $R\Pi$.
+\end{defn}
+
+We know state some fundamental results on probability kernels
+
+\begin{thm}[Integration of a kernel]
+  Let $\mu \in \Cal{P}(\Cal{X})$ and $\kappa : \Cal{X} \leadsto \Cal{Y}$.
+  Then there exists a uniquely determined probability measure
+  $\lambda \in \Cal{P}(\Cal{X} \times \Cal{Y})$
+  such that
+  \[ \lambda(A \times B) = \int_A \kappa(B, x) \difd \mu(x) \]
+  We denote this $\lambda = \kappa(\cdot \mid \mu)$.
+  \label{thm:intKer}
+\end{thm}
+\begin{proof}
+  We refer to [ref to EH markov, thm. 1.2.1].
+\end{proof}
+
+For an idea how to actually compute integrals with kernel derived measures
+we here include
+\begin{thm}[Extended Tonelli and Fubini]
+  Let $\mu \in \Cal{P}(\Cal{X})$,
+  $f \in \Cal{M}(\Sigma_\Cal{X} \otimes \Sigma_\Cal{Y}, \bb{B})$
+  be a measurable function and
+  $\kappa : \Cal{X} \leadsto \Cal{Y}$ be a probability kernel.
+  Then
+  \[ \int \abs{f} \difd \kappa(\cdot \mid \mu)
+  = \int \int \abs{f} \difd \kappa(\cdot \mid x) \difd \mu(x) \]
+  Furthermore if this is finite, i.e. $f \in \Cal{L}_1(\kappa(\cdot, \mu))$
+  then $A_0 \defeq \left\{ x \in \Cal{X} \Mid
+    \int \difd \kappa(\cdot \mid x) < \infty \right\}
+  \in \Sigma_\Cal{X}$
+  with $\mu(A_0) = 1$, 
+  \[ x \mapsto \begin{cases}
+      \int f \difd \kappa(\cdot \mid x) & x \in A_0
+      \\ 0 & x \not\in A_0
+  \end{cases} \]
+  is $\Sigma_\Cal{X}$-$\bb{B}$ measurable and
+  \[ \int f \difd \kappa(\cdot \mid \mu)
+  = \int_{A_0} \int f \difd \kappa(\cdot \mid x) \difd \mu(x) \]  
+  \label{thm:extTonFub}
+\end{thm}
+\begin{proof}
+  We refer to [ref to EH markov, thm. 1.3.2 + 1.3.3]
+\end{proof}
+
+\begin{prop}[Composition of kernels]
+  Let $\kappa : \Cal{X} \leadsto \Cal{Y}, \psi : \Cal{Y} \leadsto \Cal{Z}$
+  be probability kernels. Then
+  \[ (\psi * \kappa)(A \mid x) \defeq
+    \int \kappa(A \mid y) \difd \psi(\cdot \mid x)
+  ,\qquad \forall A \in \Sigma_{\Cal{Z}}, x \in \Cal{X} \]
+  is a $\Cal{X} \leadsto \Cal{Z}$ probability kernel called the
+  composition of $\kappa$ and $\psi$. The composition operator
+  $*$ is associative, i.e. if $\phi : \Cal{Z} \leadsto \Cal{W}$ is
+  a third probability kernel then $(\phi * \psi) * \kappa = 
+  \phi * (\psi * \kappa)$.
+  The associativity also extends to measures, i.e.
+  $\forall \mu \in \Cal{X}
+  : (\psi * \kappa)(\mu) = \psi(\kappa(\cdot \mid \mu)) $
+  and this is uniquely determined by $\psi, \kappa$ and $\mu$.
+  \label{prop:compKer}
+\end{prop}
+\begin{proof}
+  The first assertion is a trivial verification of the two conditions
+  in \cref{defn:probKer} and left as an exercise.
+  For the associativity we refer to [todo ref to EH markov, lem. 4.5.4].
+\end{proof}
+
+\begin{prop}[Existence and uniqueness of finite kernel processes]
+  Let $(\Cal{X}_i, \Sigma_{\Cal{X}_i})_{i \in \N}$ be a sequence
+  of measurable spaces. For each $i \in \N$ define
+  $\Cal{X}^{\ul{i}} \defeq \Cal{X}_1 \times \dots \times \Cal{X}_i$
+  and let
+  $\kappa_i : \Cal{X}^{\ul{i}} \leadsto \Cal{X}_{i+1}$ be a probability kernel.
+  Given a probability measure $\rho_1 \in \Cal{P}(\Cal{X}_1)$
+  there exists for every $n \in \N$ a unique probability measure 
+  $\rho_n$ on $\Cal{X}^{\ul{n}}$ defined by
+  \[ \rho_s \defeq (\kappa_{n-1} * \dots * \kappa_1)(\rho_1) \]
+  \label{prop:finSeqKer}
+\end{prop}
+\vspace*{-10mm}
+\begin{proof}
+  This follows simply by induction using \cref{prop:compKer}.
+\end{proof}
+
+\begin{prop}[Existence and uniqueness of finite policy generated processes]
+  For every policy $(\pi_n)_{n \in \N}$ and probability measure
+  $\rho_1 \in \Cal{P}(S_1)$
+  there exists a unique probability measure
+  $\rho_n \in \Cal{P}(\Cal{H}_{n+1})$ for every $n \in \N$
+  such that
+  $\rho_n = (P_n * \pi_n)(\rho_{n-1})$.
+  \label{prop:finPolProc}
+\end{prop}
+\begin{proof}
+  This is directly from \cref{prop:finSeqKer} with
+  $\kappa_1 = \pi_1 * P_1, \kappa_2 = \pi_2 * P_2 \dots$.
+  %Note that $\Cal{H}_1 = \Cal{S}_1$ so $\rho_1 \in \Cal{P}(\Cal{H}_1)$
+  %and is unique.
+  %Assume $\rho_i = P_i(\cdot \mid \pi_i(\cdot \mid \rho_i))$
+  %exists and is uniquely determined for $i = 1, \dots, n-1$.
+  %Then by \cref{thm:intKer} there exists a unique probability measure
+  %$\pi_{n-1}(\cdot \mid \rho_{n-1})
+  %\in \Cal{P}(\Cal{H}_{n-1} \times \Cal{A}_{n-1})$
+  %and therefore another unique probablity measure
+  %\[ \rho_n \defeq \Cal{P}_{n-1}(\cdot \mid \pi_{n-1}(\cdot \mid \rho_{n-1}))
+  %  \in \Cal{P}(\Cal{H}_{n-1} \times \Cal{A}_{n-1} \times \Cal{S}_n)
+  %= \Cal{P}(\Cal{H}_n) \]
+  %and so by induction the proposition follows.
+\end{proof}
+
+\Cref{prop:finPolProc} is not enough to establish existence of a
+policy generated measure on
+$(\Cal{H}_\infty, \Sigma_{\Cal{H}_\infty})$ 
+which we will need later.
+This problem was solved by Cassius Ionescu-Tulcea in 1949:
+
+\begin{thm}[Ionescu-Tulcea extension theorem]
+  Let $(\Cal{X}_1, \Sigma_{\Cal{X}_1}, \rho_1)$ be a probability space and
+  $(\Cal{X}_i, \Sigma_{\Cal{X}_i})_{i \in \N}$ be a sequence of
+  measurable spaces. Define $\Cal{X}^{\ul{i}} \defeq 
+  \Cal{X}_1 \times \dots \times \Cal{X}_i$ and
+  $\Cal{X}^{\ul{\infty}} \defeq \prod_{i \in \N} \Cal{X}_i$.
+  For all $i \in \N$ let
+  $(\kappa_i) : \Cal{X}^{\ul{i}} \leadsto \Cal{X}_{i+1}$
+  be a probability kernel and
+  $\rho_i = (\kappa_{i-1} * \dots * \kappa_1)(\rho_1)$.
+  Then there exists a unique probability measure
+  $\rho \in \Cal{P}(\Cal{X}^{\ul{\infty}})$ such that
+  \[ \rho_i(A) = \rho \left( A \times \prod_{k=i+1}^\infty \Cal{X}_k \right) \]
+  for all $i \in \N$.
+\end{thm}
+\begin{proof}
+  Todo: what about this.
+\end{proof}
+
+\begin{cor}
+  A policy $(\pi_n)_{n \in \N}$ and a probability measure
+  $\rho_1 \in \Cal{P}(S_1)$ determines a unique probability measure
+  $\rho \in \Cal{H}_\infty$.
+\end{cor}
+
+
+
+
+\end{document}
