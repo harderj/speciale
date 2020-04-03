@@ -79,15 +79,7 @@ Fix an MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$ and a policy $\pi$.
 We assume from now on that any $R \sim R(\cdot \mid s, a)$ is bounded
 with $\abs{R} \leq R_{\max}$ for any $(s,a) \in \Cal{S} \times \Cal{A}$.
 
-Generally in value iteration and Q-learning,
-any function $\Cal{S} \to \R$ is called a (\defemph{state})
-\defemph{value} function. Similarly any function
-$\Cal{S} \times \Cal{A} \to \R$ is called a (\defemph{state})
-\defemph{action value} or \defemph{Q}- function.
-The idea behind such functions are (usually) to estimate the
-cumulative rewards associated with a state or state-action pair
-and the trajectory of states it can lead to.
-One has the reduced the problem of finding a good strategy
+ne has the reduced the problem of finding a good strategy
 to choosing the action that leads to the
 highest value. Of course this value of a state will depend
 strongly on the policy being followed. 

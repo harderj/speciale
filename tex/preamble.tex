@@ -22,6 +22,7 @@
 \usepackage{multicol}
 %\usepackage{fancyhdr} %maybe later..
 %\pagestyle{fancy}
+\usepackage{mathabx}
 
 %commands
 \newcommand{\Cal}{\mathcal}
@@ -63,6 +64,12 @@
 \newtheorem{rem}{Remark}
 \newtheorem{prop}{Proposition}
 \newtheorem{asm}{Assumption}
+%\newtheorem{cond}{Condition}
+\newtheorem{sett}{Setting}
+\newtheorem{innercond}{Condition}
+\newenvironment{cond}[1]
+  {\renewcommand\theinnercond{#1}\innercond}
+  {\endinnercond}
 
 %cref
 \crefname{algocf}{alg.}{algs.}
