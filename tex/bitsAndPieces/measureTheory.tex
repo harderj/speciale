@@ -56,7 +56,7 @@ We now state some fundamental results on probability kernels
   such that
   \[ \lambda(A \times B) = \int_A \kappa(B, x) \difd \mu(x) \]
   \label{thm:intKer}
-  We denote this measure $\lambda = \kappa * \mu$.
+  We denote this measure $\lambda = \kappa \mu$.
 \end{thm}
 \begin{proof}
   We refer to [ref to EH markov, thm. 1.2.1].
@@ -65,10 +65,11 @@ We now state some fundamental results on probability kernels
 Notice that by \cref{thm:intKer}
 besides getting a probability measure on $\Cal{X} \times \Cal{Y}$
 we get an induced probability measure
-on $\Cal{Y}$ defined by $B \mapsto (\kappa * \mu)(\Cal{X} \times B)$.
-We will denote this measure by $\kappa(\cdot \mid \mu)$.
-This way $\kappa(\cdot \mid \cdot)$ can also be seen as a mapping from
-$\Cal{P}(\Cal{X}) \to \Cal{P}(\Cal{Y})$ (in the second entry).
+on $\Cal{Y}$ defined by $B \mapsto (\kappa \mu)(\Cal{X} \times B)$.
+We will denote this measure by $\kappa \circ \mu$.
+This way $\kappa$ can also be seen as a mapping from
+$\Cal{P}(\Cal{X}) \to \Cal{P}(\Cal{Y})$.
+Also note that $\kappa \circ \delta_x = \kappa(\cdot \mid x)$.
 
 For an idea how to actually compute integrals over kernel derived measures
 we here include
@@ -78,7 +79,7 @@ we here include
   be a measurable function and
   $\kappa : \Cal{X} \leadsto \Cal{Y}$ be a probability kernel.
   Then
-  \[ \int \abs{f} \difd \kappa(\cdot \mid \mu)
+  \[ \int \abs{f} \difd \kappa \circ \mu
   = \int \int \abs{f} \difd \kappa(\cdot \mid x) \difd \mu(x) \]
   Furthermore if this is finite, i.e. $f \in \Cal{L}_1(\kappa(\cdot, \mu))$
   then $A_0 \defeq \left\{ x \in \Cal{X} \Mid
@@ -111,7 +112,7 @@ we here include
   \phi \circ (\psi \circ \kappa)$.
   The associativity also extends to measures, i.e.
   $\forall \mu \in \Cal{X}
-  : (\psi \circ \kappa)(\cdot \mid \mu) = \psi(\cdot \mid \kappa(\cdot \mid \mu)) $
+  : (\psi \circ \kappa) \circ \mu = \psi \circ (\kappa \circ \mu) $
   and this is uniquely determined by $\psi, \kappa$ and $\mu$.
   \label{prop:compKer}
 \end{prop}
@@ -132,10 +133,22 @@ then by \cref{prop:compKer} the composition
 $(\id_{\Cal{X} \times \Cal{Y}} \times \psi)
 \circ (\id_{\Cal{X}} \times \kappa)$
 is a kernel $\Cal{X} \to \Cal{X} \times \Cal{Y} \times \Cal{Z}$
-which we will denote $\psi * \kappa$.
+which we will denote $\psi \kappa$.
 It inherits associativity from $\circ$ and again this associativity
 extends to application on measures: if $\mu$ is a measure on $\Cal{X}$
-then $\psi * (\kappa * \mu) = (\psi * \kappa) * \mu$.
+then $\psi (\kappa \mu) = (\psi \kappa) \mu$.
+
+\begin{prop}
+  Let $\kappa : \Cal{X} \to \Cal{Y}$ be a probability kernel
+  and $f : \Cal{Y} \to \ol{\ul{\R}}$ be integrabel.
+  Then $x \mapsto \int f \difd \kappa(\cdot \mid x)$ is measurable
+  into $(\ol{\ul{\R}}, \ol{\ul{\bb{B}}})$.
+  \label{prop:intKerMeas}
+\end{prop}
+\begin{proof}
+  Simple functions are measurable since $\kappa$ is a kernel.
+  Now extend by sums and limits.
+\end{proof}
 
 \subsubsection{Kernel derived processes}
 
@@ -146,27 +159,20 @@ $\Sigma_{\Cal{X}^{\ul{n}}} \defeq \Sigma_{\Cal{X}_1} \otimes
 \dots \otimes \Sigma_{\Cal{X}_n}$
 and let
 $\kappa_n : \Cal{X}^{\ul{n}} \leadsto \Cal{X}_{n+1}$ be a probability kernel.
-
-\begin{prop}[Existence and uniqueness of finite kernel processes]
-  For any probability measure $\rho_1 \in \Cal{P}(\Cal{X}_1)$
-  and every $n \in \N$ there exists a unique probability measure 
-  $\rho_n$ on $\Cal{X}^{\ul{n}}$ defined by
-  \[ \rho_n \defeq \kappa_{n-1} * \dots * \kappa_1 * \rho_1 \]
-  (with the convention that an empty $*$-product is $\id_{\Cal{X}_1}$
-  by context)
-  \label{prop:finSeqKer}
-\end{prop}
-\begin{proof}
-  This follows simply by induction using \cref{prop:compKer}.
-\end{proof}
+Then $\kappa^{\ul{n}} \defeq \kappa_n \dots \kappa_1$ is a kernel
+from $\Cal{X}_1$ to $\Cal{X}^{\ul{n}}$.
+So for any probability measure $\rho_1 \in \Cal{P}(\Cal{X}_1)$
+there exists a unique probability measure 
+$\rho_n$ on $\Cal{X}^{\ul{n}}$ defined by
+$\kappa^{\ul{n}} \rho_1$.
 
 Let $\Cal{X}^{\ul{\infty}} \defeq \prod_{n \in \N} \Cal{X}_n$
 and $\Sigma_{\Cal{X}^{\ul{\infty}}} \defeq \bigotimes_{n \in \N}
 \Sigma_{\Cal{X}_n}$.
-\Cref{prop:finSeqKer} is not enough to establish existence of a
+We are not equipped to establish existence of a
 kernel generated measure on
 $(\Cal{X}^{\ul{\infty}}, \Sigma_{\Cal{X}^{\ul{\infty}}})$ 
-which we will need later.
+yet which we will need.
 This problem was solved by Cassius Ionescu-Tulcea in 1949:
 
 \begin{thm}[Ionescu-Tulcea extension theorem]
@@ -174,163 +180,264 @@ This problem was solved by Cassius Ionescu-Tulcea in 1949:
   there exists a unique probability measure
   $\rho \in \Cal{P}(\Cal{X}^{\ul{\infty}})$ such that
   \[ \rho_n(A) = \rho \left( A \times \prod_{k=n+1}^\infty \Cal{X}_k \right)
-  , \qquad \forall A \in \Sigma_{\Cal{X}^{\ul{n}}} \]
-  for all $n \in \N$.
+  , \qquad \forall A \in \Sigma_{\Cal{X}^{\ul{n}}}, n \in \N \]
   We denote this measure
-  $\rho_\mu^{(\kappa_1, \kappa_2, \dots)}$.
+  $\dots \kappa_2 \kappa_1 \mu = \prod_{i=1}^\infty \kappa_i \mu \defeq \rho$.
   \label{thm:ionescuTulcea}
 \end{thm}
 \begin{proof}
   Todo: what about this.
 \end{proof}
 
-We here include lemma about the behavior of the Ionescu-Tulcea measure
-for use later.
+\begin{prop}
+  Let $\mu_x$ denote the Ionescu-Tulcea measure of a
+  sequence of probability kernels
+  $\kappa_i : \Cal{X}^{\ul{i}} \to \Cal{X}_{i+1}$
+  with starting measure $\delta_x$ on $\Cal{X}_1$ for any $x \in \Cal{X}_1$.
+  Then $\kappa(A \mid x) = \mu_x(A)$ defines a probability kernel
+  $\kappa : \Cal{X}_1 \to \Cal{X}^{\ul{\infty}}$.
+\end{prop}
+\begin{proof}
+  Since we already know that $\mu_x$ is a probability measure for any
+  $x \in \Cal{X}_1$,
+  we just have to show that $\kappa(A \mid x) = \mu_x(A)$ is measurable for all
+  $A \in \bigotimes_i \Sigma_{\Cal{X}_i}$.
+  \dots todo
+\end{proof}
+
 \begin{lem}
   The Ionescu-Tulcea measure satisfies
-  $\rho_\mu^{(\kappa_1, \dots)}
-  = \rho_{\kappa_1 * \mu}^{(\kappa_2, \dots)}$.
+  $\prod_{i=1}^\infty \kappa_i = \prod_{i=2}^\infty \kappa_i \kappa_1 $.
   \label{lem:ionescu}
 \end{lem}
 \begin{proof}
-  Notice that by associativity
-  $\kappa_n * \dots * \kappa_1 * \mu
-  = (\kappa_n * \dots * \kappa_2) * (\kappa_1 * \mu)$.
+  Let $x \in \Cal{X}_1$.
+  Notice that by associativity of the finitely induced measures
+  $\kappa_n \dots \kappa_1 \delta_x
+  = (\kappa_n \dots \kappa_2) (\kappa_1 \delta_x)$.
   This implies that
-  \[ \rho_{\mu}^{(\kappa_1, \dots)}
+  \[ \prod_{i=1}^\infty \kappa_i \delta_x
     \left( A \times \prod_{k=n+1}^\infty \Cal{X}_k \right)
-    = \rho_{\kappa_1 * \mu}^{(\kappa_2, \dots)}
+    = \prod_{i=2}^\infty \kappa_i \kappa_1 \delta_x
   \left( A \times \prod_{k=n+1}^\infty \Cal{X}_k \right) \]
   for all $n \in \N$ and $A \in \Sigma_{\Cal{X}^{\ul{n}}}$.
   By the uniqueness in \cref{thm:ionescuTulcea} we are done.
 \end{proof}
 
 \subsection{Dynamic programming}
+In the quest to have a united framework to talk about results from
+several different models we define here a quite general model.
+One which is quite close to in generality can be found in
+[ref. to Schal].
+In this section recall that $\ul{\R} = \R \cup \{-\infty\}$,
+$\ol{\R} = \R \cup \{\infty\}$ and
+$\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
 
-\begin{defn}[Dynamic programming model]
-  A general dynamic programming model is determined by
+\begin{defn}[DP model]
+  A general \defemph{dynamic programming} model is determined by
   \begin{enumerate}
     \item $(\Cal{S}_n, \Sigma_{\Cal{S}_n})_{n \in \N}$ a 
       measurable space of \defemph{states} for each timestep.
     \item $(\Cal{A}_n, \Sigma_{\Cal{A}_n})_{n \in \N}$ a 
       measurable space of \defemph{actions} for each timestep.
   \end{enumerate}
-  for each $n \in \N$ write $\Cal{H}_n = \Cal{S}_1 \times \Cal{A}_1
-  \times \dots \times \Cal{S}_n$, $\Cal{H}_\infty = \Cal{S}_1
-  \times \Cal{A}_1 \times \dots$,
-  with associated $\sigma$-algebras $ \Sigma_{\Cal{H}_n} \defeq \left(
-    \bigotimes_{n=1}^{n-1} (\Sigma_{\Cal{S}_n} \otimes \Sigma_{\Cal{A}_n})
-  \right) \otimes \Sigma_{\Cal{S}_n}$ and
-  $\Sigma_{\Cal{H}_\infty} \defeq 
-  \bigotimes_{n=1}^{\infty} (\Sigma_{\Cal{S}_n} \otimes \Sigma_{\Cal{A}_n})$.
-
+  for each $n \in \N$ we define the so called \defemph{history} spaces
+  \[ \Cal{H}_n = \Cal{S}_1 \times \Cal{A}_1
+    \times \Cal{S}_2 \times \ol{\ul{\R}} \times \Cal{A}_2
+    \times \Cal{S}_3 \times \ol{\ul{\R}} \dots \times \Cal{S}_n,
+    \Cal{H}_\infty = \Cal{S}_1 \times \Cal{A}_1 \times \Cal{S}_2 \times
+    \ol{\ul{\R}} \times \dots
+  \]
+  with associated product $\sigma$-algebras
   \begin{enumerate} \setcounter{enumi}{2}
     \item $(P_n)_{n \in \N}$ a sequence of
       $\Cal{H}_n \times \Cal{A}_n \leadsto \Cal{S}_{n+1}$ kernels
       called the \defemph{transition} kernels.
     \item $(R_n)_{n \in \N}$ a sequence of
-      $\Cal{H}_{n+1} \leadsto \R$ kernels
+      $\Cal{H}_{n+1} \leadsto \ol{\ul{\R}}$ kernels
       called the \defemph{reward} kernels.
   \end{enumerate}
 \end{defn}
+Notice the slight irregularity in the beginning of the history spaces:
+We are missing a reward state after $\Cal{S}_1$. We could avoid
+this by introducing some start reward, but we will be careless.
 
-For such a model we can define
+The vast majority of sources considered in this paper actually specialize
+the DP model with the following:
+\begin{asm}[One state and action space]
+  $\Cal{S}_1 = \Cal{S}_2 = \dots \defeq \Cal{S}$
+  $\Cal{A}_1 = \Cal{A}_2 = \dots \defeq \Cal{A}$
+  \label{asm:oneStateActionSpace}
+\end{asm}
+However we will do without this for the rest of this section in order to
+present some results in the generality they deserve.
+One could ask if it is possible to embed the general DP model into one
+with \cref{asm:oneStateActionSpace} by setting
+$\Cal{S} \defeq \Cal{S}^{\ul{\infty}}$ and
+$\Cal{A} \defeq \Cal{A}^{\ul{\infty}}$.
+I was not able to find discussions about this in litterature,
+and chose not to pursue this end. %todo pursue this
+
+For a DP model we can define
 \begin{defn}[Policy]
   A (randomized) \defemph{policy} $\pi = (\pi_n)_{n \in \N}$
   is a sequence of $\Cal{H}_n \leadsto \Cal{A}_n$ kernels.
   The set of all policies we denote $R\Pi$.
+  The policy $\pi$ is called \defemph{semi Markov} if each $\pi_i$ only depends
+  on the first and last state in the history
+  and is called \defemph{Markov} if only the last.
+  The sets are denoted $sM\Pi$ and $M\Pi$.
+  Furthermore $\pi$ is called \defemph{deterministic} if all $\pi_i$
+  are degenerate, i.e. are actually measurable functions from
+  $\Cal{H}_n$ to $\Cal{A}_n$. 
+  Under \cref{asm:oneStateActionSpace}
+  it makes sense to make a (Markov) policy $(\pi, \pi, \dots)$,
+  such a policy is called \defemph{stationary},
+  and the set of them denoted $S\Pi$.
 \end{defn}
+We have the following inclusions
+\begin{align*}
+  S\Pi \subseteq M\Pi &\subseteq sM\Pi \subseteq R\Pi
+  \\ DS\Pi \subseteq DM\Pi &\subseteq DsM\Pi \subseteq D\Pi
+\end{align*}
 
-\begin{prop}[Existence and uniqueness of policy generated processes]
-  Let $(\pi_n)_{n \in \N}$ be a policy and 
-  $\mu \in \Cal{P}(\Cal{S}_1)$ be a probability measure.
-  Then for every $n \in \N$ there exists a unique probability measure
-  $\rho_n \in \Cal{P}(\Cal{H}_n)$
-  such that $\rho_1 = \mu$ and
-  $\rho_n = (P_n * \pi_n)(\cdot \mid \rho_{n-1})$.
-  Futhermore there exists a unique probability measure
-  $\rho \in \Cal{P}(\Cal{H}_\infty)$ satisfying
-  \[ \rho_n(H_n) = \rho \left( H_n \times
-  \prod_{k=n+1}^\infty (\Cal{A}_k \times \Cal{S}_k) \right) \]
-  We will call this the \defemph{process} measure for $\pi$ and $\mu$
-  and denote it $\rho_{\mu}^\pi$ with a slight abuse of notation
-  ($\rho_\mu^{(P_n * \pi_n)_{n \in \N}}$ would be less abusive).
-  Expectations it we denote $\E_\mu^\pi$.
-  In particular when $\mu = \delta_s$, i.e. the one-point measure of
-  $s \in \Cal{S}_1$ we write $\rho_s^\pi$ and $\E_s^\pi$ for short.
-  \label{prop:polProc}
+\begin{prop}
+A dynamic progamming model together with a policy $\pi$ defines a
+probability kernel $\kappa_\pi : \Cal{S}_1 \to \Cal{H}_\infty$.
 \end{prop}
 \begin{proof}
-  This is directly from \cref{prop:finSeqKer} and 
-  \cref{thm:ionescuTulcea} with
-  $\kappa_1 = P_1 * \pi_1, \kappa_2 = P_2 * \pi_2 \dots$.
+  This is the Ionescu-Tulcea kernel generated by
+  $\dots R_2 P_2 \pi_2 R_1 P_1 \pi_1$.
 \end{proof}
-
-
-\subsubsection{Optimal policies}
-
-Let $(\Cal{S}_n, \Cal{A}_n, P_n, R_n)_{n \in \N}$ be a dynamic programming model.
-%From here on we assume that the reward kernel $R_n(\cdot \mid \cdot)$ is
-%bounded from above across $n \in \N$ with upper bound
-%$R_{\max}$.
-%For all $n \in \N$ let $c_n : \Cal{H}_\infty \to (\Cal{S}_n, \Cal{A}_n)$
-%be the projection of the history on the $n$th state-action pair.
-Define the $n$th \defemph{expected reward function}
-$r_n : \Cal{H}_{n+1} \to \R$ by
-$r_n(h) = \int r \difd R_n(r \mid h)$ for any $h \in
-\Cal{H}_{n+1}$.
-
-%We now introduce a so called \defemph{discount factor}
-%$\gamma \in (0,1)$.
+This kernel yields a probability measure $\kappa_\pi \mu$ on $\Cal{H}_\infty$
+for every $\mu \in \Cal{S}_1$. In particular for any $s \in \Cal{S}_1$
+$\kappa_\pi \delta_s$ yields the measure $\kappa(\cdot \mid s)$
+and we shall occasionally write this $\kappa_\pi s$ and
+integration with respect to it $\E^\pi_s$.
 
 In litterature the terminology varies and generally %todo: backup this claim
-any function mapping a state space $\Cal{S}$ to $\R$
+any function mapping a state space $\Cal{S}$ to $\ol{\ul{\R}}$
 can be called a (state)
-\defemph{value} function. Similarly any function mapping some the
-product of a state space and an
-action space $\Cal{A}$ to $\R$ can be called (state)
+\defemph{value} function. Similarly any $\ul{\ol{\R}}$ valued function
+on pairs of states and actions can be called (state)
 \defemph{action value} or \defemph{Q}- function.
 The idea behind such functions are (usually) to estimate the
 cumulative rewards associated with a state or state-action pair
 and the trajectory of states it can lead to.
+In order to define some of the most standard of value functions,
+which we call \defemph{ideal} to avoid confusion, we will need one of
+the following conditions:
 
-\begin{asm}[General assumption]
-  We assume that $\sum_{i \in \N} \E_\pi r^+_i < \infty$
-  for all policies $\pi \in R\Pi$.
-  \label{asm:generalE}
+\begin{cond}{$F^+$}
+  $R_i(\{\infty\} \mid h) = 0$ for all
+  $h \in \Cal{H}_{i+1}$ and $i \in \N$
+  \label{cond:F+}
+\end{cond}
+\begin{cond}{$F^-$}
+  $R_i(\{-\infty\} \mid h) = 0$ for all
+  $h \in \Cal{H}_{i+1}$ and $i \in \N$
+  \label{cond:F-}
+\end{cond}
+When assuming either of (\cref{cond:F+}) or (\cref{cond:F-})
+adding rewards cannot lead to a $\infty - \infty$ situation,
+and the following definition makes sense 
+\begin{defn}[Ideal value functions]
+  Let $r_i : \Cal{H}_\infty \to \ol{\ul{\R}}$ be the projection onto the
+  $i$th reward. Define
+  \[ V_{n,\pi}(s) = \E_s^\pi \sum_{i=1}^n r_i, \qquad
+  V_\pi(s) = \E_s^\pi \limsup_{n \to \infty} \sum_{i=1}^n r_i \]
+  called the \defemph{ideal} value functions.
+\end{defn}
+
+\begin{prop}
+  The ideal value functions $V_{n,\pi}, V_\pi$ are measurable
+  into $(\ul{\ol{\R}}, \ul{\ol{\bb{B}}})$.
+\end{prop}
+\begin{proof}  
+  Use \cref{prop:intKerMeas}.
+\end{proof}
+
+Note that for pointwise convergence of $V_{n, \pi}$ to $V_\pi$
+we need something like the assumptions for monotone or dominated convergence.
+To this end we introduce 
+\begin{cond}{P} $R_i \in [0,\infty], \forall i \in \N$
+  \label{cond:P}
+\end{cond}
+\begin{cond}{N} $R_i \in [-\infty, 0], \forall i \in \N$ 
+  \label{cond:N} 
+\end{cond}
+\begin{cond}{D} There exist a bound $R_{\max} > 0$ and a
+  $\gamma \in [0,1)$ called the \defemph{discount} factor such that
+  $R_i \in [-R_{\max} \gamma^i, R_{\max} \gamma^i]$
+  for all $i \in \N$.
+  \label{cond:D}
+\end{cond}
+
+\begin{prop}
+  Under \cref{cond:P}, \cref{cond:N} or \cref{cond:D} we have
+  $\lim_{n\to\infty} V_{n, \pi} = V_\pi $
+  for all $\pi \in R\Pi$.
+\end{prop}
+\begin{proof}
+  By monotone or dominated convergence.
+\end{proof}
+
+\subsubsection{Optimal policies}
+
+Let $(\Cal{S}_n, \Cal{A}_n, P_n, R_n)_{n \in \N}$ be a DP model.
+
+\begin{asm}(Reward independence)
+  $P_n, R_n$ and policies are only allowed to depend on the
+  states and actions.
+  \label{asm:rewardIndep}
 \end{asm}
 
-Then following definition makes sense
-\begin{defn}[Ideal and optimal value functions] 
-  Let $\pi$ be a policy.
-  We define
-  \begin{align*}
-    V_n^\pi(s) \defeq & \; \E_s^\pi \sum_{i \in [n]} r_i &
-    V^\pi(s) \defeq & \; \E_s^\pi \sum_{i \in \N} r_i
-  \end{align*}
-  called the \defemph{ideal} value functions for the policy $\pi$
-  and
+In all sources known to this writer \cref{asm:rewardIndep} is assumed.
+This is a bit of a puzzle since it is obvious that one could
+want to define algorithms (policies) that take into account which rewards
+they received in the past.
+We will also do this but stick to the standard and 
+never attempt to evaluate ideal value functions of
+policies that depend on rewards.
+Thus we will assume \cref{asm:rewardIndep} henceforth with including the
+shrinkage of the set of general policies $R\Pi$ that it entails.
+
+A neat consequence of \cref{asm:rewardIndep} when talking about
+value functions is that we can reduce the reward kernels to functions
+$r_i : \Cal{H}_{i+1} \to \ul{\R} = h \to \int r \difd R_i(r \mid h)$
+which are measurable (due to \cref{prop:intKerMeas}).
+
+\begin{defn}[Optimal value functions] 
   \begin{align*}
     V_n^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_n^\pi(s) &
     V^*(s) \defeq & \; \sup_{\pi \in R\Pi} V^\pi(s)
   \end{align*}
-  called the \defemph{optimal} value functions.
-  A policy for which $V^{\pi^*} = V^*$ is called an
+  are called the \defemph{optimal} value functions.
+  A policy $\pi^* \in R\Pi$ for which $V_{\pi^*} = V^*$ is called an
   \defemph{optimal} policy.
 \end{defn}
 
-%The discount factor can be interpreted as measuring how much
-%we consider future rewards, as our ideal value value is the
-%(infinite) sum of discounted rewards of the future states.
+An interesting fact about the optimal value functions is that they
+might not be Borel measurable [todo ref to counterexample]
+even in the finite case.
+After all we are taking a supremum over
+sets of policies which have cardinality of at least the continuum.
+However it is sometimes possible to show that they are
+universally measurable, thus Lebesgue measurable and therefore
+standard Lebesgue integration is possible.
+We will take these discussions as they occur in various settings.
 
 At this point many interesting questions can be asked.
 \begin{enumerate}
-  \item Does an optimal policy $\pi^*$ exist?
+  \item To which extend does an optimal policy $\pi^*$ exist?
   \item Does $V_n^*$ converge to $V^*$?
-  \item Can $\pi^*$ be chosen to be deterministic?
+  \item In case there is some sort of optimal policy
+    in which classes of policies has a representative?
 \end{enumerate}
-
 These questions has been answered in a variety of settings.
+We will address these question in order by strength of assumptions
+they require as far as this is possible.
+
 In a quite general setting, questions 1 and 2
 was investigated by M. Schäl in 1974
 [todo ref. to On Dynamic Programming:
@@ -338,6 +445,7 @@ Compactness of the space of policies, 1974].
 Here some additional structure on our model is imposed:
 \begin{sett}[Schäl]
   \begin{enumerate}
+    \item $V_\pi < \infty$ for all policies $\pi \in R\Pi$.
     \item $(\Cal{S}_n, \Sigma_{\Cal{S}_n})$ is assumed to be standard Borel.
       I.e. $\Cal{S}_n$ is a non-empty Borel subset of a Polish space
       and $\Sigma_{\Cal{S}_n}$ is the Borel subsets of $S_n$.
@@ -350,6 +458,7 @@ Here some additional structure on our model is imposed:
   \end{enumerate}
   \label{sett:Schal}
 \end{sett}
+
 In this setting Schäl introduced two set of criteria for the existence
 of an optimal policy:
 
@@ -379,7 +488,7 @@ of an optimal policy:
 \begin{thm}[Existence and convergence of optimal policies in DP]
   When either \cref{cond:S} or \cref{cond:W} hold then
   \begin{enumerate}
-    \item There exist an optimal oplicy $\pi^* \in R\Pi$.
+    \item There exist an optimal policy $\pi^* \in R\Pi$.
     \item $V^*_n \to V^*$ as $n \to \infty$.
   \end{enumerate}
 \end{thm}
@@ -388,97 +497,124 @@ of an optimal policy:
   policies, M. Schäl 1974]. %todo: or do we?
 \end{proof}
 
-\subsection{Stationary policies}
-
-We will now specialize the dynamic programming model to:
-
-\begin{sett}[Finite action decision model]
-  \begin{enumerate}
-    \item $\Cal{S}_1 = \Cal{S}_2 = \dots \defeq \Cal{S}$ and $\Cal{S}$ is
-      standard Borel.
-    \item $\Cal{A}_1 = \Cal{A}_2 = \dots \defeq \Cal{A}$ and $\Cal{A}$ is
-      finite.
-    \item There exist a kernel $P : \Cal{S} \times \Cal{A} \leadsto
-      \Cal{S}$ such that
-      \[ P_n(\cdot \mid s_1, a_1, \dots, s_n, a_n) = P(\cdot \mid s_n, a_n),
-      \qquad \forall n \in \N \]
-    \item There exist a kernel $R : \Cal{S} \times \Cal{A} \leadsto
-      (-\infty, R_{\max}]$
-      such that
-      \[ R_n(\cdot \mid s_1, a_1, \dots, s_n, a_n, s_{n+1})
-	= \gamma^{n-1} R(\cdot \mid s_n, a_n),
-      \qquad \forall n \in \N \]
-      where $\gamma \in [0,1)$ is called the \defemph{discount factor}.
-      We donte $r(s, a) \defeq \int r' \difd R(r' \mid s, a)$.
-    \item $r$ is semi upper continuous.
-  \end{enumerate}
-  \label{sett:stationary}
+\subsection{Bertsekas-Shreve framework}
+The theory here described is largely based on
+[ref to Bertsekas-Shreve, Stochastic Optimal Control].
+Their framework is cost-based as opposed to the this paper reward-based outset.
+This means that positive and negative, upper and lower, supremum and infimum,
+ect. are mirrored.
+\begin{sett}[BS]
+  We write the source notation in parenthesis for comparison.
+  \begin{itemize}
+    \item \Cref{asm:oneStateActionSpace} i.e. there is only one state
+      and action space $\Cal{S}$, $\Cal{A}$.
+    \item $P_n$ depends only on $s_n$ and $a_n$ and does not
+      differ with $n$. I.e. there exists a kernel $P$ such that
+      $P_n(\cdot \mid s_1, \dots, s_n, a_n) = P(\cdot \mid s_n, a_n)$
+      for all $n \in \N$. We will write $P$ instead of $P_n$ understanding
+      kernel compositions as if using $P_n$.
+    \item $r_n$ depends only on $s_n$ and $a_n$ and does not differ
+      with $n$ except for a potential discount.
+      I.e. there exists a function $r:\Cal{S}\times\Cal{A}$ such that
+      $r = r_n/\gamma^{n-1}$ for all $n \in \N$ (in the case where we 
+      are not discounting set $\gamma = 1$).
+    \item $\Cal{S}$ and $\Cal{A}$ are Borel spaces.
+    \item $\Cal{A}$ is compact.
+    \item $r$ is upper semicontinuous and bounded from above
+      (least upper bound denoted $R_{\max} > 0$).
+    \item $P(S \mid \cdot)$ is continuous for any $S \in \Sigma_{\Cal{S}}$.
+  \end{itemize}
+  \label{sett:BS}
 \end{sett}
+The original setup in [ref to Bertsekas-Shreve, Stochastic Optimal Control]
+is slightly different than the setup here presented.
+Besides having a state and action space, it also features a 
+non-empty Borel space called the
+\emph{disturbance space} $W$, a \emph{disturbance kernel}
+$p: \Cal{S} \times \Cal{A} \to W$,
+instead of a transition kernel which on the other hand is a deterministic
+\emph{system function} $f : \Cal{S} \times \Cal{A} \times W \to \Cal{S}$
+which should be Borel measurable.
+Moreover it allows for constrains on the action space for each state.
+This is made precise by a function $U:\Cal{S} \to \Sigma_{\Cal{A}}$
+and a restriction on $R\Pi$ that all policies $\pi$ should satisfy
+$\pi(U(s) \mid s) = 1$.
+Lastly the rewards are interpreted as negative costs, and thus
+$g$ is required to be semi \emph{lower}continuous.
+This is equivalent to our conditions by symmetry.%todo prove this
 
-\begin{prop}
-  \Cref{sett:stationary} implies \cref{sett:Schal} and \cref{cond:S}.
-\end{prop}
-\begin{proof}
-  Pt. 1 is by definition.
-  We naturally endow $\Cal{A}$ with the discrete topology
-  and the powerset $\sigma$-algebra, making it
-  standard Borel and compact.
-  The last point in \cref{sett:Schal} is implied by
-  \cref{asm:generalE} and the discounting in \cref{sett:stationary} pt. 4.
-  Pt. 1 in \cref{cond:S} is trivial since all functions are
-  continuous from a discrete space and pt. 2 is by definition.
-\end{proof}
+By setting $P(\cdot \mid s, a) = f(s, a, p(\cdot \mid s, a))$
+and maximizing rewards of upper semicontinuous instead of
+minimizing lower semicontinuous ones, we fully capture
+all aspects of the original model and its results,
+except the for the action constrains.
 
-\begin{defn}[Markov and stationary policies]
-  A policy $(\pi_n)_{n \in \N}$ called \defemph{Markov}
-  if $\pi_n$ only depends on the last item in the history,
-  that is $\pi_n(\cdot \mid s_1, a_1, \dots a_{n-1}, s_n)
-  = \pi'_n(\cdot \mid s_n)$ for some kernel $\pi'_n : \Cal{S}
-  \leadsto \Cal{A}$ for all $n \in \N$. The set of Markov policies
-  we denote $M\Pi$.
- 
-  A Markov policy is called \defemph{stationary}
-  if there exist a kernel $\pi : \Cal{S} \leadsto \Cal{A}$ such that
-  $\pi'_n = \pi$ for all $n \in \N$.
-  The space of such policies we denote $\Pi$.
-\end{defn}
-We remark that
-\[ \Pi \subseteq M\Pi \subseteq R\Pi \]
-\begin{prop}
-  There is an optimal policy which is Markov.
-\end{prop}
-\begin{proof}
-  We first show that there exist optimal finite-horizon Markov policy
-  for each $n \in \N$.
-  Let $\tau_1: \Cal{S} \leadsto \Cal{A}$ be a policy such that
-  $\tau_1(\argmax_{a \in \Cal{A}} r(s, a) \mid s) = 1$.
-  Then clearly
-  $V^{\tau_1}_1(s) = \max_{a \in \Cal{A}} r(s, a) = V^*_1(s)$
-  and $\tau_1$ is Markov as any one-step policy.
-  For $n \in \N$ assume
-  $(\tau_{n}, \dots, \tau_1)$ is an optimal finite-horizon
-  Markov policy.
-  Let
-  \[ \tau_{n+1}\left(\argmax_{a \in \Cal{A}} r(s, a) + 
-      \gamma \int V_n^{(\tau_n, \dots, \tau_1)}(s') \difd P(s' \mid s, a)
-  \Mid s \right) \]
-  Then $(\tau_{n+1}, \dots, \tau_1)$ is an $n+1$-optimal Markov policy.
-  \dots
-\end{proof}
+With \cref{sett:BS} we can define
 
 \begin{defn}[The $T$-operators]
-  For a stationary policy $\pi$ we define the operator
-  $T^\pi$ on $\Cal{L}_\infty(\Cal{S})$ by
-  \[ T^\pi(V) \defeq s \mapsto \int r(s, a)
-  + \gamma V(s') \difd (P * \pi)(s, a, s'\mid s) \]
-  When $\pi = \delta_a$ for some $a \in \Cal{A}$ we simply write $T^a$.
-  %$V$ if $\pi_V( A_s \mid s ) = 1$ for all
-  %$s \in \Cal{S}$. We define
-  %\[ T \defeq V \mapsto T^{\pi_V} V \in \Cal{L}_\infty(\Cal{S}) \]
+  For a stationary policy $\pi$ we define
+  the operators 
+  \[ P^\pi V \defeq s \mapsto \int V(s') \difd P\pi(s' \mid s) \]
+  \[ T^\pi V \defeq s \mapsto \int r(s, a)
+  + \gamma V(s') \difd (P \pi)(s, a, s'\mid s) \]
+  \[ T V \defeq s \mapsto \sup_{a \in \Cal{A}} T^a V(s) \]
+  where $T^a = T^{\delta_a}$.
 \end{defn}
 
+%proposition 8.6 Stoch. Opt. Control
 \begin{prop}
+  $V^*_k = T^k 0$ and is semi uppercontinuous.
+  Furthermore there exists a deterministic, Markov, Borel-measurable policy
+  $\pi^* = (\pi^*_1, \pi^*_2, \dots) \in DM\Pi$
+  which is $k$-optimal for all $k \in \N$.
+\end{prop}
+
+%cor. 9.17.2
+\begin{thm} 
+  Under (\cref{cond:N}) or (\cref{cond:D})
+  $V^* = \lim_{k\to\infty} T^k 0$ and is upper semicontinuous.
+  Furthermore there exist a deterministic
+  stationary, Borel-measurable policy $\pi^*$.
+\end{thm}
+
+\begin{sett}[BS Analytic]
+  The same as \cref{sett:BS} except:
+  $P$ is not necessarily continuous.
+  $r$ is upper semianalytic.
+  $\Cal{A}$ is not necessarily compact.
+  \label{sett:BSA}
+\end{sett}
+
+\begin{thm}
+  Under \cref{sett:BSA}
+  suppose there exists a $k \in \N$ such that
+  $\forall \lambda \in \R, N \geq k, s \in \Cal{S}$
+  \[ A^\lambda_N(s) = \left\{ a \in \Cal{A} \Mid r(s, a)
+  + \gamma \int V^*_N P(\cdot \mid s, a) \geq \lambda \right\} \]
+  is a compact subset of $\Cal{A}$.
+  Then $V^*(s) = \lim_{N \to \infty} V^*_N(s)$ for all $s \in \Cal{S}$
+  and there exists a optimal policy $\pi^*$ which is stationary
+  and deterministic.
+\end{thm}
+\begin{proof}
+  We refer to [todo ref to Bertsekas and Schreve, Stochastic Optimal Control:
+  The Discrete-Time Case, prop. 9.17].
+\end{proof}
+
+\begin{prop}
+  Under (\cref{cond:D}) for any $\pi \in R\Pi$ we have
+  $V_{n,\pi}, V_\pi \leq V_{\max} \defeq R_{\max}/(1-\gamma)$.
+\end{prop}
+\begin{proof}
+  \[ \sum_{i \in \N} \E_\mu r_i^+
+    \leq \sum_{i \in \N} \gamma^{i-1} R_{\max}
+  \leq R_{\max} / (1-\gamma) := V_{\max} < \infty \]
+\end{proof}
+
+\begin{prop}
+  Under (\cref{cond:D})
   $T^\pi$ is $\gamma$-contractive on $\Cal{L}_\infty(\Cal{S})$.
+  \label{prop:TpiContracts}
 \end{prop}
 \begin{proof}
   Let $V, V' \in \Cal{L}_\infty(\Cal{S})$
@@ -486,53 +622,17 @@ We remark that
   Then
   \[ \norm{T^\pi V - T^\pi V'}_\infty
     = \sup_{s \in \Cal{S}} \abs{ \gamma
-    \int V - V' \difd (P \circ \pi)(\cdot \mid s)}
+    \int V(s') - V'(s') \difd P\pi(s' \mid s)}
   \leq \gamma K \]
 \end{proof}
 
-Let $\pi = (\pi_n)_{n \in \N}$ be a
-Markov policy.
-
-\begin{prop}
-  $V^\pi = T^{\pi_1} V^{(\pi_2, \dots)}$.
-  In particular if $\pi$ is stationary then $V^\pi$ is the unique bounded
-  fixed point for $T^\pi$.
-\end{prop}
+\begin{cor}
+  Under (\cref{cond:D})
+  $V^\pi$ is the unique bounded fixed point of $T^\pi$.
+\end{cor}
 \begin{proof}
-  Fix $s \in \Cal{S}$ and let $\rho_s^\pi$ be the process measure
-  (see \cref{prop:polProc}) of $\pi$.
-  \begin{align*}
-    T^{\pi_1} V^{(\pi_2, \dots)}
-    = & \; \int V^{(\pi_2, \dots)}(s_2) \difd (P * \pi_1)(s_1, a_1, s_2 \mid \mu)
-    \\ = & \; \int \int \sum_{n=1}^\infty \gamma^n r(s'_{n+1}, a'_{n+1})
-    \difd \rho_{s_2}^{(\pi_2, \dots)}(s'_1, a'_1, \dots)
-    \difd (P * \pi_1)(s_1, a_1, s_2 | \mu)
-    \\ = & \; \int \int \sum_{n=1}^\infty \gamma^n r(s'_{n+1}, a'_{n+1})
-    \difd \rho_{(P \circ \pi_1)(\cdot \mid \mu)}^
-    {(\pi_2, \dots)}(s'_1, a'_1, \dots)
-  \end{align*}
+  This is by the Banach fixed point theorem and \cref{prop:TpiContracts}.
 \end{proof}
-
-\begin{prop}
-  There exists a stationary policy $\tau$ such that
-  $V^\tau \geq V^\pi$.
-\end{prop}
-\begin{proof}
-
-\end{proof}
-
-%% scratch
-
-%We include here a corollary to this theory by
-%[todo ref. to Total Expected Discounted Reward MDPs: Existence of
-%Optimal Policies, thm 14]. %todo ask Stefan: is this an OK reference?
-
-%Even measure theoretic questions arise because
-%it turns out that $V^*$ may not be Borel measurable.
-%However it will belong to a broader class of functions,
-%the so called \defemph{universally measurable},
-%which means that we can integrate in the same way
-%that we are used anyway.
 
 
 

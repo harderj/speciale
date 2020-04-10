@@ -1,0 +1,41 @@
+
+\documentclass{article}
+
+\input{../preamble}
+
+\begin{document}
+
+
+
+\begin{prop}
+  Let $\kappa : \Cal{X} \to \Cal{Y}$ be a probability kernel
+  and $\mu \in \Cal{P}(\Cal{X})$.
+  Then $\kappa(B \mid x)\delta_x(A) = \kappa \delta_x(A \times B)$
+  for all $A \in \Sigma_{\Cal{X}}$ and $B \in \Sigma_\Cal{Y}$.
+\end{prop}
+\begin{proof}
+  This is straight from definition.
+\end{proof}
+
+
+
+
+
+\begin{prop}
+  Let $f_1 : \Cal{X}_1 \to \ol{\R}, f_2 : \Cal{X}_2 \to \ol{\R}, \dots$
+  are measurable. Then
+  \begin{align*}
+    f: \prod_i \Cal{X}_i &\to \ol{\R}
+    \\ (x_1, x_2, \dots) &\mapsto \limsup_{n \to \infty}
+    \sum_{i=1}^n f_i(x_i)
+  \end{align*}
+  is measurable.
+  \label{prop:limsupSumMeas}
+\end{prop}
+\begin{proof}
+  $\sum_{i=1}^n f_i \circ c_i$ is measurable since it is a composition of
+  projections, the $f_i$s and summation which are all measurable.
+\end{proof}
+
+
+\end{document}
