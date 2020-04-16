@@ -1,29 +1,9 @@
 
-Throughout we are working with a background probability space
-denoted $(\Omega, \Cal{H}, \Prob)$.
+\documentclass{article}
 
-\subsection{Reinforcement Learning}
+\input{preamble}
 
-Through the  probability space, denote this
-
-In Reinforcement Learning (RL) we are concerned with finding an optimal policy
-for an agent in some environment.
-Typically (also in the case of Q-learning) this environment is a
-Markov decision process
-
-\begin{defn}
-	A Markov decision process (MDP) $(\Cal{S}, \Cal{A}, P, R, \gamma)$
-	consists of
-\begin{itemize}
-  \item $(\Cal{S}, \Sigma_{\Cal{S}})$ a measurable space of \defemph{states}.
-  \item $(\Cal{A}, \Sigma_{\Cal{A}})$ a measurable space of \defemph{actions}.
-  \item $P(\cdot \mid \cdot) : \Sigma_{\Cal{S}} \times (\Cal{S} \times \Cal{A})
-    \to [0,1]$ a probability kernel (of \defemph{transition} probabilities).
-  \item $R(\cdot \mid \cdot) : \bb{B} \times (\Cal{S} \times \Cal{A})
-    \to [0,1]$ a probability kernel (of \defemph{reward} probabilities).
-  \item $\gamma \in (0,1)$ a \defemph{discount} factor.
-\end{itemize}
-\end{defn}
+\begin{document}
 
 In order for this to make sense we here include
 \begin{defn}[Probability kernel]
@@ -288,4 +268,4 @@ We here present the algorithm which everything in this paper revolves around:
 \end{algorithm}
 
 
-
+\end{document}

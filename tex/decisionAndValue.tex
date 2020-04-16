@@ -1,7 +1,7 @@
 
 \subsection{General decision model}
 In the quest to have a united framework to talk about results from
-several different models we define here a quite general model.
+several different sources we define here a quite general model.
 One which is quite close to in generality can be found in
 [ref. to Schal].
 In this section recall that $\ul{\R} = \R \cup \{-\infty\}$,
@@ -32,6 +32,7 @@ $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
       $\Cal{H}_{n+1} \leadsto \ol{\ul{\R}}$ kernels
       called the \defemph{reward} kernels.
   \end{enumerate}
+  \label{sett:DM}
 \end{defn}
 Some authors refers to this as a \emph{dynamic progamming} model.
 Notice the slight irregularity in the beginning of the history spaces:
@@ -53,6 +54,13 @@ $\Cal{S} \defeq \bigcup_{i\in\N} \Cal{S}_i$ and
 $\Cal{A} \defeq \bigcup_{i\in\N} \Cal{A}_i$ or similar.
 One attempt at this can be found in [BS SOC, chp. 10],
 but this will not be covered here. %consider covering it
+
+Other ways to specialize include reducing one or both of the
+transition and reward kernels to functions defined on
+$\Cal{S} \times \Cal{A}$. These models are often called
+\emph{deterministic}, but the exact definitions vary across sources, and we will
+instead specify each setting individually.
+
 
 For a DP model we can define
 \begin{defn}[Policy]
@@ -214,16 +222,17 @@ universally measurable, thus Lebesgue measurable and therefore
 standard Lebesgue integration is possible.
 We will take these discussions as they occur in various settings.
 
-At this point many interesting questions can be asked.
+At this point some central questions can be asked.
 \begin{enumerate}
   \item To which extend does an optimal policy $\pi^*$ exist?
   \item Does $V_n^*$ converge to $V^*$?
-  \item In case there is some sort of optimal policy
-    in which classes of policies has a representative?
+  \item When can optimal policies be chosen to be Markov, deterministic, etc.?
+  \item Can an algorithm be designed to efficiently find $V^*$ and
+    $\pi^*$?
 \end{enumerate}
 These questions has been answered in a variety of settings.
-We will address these question in order by strength of assumptions
-they require as far as this is possible.
+We will try to address these question in order by strength of assumptions
+they require.
 
 In a quite general setting, questions 1 and 2
 was investigated by M. Schäl in 1974
@@ -284,11 +293,12 @@ of an optimal policy:
   policies, M. Schäl 1974]. %todo: or do we?
 \end{proof}
 
-\subsection{Markov Decisions Process}
+\subsection{Markov decision model}
 
-\begin{sett}[Markov Decision Process]
+\begin{sett}[Markov decision model]
   \begin{itemize}
-    \item \Cref{asm:oneStateActionSpace} i.e. there is only one state
+    \item A decision model (\cref{sett:DM}) under
+      \Cref{asm:oneStateActionSpace} i.e. there is only one state
       and action space $\Cal{S}$, $\Cal{A}$.
     \item $P_n$ depends only on $s_n$ and $a_n$ and does not
       differ with $n$. I.e. there exists a kernel $P$ such that
@@ -303,7 +313,7 @@ of an optimal policy:
       $r = r_n/\gamma^{n-1}$ for all $n \in \N$ (in the case where we 
       are not discounting set $\gamma = 1$).
   \end{itemize}
-  \label{sett:MDP}
+  \label{sett:MDM}
 \end{sett}
 %
 
@@ -315,7 +325,8 @@ This means that positive and negative, upper and lower, supremum and infimum,
 ect. are opposite to the source.
 \begin{sett}[BS]
   \begin{itemize}
-    \item We consider an MDP (see \cref{sett:MDP}).
+    \item We consider an MDM $(\Cal{S}, \Cal{A}, P, R, \gamma)$
+      (see \cref{sett:MDM}).
     \item $\Cal{S}$ and $\Cal{A}$ are Borel spaces.
     \item $\Cal{A}$ is compact.
     \item $P(S \mid \cdot)$ is continuous for any $S \in \Sigma_{\Cal{S}}$.
@@ -766,7 +777,7 @@ implying
 
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
 \caption{Simple theoretical Q-iteration}
-\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
+\KwIn{MDM $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
 $\forall (s, a) \in \Cal{S} \times \Cal{A} :
 r(s, a) \leftarrow \int x \difd R(x \mid s, a)$.
 
@@ -784,8 +795,8 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
 
 \subsubsection{Finite Q-iteration}
 Concluding on the results so far
-we have showed how if one knows the process dynamics
-of a stationary decision process satisfying rather broad criteria, 
+we have showed how if one knows the dynamics
+of a stationary decision model satisfying rather broad criteria, 
 such as continuity and compactness,
 the optimal policy and state-value function can be found
 simply by iteration over the $T$-operator and picking a greedy strategy
