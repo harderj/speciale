@@ -10,44 +10,42 @@
 
 \maketitle
 
-\section{Abstract}
-
-\section{Foreword}
-\input{purpose}
-
-\section{Disambiguation}
+\subsection{Abstract}
+%todo
+\subsection{Foreword}
+\input{foreword}
+\subsection{Disambiguation}
 \input{disambiguation}
+\section{Introduction}
+%\input{intro} %old intro
+\input{introduction.tex}
 
+\subsection{Measure theory}
+\input{measureTheory}
+\subsection{Reinforcement learning in general}
+\input{generalNotes}
+\section{Decision models and value functions}
+\input{decisionAndValue.tex}
+\section{Hidden dynamics}
+
+\section{Fan et al.}
 \subsection{Notational deviations from [TODO ref YangXieWang]}
 \input{notationDiffYang}
-
-\section{Introduction}
-\input{intro}
-
-\section{Assumptions}
+\subsection{Assumptions}
 \input{assumptions}
-
-\section{Main theorem}
+\subsection{Main theorem}
 \input{mainTheorem}
-
-\section{Proofs}
-
-\input{mainProof}
-
+\subsection{Proofs}
 \input{errorpropthm}
-
-\input{C1proof}
-
 \input{onestepthm}
-
+\input{mainProof}
+\input{C1proof}
 \input{C2proof}
-
-
 \section{Appendices}
-\subsection{Various lemmas}
-
+\subsection{Lemmas for Fan et al.}
 \input{variousLemmas}
-
+\subsection{Other notes}
+\input{otherNotes}
 
 
 \end{document}

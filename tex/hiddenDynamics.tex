@@ -1,0 +1,126 @@
+
+In this section we will look at what can be done when the process dynamics
+are unknown.
+In this case we cannot calculate directly neither $r$, $T_\pi Q$ nor
+$TQ$ because the transition and reward kernels $P,R$ are unknown.
+
+It is clear that \cref{alg:theoSimpleQ} will not work without
+modification in this case. Simply because $R$ and $P$ are not
+available.
+To make the scheme work anyway we could simply avoid taking expectations
+and use the random outcomes of the kernels.
+Leading to
+
+\begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
+  \caption{Random theoretical Q-iteration (example of thought)}
+\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
+$\forall (s, a) \in \Cal{S} \times \Cal{A} :
+\wt{Q}_0(s, a) \leftarrow X \sim R(\cdot \mid s, a)$.
+
+\For{$k = 0,1,2,\dots,K-1$}{
+  $ \forall (s, a) \in \Cal{S} \times \Cal{A} :
+  \wt{Q}_{k+1}(s, a) \leftarrow r'
+  + \gamma \sup_{a' \in \Cal{A}} \wt{Q}_k(s', a')$
+
+  where $r' \sim R(\cdot \mid s, a), s' \sim P(\cdot \mid s, a)$.
+}
+Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
+\KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+\label{alg:theoRandomQ}
+\end{algorithm}
+We immedially run into problems in the uncountable case, because
+drawing uncountably many times from a distribution is not easily
+defined in a sensible way.
+Even in the finite case, even though the $\wt{Q}_k$s
+are well defined, they cannot converge if $R$ is not deterministic.
+Therefore this approach is not attractive in a continuous or
+stochastic setting.
+
+\subsubsection{Finite case}
+
+A common way to overcome the problem of convergence
+is called \emph{temporal difference} (TD) learning and is based on the following
+update scheme
+\begin{equation}
+  \wt{Q}_{k+1}(s, a) \leftarrow (1-\alpha_k) \wt{Q}_k(s, a)
+  + \alpha_k (r' + \gamma \cdot \max_{a' \in \Cal{A}} \wt{Q}_k(s', a'))
+  \label{eq:tdeq}
+\end{equation}
+Here $r'$ and $s'$ are the reward and next-state drawn from the
+reward and transition kernels,
+and $\alpha_k \in [0,1]$ is the so-called \defemph{learning rate}
+(of the $k$th step).
+The 'temporal difference' is also the name of term
+$ \alpha_k ( r' + \gamma \cdot \max_{a \in \Cal{A}} \wt{Q}_k(s', a')
+- \wt{Q}_k(s, a) )$ occuring from rearranging \cref{eq:tdeq}.
+Usually the learning rate is fixed before running the algoritm
+(does not depend on the history) and is set to decay
+from 1 to 0 in some fashion as $k \to \infty$.
+
+We will now look at a convergence result obtained by
+[Jaakkola, Jordan, Singh, 1993] of a TD algorithm using Q-functions
+
+\begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
+  \caption{Simple Q-learning}
+  \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$ such that
+    $\abs{\Cal{S}}\abs{\Cal{A}} < \infty$,
+    number of iterations $K$,
+    state-action pairs $(s_1,a_1, \dots, s_K, a_K)$,
+    learning rates $(\alpha_1', \dots, \alpha_K')$,
+    initial $\wt{Q}_0 : \Cal{S}\times\Cal{A} \to \R$
+  }
+  Put $\alpha_k = \delta_{(s_k, a_k)} \alpha'_k$.
+
+  \For{$k = 1,2,\dots,K$}{
+    Sample $r' \sim R(\cdot \mid s_k, a_k),
+    s' \sim P(\cdot \mid s_k, a_k)$
+
+    Update action-value function:
+    \[ \wt{Q}_k \leftarrow
+      \wt{Q}_{k-1} +
+      \alpha_k (r' + \max_{a' \in \Cal{A}} \wt{Q}_{k-1}(s', a'))
+    \]
+  }
+  Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
+  \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+  \label{alg:simpleQL}
+\end{algorithm}
+Note that only the value of the pair $(s_k, a_k)$ are updated in each
+step of the algorithm
+(since $\alpha_k(s, a) = 0$ for all $(s,a)\neq(s_k, a_k)$).
+
+\begin{thm}(Jaakkola, Jordan, Singh)
+  Let $s_1, a_1, s_2, a_2, \dots \in
+  \Cal{S} \times \Cal{A} \times \Cal{S} \times \Cal{A} \times \dots$
+  be random variables, and $\alpha_1, \alpha_2, \dots \in [0,1]$.
+  The output $\wt{Q}_K$ of \cref{alg:simpleQL} converges to $Q^*$
+  provided
+  \begin{enumerate}
+    \item $\Prob\left(\sum_{i=1}^\infty \alpha_i(s,a) = \infty\right) = 1,
+      \Prob\left(\sum_{i=1}^\infty \alpha_i^2(s,a) < \infty\right) = 1$.
+    \item $\Var(R(\cdot \mid s, a)) < \infty$ for all $(s, a) \in
+      \Cal{S}\times\Cal{A}$.
+    \item If $\gamma = 1$ all policies lead to a reward-free terminal
+      state almost surely.
+  \end{enumerate}
+\end{thm}
+In the original formulation the sums of learning rates were supposed to
+converge \emph{uniformly}. However this is equivalent to this formulation
+because of the fact that
+$\Prob(\sup_{(s, a) \in \Cal{S} \times \Cal{A}} \abs{f_n(s, a)} \to 0) = 1 \iff
+\Prob(\abs{f_n(s, a)} \to 0) = 1, \forall (s, a) \in \Cal{S} \times \Cal{A}$
+whenever $\Cal{S}, \Cal{A}$ is finite.
+Notice that the first condition implies that all state-action pairs
+must occur infinitely often almost surely.
+Also notice that the second condition is automatically fulfilled under
+(D) since then $\Var(R(\cdot \mid s, a)) < \E (2R_{\max})^2 = 4 R_{\max}$.
+
+\subsubsection{Perspectives}
+Another approach could be to 
+estimate $R$ and $P$ before or while using an algorithm like
+\cref{alg:theoSimpleQ} using the estimated kernels.
+I was not able to find sources that
+did this, however you can argue that this idea is already employed
+in temporal difference learning and others.
+
+
