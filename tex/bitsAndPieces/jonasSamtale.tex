@@ -1,0 +1,90 @@
+\documentclass{article}
+
+\input{../preamble}
+
+\begin{document}
+
+\subsection{Messenger samtale med Jonas Rysgaard Jensen}
+
+Ja, men jeg kan ikke se forbindelsen med mellem det, du skriver her og det, du har skrevet på StackExchange. Lad os starte med det du skriver her: Det lyder som om du spørger om der findes en disintegration af dit mål. Det gør der under visse tilstrækkelige betingelser som du kan finde i bøger om målteori.
+aha okay så ‘disintegration’ er nøgleordet?
+
+Ja, hvis du har et mål på et produktrum og et mål på et af faktorerne og ønsker at finde en kerne så målet på produktrummet er integrationen af kernen mht. målet på faktoren, så kaldes det for disintegration.
+
+fedest det tjekker jeg lige. Men hvis jeg har en kerne ind i processrummet, så kan jeg vel også få integrationen den vej?
+
+Hvis du har en kerne, kan du altid integrere den og på den måde få et mål.
+
+Efter flere adskillige gennemlæsninger, så tænker jeg det også at det er eksistens af disintegration du spørger om på StackExchange -- men det er meget uklart det, du har skrevet.
+
+hmm. okay. tak for hjælpen indtil videre i hvert fald men syntes du ikke det er et lidt interessant spørgsmål om man får en kerne også?
+
+nåh det gør du jo måske også med disintegration.
+
+Jeg tror måske jeg begynder at forstå dit spørgsmål på StackExchange. Men er her nogle kommentarer: Tjek hvad Ionescu-Tulceas sætning siger i forhold til det, du har skrevet. Din "kerne" kan generelt ikke være en kerne, fordi "punktvist" produkt af mål bestemt ikke er et mål. Men det kan være det mirakuløst går godt, fordi det ene mål er et punktmål -- men det kræver et argument... MEN, hvis jeg nu forstår dit spørgsmål korrekt, så vil du have en kerne fra første faktor ind i det (uendelige) produktrum pånær første faktor, så integrationen af denne kerne mht. dit første mål er målet på hele det uendelige produkt?
+
+ja lige præcis
+
+ja i princippet kunne den første faktor vel stadig være med.
+
+Hvis du har en følge af kerner, der opfylder Ionescu-Tulceas sætning, så får du også en kerne fra samme sætning -- plus lidt argumenter for målelighed. Gentag konstruktionen, hvor du starter med 1. kernen i stedet for 1. mål.
+
+1. faktor kan godt være med, men så skal du have endnu en faktor ellers er det en ret degenereret kerne du får.
+
+Så får du for hvert x i $X_1$ et mål på dit produktrum, så skal det bare vises at sammenbundtningen giver en kerne -- dvs. det eneste der mangler er måleligheden.
+
+ja præcis. det var der jeg gik i stå
+
+Jeg mener det kan vises med et Dynkin klasse argument.
+
+Det burde umiddelbart faktisk være helt lige til... og jeg vil gerne satse på det gælder.
+
+fedt
+
+kunne være lidt fedt at vide om der er nogen som har gjort det før
+
+Det er der: Det bruges hele tiden indenfor stokastiske processer.
+
+Det er ganske normal, at man f.eks. ønsker at betinge på en startværdi af en process. Det er præcis hvad der foregår her i termer af stokastiske processer. Og argumentet er velkendt.
+
+jeg har ikke kunne finde et bevis
+
+har du en god kilde?
+
+Nej, men jeg har ret sikker på, at jeg har givet dig beviset, så du kan jo altid tjekke det efter og indsætte det som et lemma. Brug et Dynkin-klasse argument. Den korrekte snit-stabile frembringer er præcis den velkendte frembringer for cylinderalgebraen. Pr. konstruktion af den potentielle kerne så er afbilidningen målbar på alle elementerne i denne frembringer og det så skal du bare vise at klassen af hændelser hvor afbildningen er målbar er en Dynkinklasse.
+
+fedt mand jeg prøver. Kunne nu være rart med et reference alligevel. Men du kan bare sige til hvis du kommer i tanke om noget. Tusind tak for hjælpen ! Hvad arbejder du med på phd’en for tiden?
+
+Det er en Dynkinklasse! 
+
+Jeg er ved at renskrive et bevis for at en bestemt simpel "algoritme" til simulation af en stokastisk process på en mangfoldighed rent faktisk konvergerer som process. Og så arbejder jeg på at beskrive regularitetet af udfaldsstierne på en gruppe af processer.
+
+nå hvor fedt. så rammer mit spørgsmål jo næsten i nærheden af hvad du laver ?
+
+Mht. Dynkinklasse argumentet: Lad $\mathbb G$ være klassen  af hændelser i $\bigotimes_{i=1}^\infty \mathcal A_i$, så $x\mapsto P_x(B)$ er målelig.  Så er det klart at $\prod_{i=1}^\infty \mathcal X_i$ og $\emptyset$ er i $\mathbb G$, det er også klart at hvis $A, B \in \mathbb G$ og $A\subset B$ så er $B\slash A$ i $\mathbb G$. Hvis endeligt $B_n$ er en voksende følge af hændelser i $\mathbb G$, så er $P_x(\cup_{n=1}^\infty B_n) = \lim_{n\to \infty} P_x(B_n)$ så denne afbildning er også målelig.
+
+jeg vender lige tilbage når jeg har fået lidt mere tid til at kigge på det
+
+Mht. henvisninger. Ved ikke hvor du har prøvet at kigge, men resultatet er omtalt i både Blumenthal+Getoor og Kallenberg. Så dér har du nogle henvisninger. Kallenberg er alt efter hvad du skal bruge det til nok at regne for et standardværk. Jeg er ret sikker på, du også vil kunne finde det i Ethier og Kurtz eller Rogers og Williams, men har ikke tjekket. Det er alle matematisk tekster for matematikere der helt eller delvist omhandler markovprocesser. Drop tekster med fokus på anvendelser 
+
+Kallenberg Lemma 7.7 i afsnittet om Markovprocesser.
+
+Og det er selvfølgelig Kallenbergs Foundations 
+
+tak ! du er for vild. Ja de anvendte tekster kan godt være lidt opadbakke 
+
+Bare lige en notits. Både i Lemma 7.7 [Kallenberg] og [BG] handler det om Markov processer, hvilket også er meget relevant for mig, men i spørgsmålet vi diskuterede kigger vi jo på en anden generalitet: $X_{i+1}$ kan afhænge af $X_i, \dots, X_1$. Men dit argument virker sikkert stadig, har ikke kørt det helt igennem endnu..
+	
+Det argument, jeg gav, bruger kun de samme antagelser som i Ionescu-Tulcea, og som du kan se, så skrivee Kallenber også, at det er kan bevises ved et Monotone class argument hvilket er ækvivalent til et Dynkinklasse argument.
+
+fedest
+
+Hvis "$X_i$ afhænger af $X_1, ... X_{i-1}$" så konstruerer du bare kernen ud fra det mål du får ved at starte med den i-te kerne. Argumentet er identisk.
+
+ja klart. Nu hvor jeg har dig.. Hvis du nu laver $f= limsup_n sum^n f_i$ hvor $f_i$’erne er målelige fra $X_i \to R$. Så er f vel trivielt målelig ikke? Det er bare en komposition af målelige funktioner og en grænse. Grunden til jeg spørger er at nogle forfattere indfører ‘universel målelighed’ til at beskrive denne funktion, men jeg syntes ikke det er nødvendigt.
+
+Ja, f er trivielt målelig.
+
+nice tak igen. Gad nok vide hvad de skal bruge den universelle målelighed til..
+
+\end{document}

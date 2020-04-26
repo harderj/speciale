@@ -3,42 +3,47 @@
 \subsubsection{The decision model}
 
 \begin{sett}[Fan et al.]
+  \leavevmode
   \begin{enumerate}
-    \item An MDP \cref{sett:MDP} i.e. one state and action space
-      $(\Cal{S}, \Cal{A}$ and one transition and reward kernel $P, R$
+    \item We're considereing an MDP (\cref{sett:MDP}).
+      That is a state and action space
+      $(\Cal{S}, \Cal{A})$ and a transition and reward kernel $P, R$
       which only depends on the previous state-action pair.
-    \item Discounted with a factor strictly in the unit interval
-      $\gamma \in (0,1)$.
+    \item $S \subseteq \R^w$ is a compact subset of a euclidean space.
+    \item $\Cal{A}$ is finite.
+    \item Discounted factor satisfy $0 < \gamma < 1$.
   \end{enumerate}
 \end{sett}
+
+%todo establish connection to Bertsekas model, e.g. is this u.s.c?
 
 \subsubsection{Artificial neural networks}
 
 \begin{defn}\label{def_ANN}
-	An \textbf{ANN} (Artificial Neural Network) with structure
-	$\{ d_i \}_{i=0}^{L+1} \subseteq \N$,
-	activation functions $\sigma_i = (\sigma_{ij} : \R \to \R)_{j=1}^{d_i}$
-	and weights $\{ W_i \in M^{d_i \times d_{i-1}}, v_i \in \R^{d_i} \}_{i=1}^{L+1}$
-	is the function $F:\R^{d_0} \to \R^{d_{L+1}}$ 
-	\[ F = w_{L+1} \circ \sigma_L \circ w_L \circ \sigma_{L-1} \circ \dots \circ w_1 \]
-	where $w_i$ is the affine function $x \mapsto W_i x + v_i$ for all $i$.
+  An \textbf{ANN} (Artificial Neural Network) with structure
+  $\{ d_i \}_{i=0}^{L+1} \subseteq \N$,
+  activation functions $\sigma_i = (\sigma_{ij} : \R \to \R)_{j=1}^{d_i}$
+  and weights $\{ W_i \in M^{d_i \times d_{i-1}}, v_i \in \R^{d_i} \}_{i=1}^{L+1}$
+  is the function $F:\R^{d_0} \to \R^{d_{L+1}}$ 
+  \[ F = w_{L+1} \circ \sigma_L \circ w_L
+  \circ \sigma_{L-1} \circ \dots \circ w_1 \]
+  where $w_i$ is the affine function $x \mapsto W_i x + v_i$ for all $i$.
 
-	Here $\sigma_i(x_1, \dots, x_{d_i})
-	= (\sigma_{i1}(x_1), \dots, \sigma_{id_{i}}(x_{d_{i}}))$.
+  Here $\sigma_i(x_1, \dots, x_{d_i})
+  = (\sigma_{i1}(x_1), \dots, \sigma_{id_{i}}(x_{d_{i}}))$.
 
-	$L \in \N_0$ is called the number of hidden layers.
+  $L \in \N_0$ is called the number of hidden layers.
 
-	$d_i$ is the number of neurons or nodes in layer $i$.
+  $d_i$ is the number of neurons or nodes in layer $i$.
 \end{defn}
 
 An ANN is called \emph{deep} if there are two or more hidden layers.
 
 \begin{defn}[Sparse ReLU Networks]
   For $s,V \in \R$ a (s,V)-\defemph{Sparse ReLU Network} is an ANN $f$
-  with any structure $\{d_i\}_{i\in [L+1]}$,
-  all activation functions being \emph{ReLU} i.e. $\sigma_{ij} = \max(\cdot, 0)$
-  and any weights $(W_\ell, v_\ell)$
-  satisfying
+  with all activation functions being \emph{ReLU}
+  i.e. $\sigma_{ij} = \max(\cdot, 0)$
+  and with weights $(W_\ell, v_\ell)$ satisfying
   \begin{multicols}{3}
     \begin{itemize}
       \item $\max_{\ell \in [L+1]} \norm{\widetilde{W}_\ell}_\infty \leq 1$
@@ -52,9 +57,8 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
 \end{defn}
 
 \subsubsection{Fitted Q-Iteration}
-
-We here present the algorithm which everything in this paper revolves around:
-
+The algorithm analysed by [Fan et al] is
+\begin{figure}[H]
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
   \caption{Fitted Q-Iteration Algorithm}
   \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
@@ -73,6 +77,6 @@ We here present the algorithm which everything in this paper revolves around:
   \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
   \label{alg:fqi}
 \end{algorithm}
-
+\end{figure}
 
 

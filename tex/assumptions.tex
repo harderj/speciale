@@ -4,21 +4,21 @@
 \begin{defn}[Hölder smoothness]
   For $f : \Cal{S} \to \R$ we define
   \begin{equation}
-    \norm{f}_{C_r} \defeq 
+    \norm{f}_{C_w} \defeq 
     \sum_{|{\alpha}| < \beta}
     \norm{\partial^{\alpha}f}_\infty +
     \sum_{\norm{{\alpha}}_1 = \floor{\beta}}
     \sup_{x \neq y} \frac{|\partial^\alpha (f(x) - f(y))|}
   {\norm{x-y}_\infty^{\beta-\floor{\beta}}}
   \end{equation}
-  Where $\alpha = (\alpha_1, \dots, \alpha_r) \in \N_0^r$.
+  Where $\alpha = (\alpha_1, \dots, \alpha_w) \in \N_0^w$.
   And $\partial^k$ is the partial derivative w.r.t. the $k$th variable.
-  If $\norm{f}_{C_r} < \infty$ then $f$ is \defemph{Hölder smooth}.
-  Given a compact subset $\Cal{D} \subseteq \R^r$
+  If $\norm{f}_{C_w} < \infty$ then $f$ is \defemph{Hölder smooth}.
+  Given a compact subset $\Cal{D} \subseteq \R^w$
   the space of Hölder smooth functions on $\Cal{D}$ with norm bounded by
   $H > 0$ is denoted
-  \[ C_r(\Cal{D}, \beta, H) \defeq
-  \left\{ f : \Cal{D} \to \R \Mid \norm{f}_{C_r} \leq H \right\} \]
+  \[ C_w(\Cal{D}, \beta, H) \defeq
+  \left\{ f : \Cal{D} \to \R \Mid \norm{f}_{C_w} \leq H \right\} \]
 \end{defn}
 
 \begin{defn}
@@ -28,7 +28,7 @@
   for some functions $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
   that only depend on $t_j$ of their inputs
   for each of their components $g_{jk}$,
-  and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^t_j, \beta_j, H_j)$, 
+  and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$, 
   i.e. they are Holder smooth.
   We denote the class of these functions
   \[ \Cal{G}(\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}) \]
@@ -51,56 +51,58 @@
   we should stay in the class of compositions of Holder smooth functions.
 \end{asm}
 
-If also $\Cal{G_0}$ is well approximated by functions in $\Cal{F}_0$
+If also $\Cal{G}_0$ is well approximated by functions in $\Cal{F}_0$
 then this assumption implies that $\Cal{F}_0$ is approximately closed
 under the Bellman operator $T$ and thus that $Q^*$ is close to $\Cal{F}_0$.
 
-We now look at a case where $\Cal{D}=[0,1]^r$, $q=1$ 
-and both the expected reward function and transition kernel
-is Hölder smooth.
+We now look at a simple example where \cref{asm:A1} holds:
+Seting $\Cal{D}=[0,1]^r$, $q=1$ 
+and taking both the expected reward function and transition kernel
+to be Hölder smooth.
 
 \begin{prop}
   Assume for all $a \in \Cal{A}$ that
-  $P(s,a)$ and $R(s,a)$ are absolutely continuous w.r.t. $\lambda^k$
-  and for all $s' \in \Cal{S}$ that
-  $s \mapsto P\left(s' \Mid s, a \right)$
-  and $s \mapsto \E R(s, a)$
-  are both in $C_r([0,1]^r, \beta, H)$.
-  Then $T \Cal{F}_0 \subseteq C_r([0,1]^r, \beta, (1 + \gamma V_{\max}) H)$.
+  $P(\cdot \mid s,a)$ is absolutely continuous w.r.t. $\lambda^k$
+  with density $p(\cdot \mid s, a)$,
+  Assume for all $s' \in \Cal{S}$ that
+  $s \mapsto p\left(s' \Mid s, a \right)$
+  and $s \mapsto r(s, a)$
+  are both in $C_w([0,1]^r, \beta, H)$.
+  Then $T \Cal{F}_0 \subseteq C_w([0,1]^r, \beta, (1 + \gamma V_{\max}) H)$.
 \end{prop}
 \begin{proof}
-  Let $f \in \Cal{F}_0$ and $\alpha \in \N_0^r$.
+  Let $f \in \Cal{F}_0$ and $\alpha \in \N_0^w$.
   Observe that
   \begin{align*}
     \partial^\alpha (Tf)(s, a)
-    = & \; \partial^\alpha_s \left( \E R(s, a) \right)
+    = & \; \partial^\alpha_s \left( r(s, a) \right)
     + \gamma \int_{\Cal{S}}\partial^\alpha_s \left[ \max_{a' \in \Cal{A}}
-    f(s', a') P\left(s' \Mid s, a\right) \right] \difd s' 
-    \\ \leq & \; \partial^\alpha_s \left( \E R(s, a) \right)
+    f(s', a') p\left(s' \Mid s, a\right) \right] \difd s' 
+    \\ \leq & \; \partial^\alpha_s \left( r(s, a) \right)
     + \gamma V_{\max} \sup_{s' \in \Cal{S}} \partial_s^\alpha
-    P\left(s' \Mid s, a\right)
+    p\left(s' \Mid s, a\right)
   \end{align*}
   similarly
   \begin{align*}
     \partial^\alpha (Tf)(s, a) - \partial^\alpha (Tf)(s', a)
-    \leq & \; \partial^\alpha_s \left( \E R(s, a) \right)
-    - \partial^\alpha_s \left( \E R(s', a) \right)
+    \leq & \; \partial^\alpha_s \left( r(s, a) \right)
+    - \partial^\alpha_s \left( r(s', a) \right)
     \\ & \; + \gamma V_{\max} \sup_{s'' \in \Cal{S}}
-    \left( \partial_s^\alpha P(s'' \Mid s, a)
-    - \partial_s^\alpha P(s'' \Mid s', a) \right)
+    \left( \partial_s^\alpha p(s'' \Mid s, a)
+    - \partial_s^\alpha p(s'' \Mid s', a) \right)
   \end{align*}
   Thus
   \begin{align*}
-    \norm{Tf}_{C_r} \leq & \; \sum_{\abs{\alpha}<\beta} \left(
-      \norm{\partial^\alpha \E R(\cdot, a)}_\infty
+    \norm{Tf}_{C_w} \leq & \; \sum_{\abs{\alpha}<\beta} \left(
+      \norm{\partial^\alpha r(\cdot, a)}_\infty
       + \gamma V_{\max} \sup_{s \in \Cal{S}} \norm{\partial^\alpha
-    P(s \mid \cdot, a)}_\infty \right)
+    p(s \mid \cdot, a)}_\infty \right)
     \\ + & \; \sum_{\norm{\alpha}_1 = \floor{\beta}} \sup_{x \neq y}
     \left(
-      \frac{\abs{\partial^\alpha (\E R(x, a) - \E R(y, a))}}
+      \frac{\abs{\partial^\alpha (r(x, a) - r(y, a))}}
       {\norm{x - y}_{\infty}^{\beta - \floor{\beta}}}
       + \gamma V_{\max} \sup_{s \in \Cal{S}} \frac{
-      \abs{\partial^\alpha (\E P(s \mid x, a) - \E R(s \mid y, a))}}
+      \abs{\partial^\alpha (p(s \mid x, a) - p(s \mid y, a))}}
       {\norm{x - y}_{\infty}^{\beta - \floor{\beta}}}
     \right)
     \\ \leq & \; H + \gamma V_{\max} H = (1 + \gamma V_{\max}) H
@@ -113,10 +115,12 @@ is Hölder smooth.
 
 \begin{defn}[Concentration coefficients] \label{defn:ccoefs}
   Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
-  absolutely continuous w.r.t. $m_{\lambda}$
+  absolutely continuous w.r.t. $\lambda^w \otimes \mu_\Cal{A}$
+  (the product of the $w$-dimensional Lebesgue measure and the counting measure
+  on $\Cal{A}$).
   Define
   \[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m}
-    \left[ \E_{v_2} \left( \frac{\mathrm{d} (P^{\pi_m} \dots P^{\pi_1} \nu_1)}
+    \left[ \E_{v_2} \left( \frac{\mathrm{d} (P_{\pi_m} \dots P_{\pi_1} \nu_1)}
   {\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
 \end{defn}
 

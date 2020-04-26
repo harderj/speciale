@@ -24,6 +24,10 @@
 %\pagestyle{fancy}
 \usepackage{mathabx}
 \usepackage{csquotes}
+\usepackage{tikz}
+%\usepackage{cite}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
 
 %linespread and geometry
 \linespread{1.3}
@@ -59,6 +63,15 @@
 \newcommand{\defeq}{\vcentcolon=} %definition equality symbol
 %add single eq. tag in align*
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rleft}[1]{\rotatebox[origin=c]{90}{\ensuremath{#1}}}
+\newcommand{\vrel}[3]{ % for vertical subseteq e.g.
+\vcenter{\halign{\hfill##\hfill\cr
+\ensuremath{#1}\cr
+\rotatebox[origin=c]{270}{\ensuremath{#2}}\cr
+\ensuremath{#3}\cr
+}}}
+\newcommand{\lar}{\leftrightarrow}
+\newcommand{\Span}{\mathrm{span}}
 
 %theorems
 \theoremstyle{definition}

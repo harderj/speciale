@@ -1,7 +1,6 @@
 
-\subsubsection{Reinforcement learning}
-
-In Reinforcement Learning (RL) we are concerned with finding an optimal policy
+In Reinforcement Learning (RL) in general
+we are concerned with finding an optimal policy
 for an agent in some environment.
 This environment is described by a so-called decision process
 consisting of a sequence of state and action spaces
@@ -12,17 +11,21 @@ In the general case $\Cal{S}_i, \Cal{A}_i$ are measurable spaces
 and $P_i, R_i$ are probability kernels on $S_{i+1}$ and $\Rext$, respectively.
 One then attempts to find a \emph{policy} (behavior or strategy) that
 maximizes the rewards returned from the environment.
-A policy and an distribution over starting states
+A policy and a distribution over starting states
 $\mu \in \Cal{P}(\Cal{S}_1)$
 give rise to a countable stochastic process,
 $ (X_i)_{i\in \N} = (S_i, A_i, R_i)_{i\in \N}$ 
-that is a probability measure $P^\pi_\mu$. on
+that is a probability measure $P^\pi_\mu$ on
 $\Cal{S}_1 \times \Cal{A}_1 \times \dots$.
 Intuitively $S_1$ is drawn from $\mu$,
 then for all $i \in \N$
 $A_i$ is drawn from $\pi(\cdot \mid S_i)$,
 a reward is then drawn from $R(\cdot \mid S_i, A_i)$,
 then $S_{i+1}$ is drawn from $P(\cdot \mid S_i, A_i)$ and so on.
+We devote a considerable part of this paper discussing how this is 
+constructed in concrete term, in the chapters on measure theory
+and decision processes. 
+
 
 
 In RL there is a categorization of algorithms into

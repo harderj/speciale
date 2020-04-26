@@ -1,4 +1,14 @@
 
+In this section we will present some background theory which is
+necessary for the constructions and derivations in the following
+sections.
+This is mainly standard theory of stochastic processes with some
+slight extensions.
+The reader may skip this if already familiar with such theory
+and use this section as a reference when going into the technical
+details in the following sections.
+
+\subsubsection{Background and notation}
 
 We work with a background probability space $(\Omega, \Sigma_\Omega, \Prob)$.
 For a measurable space $(\Cal{X}, \Sigma_{\Cal{X}})$ we denote
@@ -71,7 +81,7 @@ we here include
   be a measurable function and
   $\kappa : \Cal{X} \leadsto \Cal{Y}$ be a probability kernel.
   Then
-  \[ \int \abs{f} \difd \kappa \circ \mu
+  \[ \int \abs{f} \difd \kappa \mu
   = \int \int \abs{f} \difd \kappa(\cdot \mid x) \difd \mu(x) \]
   Furthermore if this is finite, i.e. $f \in \Cal{L}_1(\kappa(\cdot, \mu))$
   then $A_0 \defeq \left\{ x \in \Cal{X} \Mid
@@ -83,7 +93,7 @@ we here include
       \\ 0 & x \not\in A_0
   \end{cases} \]
   is $\Sigma_\Cal{X}$-$\bb{B}$ measurable and
-  \[ \int f \difd \kappa(\cdot \mid \mu)
+  \[ \int f \difd \kappa \mu
   = \int_{A_0} \int f \difd \kappa(\cdot \mid x) \difd \mu(x) \]  
   \label{thm:extTonFub}
 \end{thm}
@@ -157,30 +167,34 @@ So for any probability measure $\rho_1 \in \Cal{P}(\Cal{X}_1)$
 there exists a unique probability measure 
 $\rho_n$ on $\Cal{X}^{\ul{n}}$ defined by
 $\kappa^{\ul{n}} \rho_1$.
-
-Let $\Cal{X}^{\ul{\infty}} \defeq \prod_{n \in \N} \Cal{X}_n$
-and $\Sigma_{\Cal{X}^{\ul{\infty}}} \defeq \bigotimes_{n \in \N}
-\Sigma_{\Cal{X}_n}$.
-We are not equipped to establish existence of a
-kernel generated measure on
-$(\Cal{X}^{\ul{\infty}}, \Sigma_{\Cal{X}^{\ul{\infty}}})$ 
-yet which we will need.
-This problem was solved by Cassius Ionescu-Tulcea in 1949:
+This does however not imply existence of a measure on
+\[ \left(\Cal{X}^{\ul{\infty}},
+  \Sigma_{\Cal{X}^{\ul{\infty}}} \right) \]
+where $\Cal{X}^{\ul{\infty}} \defeq \prod_{n \in \N} \Cal{X}_n$ and
+$\Sigma_{\Cal{X}^{\ul{\infty}}} \defeq \bigotimes_{n \in \N}
+\Sigma_{\Cal{X}_n} $.
+We will need this to talk about countable stochastic processes
+arising from decision models, so we include here a result
+by C. Ionescu-Tulcea (1949):
 
 \begin{thm}[Ionescu-Tulcea extension theorem]
   For every $\mu \in \Cal{P}(\Cal{X}_1)$ 
   there exists a unique probability measure
   $\rho \in \Cal{P}(\Cal{X}^{\ul{\infty}})$ such that
-  \[ \rho_n(A) = \rho \left( A \times \prod_{k=n+1}^\infty \Cal{X}_k \right)
+  \[ \kappa^{\ul{n-1}} \mu (A) = \rho
+    \left( A \times \prod_{k=n+1}^\infty \Cal{X}_k \right)
   , \qquad \forall A \in \Sigma_{\Cal{X}^{\ul{n}}}, n \in \N \]
-  We denote this measure
-  $\dots \kappa_2 \kappa_1 \mu = \prod_{i=1}^\infty \kappa_i \mu \defeq \rho$.
   \label{thm:ionescuTulcea}
 \end{thm}
 \begin{proof}
-  Todo: what about this.
+  We refer to [Kallenberg, Foundations, thm. 5.17]. %todo do the proof instead
 \end{proof}
 
+We will also need to integrate with respect to starting conditions
+on such a stochastic process. To this end it is convenient to
+extend the Ionescu-Tulcea construction from a measure to a kernel.
+As I was not able to find a proof of this elsewhere
+an original proof is included here.
 \begin{prop}[Ionescu-Tulcea kernel]
   Let $\mu_x$ denote the Ionescu-Tulcea measure of a
   sequence of probability kernels
@@ -192,10 +206,41 @@ This problem was solved by Cassius Ionescu-Tulcea in 1949:
 \begin{proof}
   Since we already know that $\mu_x$ is a probability measure for any
   $x \in \Cal{X}_1$,
-  we just have to show that $\kappa(A \mid x) = \mu_x(A)$ is measurable for all
-  $A \in \bigotimes_i \Sigma_{\Cal{X}_i}$.
-  \dots todo
+  we just have to show that $\kappa(A \mid x) = \mu_x(A)$ is measurable
+  as a function of $x$ for all
+  $A \in \Sigma_{\Cal{X}^{\ul{\infty}}}
+  = \bigotimes_{i=1}^\infty \Sigma_{\Cal{X}_i}$.
+  Let $\phi_A = x \mapsto \mu_x(A)$
+  for all $A \in \Sigma_\Cal{X^{\ul{\infty}}}$ and define
+  \[ \bb{G} = \left\{ A \in \bigotimes_{i=1}^\infty \Sigma_{\Cal{X}_i}
+  \Mid \phi_A \in \Cal{M}(\Sigma_{\Cal{X}_1}, \bb{B}_{[0,1]}) \right\} \]
+  The cylinder algebra
+  \[ \bb{C} = \left\{ A_1 \times \dots \times A_i \times \Cal{X}_{i+1},
+  \dots \Mid A_i \in \Sigma_{\Cal{X}_i}, i \in \N \right\} \]
+  Is a generator for $\Sigma_{\Cal{X}^{\ul{\infty}}}$ stabile under 
+  finite intersections.
+  By contruction $\bb{C} \subseteq \bb{G}$ since
+  \[ \phi_{A_1 \times \dots \times A_i \times \Cal{X}_{i+1} \times \dots}
+  = \kappa^{\ul{i-1}}(A_1 \times \dots \times A_i \mid \cdot) \]
+  and any $\kappa^{\ul{i-1}}$ is a kernel (\cref{prop:compKer}).
+  We will show that $\bb{G}$ is a Dynkin class.
+  Then by Dynkins $\pi$-$\lambda$ theorem
+  \[ \sigma(\bb{C}) = \Sigma_{\Cal{X}^{\ul{\infty}}}
+  \subseteq \bb{G} \]
+  implying that $\phi_A$ is measurable
+  for all $A \in \Sigma_{\Cal{X}^{\ul{\infty}}}$.
+  
+  Clearly $\Cal{X}^{\ul{\infty}}, \emptyset \in \bb{G}$ and if
+  $A,B \in \bb{G}$ with $A \subseteq B$ then
+  $\phi_{B \setminus A} = \phi_B - \phi_A \in \bb{G}$.
+  Finally if $(B_n)_{n \in \N}$ is an ($\subseteq$-) increasing sequence
+  in $\bb{G}$ then $\phi_{\bigcup_{n=1}^\infty B_n} =
+  \lim_{n \to \infty} \phi_{B_n}$ is again measurable as it is a
+  limit of measurable functions, showing that $\bb{G}$ is a Dynkin class.
 \end{proof}
+
+We will denote the Ionescu-Tulcea kernel $\dots \kappa_2 \kappa_1$ or
+$\prod_{i=1}^\infty \kappa_i$ or simply $\kappa^{\ul{\infty}}$.
 
 \begin{lem}
   The Ionescu-Tulcea kernel satisfies
@@ -215,22 +260,6 @@ This problem was solved by Cassius Ionescu-Tulcea in 1949:
   for all $n \in \N$ and $A \in \Sigma_{\Cal{X}^{\ul{n}}}$.
   By the uniqueness in \cref{thm:ionescuTulcea} we are done.
 \end{proof}
-
-
-\begin{prop}
-  Let $\Cal{X}, \Cal{Y}$ be separable and metrizable,
-  $\kappa : \Cal{X} \to \Cal{Y}$ be a continuous probability kernel
-  and $f:\Cal{X} \times \Cal{Y} \to \ul{\ol{\R}}$ be Borel-measurable
-  satisfying one of
-  $f \leq 0, f \geq 0, \abs{f} < \infty$.
-  If $f$ is bounded from above (below) and upper (lower) semicontinuous
-  then
-  \[ x \mapsto \int f \difd \kappa(\cdot \mid x) \]
-  is bounded from above (below) and upper (lower) semicontinuous. 
-  \label{prop:BS7_31}
-\end{prop}
-
-\begin{proof}
-  We refer to [BS SOC, prop. 7.31]. %todo do it yourself
-\end{proof}
+This lemma will come in handy when manipulating with integrals over
+kernel derived measures.
 

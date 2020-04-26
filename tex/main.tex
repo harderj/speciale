@@ -10,24 +10,25 @@
 
 \maketitle
 
-\subsection{Abstract}
-%todo
+\subsection*{Abstract}
+\input{abstract}
+\section{Introduction}
 \subsection{Foreword}
 \input{foreword}
-\subsection{Disambiguation}
-\input{disambiguation}
-\section{Introduction}
 %\input{intro} %old intro
 \input{introduction.tex}
 \subsection{Reinforcement learning in general}
 \input{generalNotes}
 \subsection{Measure theory}
 \input{measureTheory}
+
 \section{Decision models and value functions}
 \input{decisionAndValue.tex}
+
 \section{Hidden dynamics}
 \input{hiddenDynamics}
-\section{Fan et al.}
+
+\section{Deep fitted Q-iteration}
 \subsection{Introduction}
 \input{introFan}
 \subsection{Notational deviations from [TODO ref YangXieWang]}
@@ -37,16 +38,34 @@
 \subsection{Main theorem}
 \input{mainTheorem}
 \subsection{Proofs}
+The proof of \cref{thm:main} combines two results.
+The first on the error propagation and the second on the error
+ocurring in a single step.
 \input{errorpropthm}
 \input{onestepthm}
+The proofs of \cref{thm:errorprop} and \cref{thm:oneStep} are
+found below, but first 
+we will show how to combine them to obtain
+\cref{thm:main}.
 \input{mainProof}
+Now for \cref{thm:errorprop}.
 \input{C1proof}
+Finally we show \cref{thm:oneStep}.
 \input{C2proof}
+
+\section{Further directions}
+\input{furtherDir}
+
 \section{Appendices}
+\subsection{Disambiguation}
+\input{disambiguation}
 \subsection{Lemmas for Fan et al.}
 \input{variousLemmas}
 \subsection{Other notes}
 \input{otherNotes}
 
+
+
+\bibliography{bib}{}
 
 \end{document}

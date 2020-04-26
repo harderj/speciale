@@ -1,15 +1,26 @@
 
-\subsection{General decision model}
-In the quest to have a united framework to talk about results from
-several different sources we define here a quite general model.
-One which is quite close to in generality can be found in
+In this section we will develop general theory about
+decision processes and value function (including Q-functions)
+that is used across all sources considered in this paper.
+We will also take up the question of optimal policy existence and 
+prove this in different settings for reference
+in the latter sections.
+
+\subsection{History dependent decision process}
+We define in this section a quite general framework.
+We do this partly in the quest to have a united framework
+to talk about results from a variety of sources,
+and relate them to each other in generality.
+And partly to avoid defining various concepts such as value functions
+everytime a new context is considered.
+A source which uses a setup which is almost as general can be found in
 [ref. to Schal].
 In this section recall that $\ul{\R} = \R \cup \{-\infty\}$,
 $\ol{\R} = \R \cup \{\infty\}$ and
 $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
 
-\begin{defn}[Decision model]
-  A general \defemph{decision} model is determined by
+\begin{defn}[History dependent decision process]
+  A \defemph{history dependent decision process} (HDP) is determined by
   \begin{enumerate}
     \item $(\Cal{S}_n, \Sigma_{\Cal{S}_n})_{n \in \N}$ a 
       measurable space of \defemph{states} for each timestep.
@@ -17,9 +28,14 @@ $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
       measurable space of \defemph{actions} for each timestep.
   \end{enumerate}
   for each $n \in \N$ we define the so called \defemph{history} spaces
+  \[ \Cal{H}_1 = \Cal{S}_1, \quad
+    \Cal{H}_2 = \Cal{S}_1\times \Cal{A}_1\times \Cal{S}_2,
+    \quad \Cal{H}_3 = \Cal{S}_1 \times \Cal{A}_1 \times \Cal{S}_2 \times
+  \Rext \times \Cal{A}_2 \times \Cal{S}_3 \]
   \[ \Cal{H}_n = \Cal{S}_1 \times \Cal{A}_1
     \times \Cal{S}_2 \times \ol{\ul{\R}} \times \Cal{A}_2
-    \times \Cal{S}_3 \times \ol{\ul{\R}} \dots \times \Cal{S}_n,
+  \times \Cal{S}_3 \times \ol{\ul{\R}}\times \dots \times \Cal{S}_n \]
+  \[
     \Cal{H}_\infty = \Cal{S}_1 \times \Cal{A}_1 \times \Cal{S}_2 \times
     \ol{\ul{\R}} \times \dots
   \]
@@ -32,23 +48,43 @@ $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
       $\Cal{H}_{n+1} \leadsto \ol{\ul{\R}}$ kernels
       called the \defemph{reward} kernels.
   \end{enumerate}
-  \label{sett:DM}
+  \label{sett:HDP}
 \end{defn}
-Some authors refers to this as a \emph{dynamic progamming} model.
+The name \emph{decision process} is used for many different processes
+across litterature but many of them generalize to the above.
+Some authors use the name \emph{dynamic progamming model} to refer to
+such processes.
 Notice the slight irregularity in the beginning of the history spaces:
 We are missing a reward state after $\Cal{S}_1$. We could avoid
-this by introducing some start reward, but we will be careless.
+this by introducing some start reward we will do without.
 
-The vast majority of sources considered in this paper actually specialize
-the DP model with the following:
+\begin{asm}(Reward independence)
+  $P_n, R_n$ and policies are only allowed to depend on the past
+  states and actions, and not the rewards.
+  \label{asm:rewardIndep}
+\end{asm}
+
+In all sources known to this writer \cref{asm:rewardIndep} is assumed.
+This is a bit of a puzzle since it is obvious that one could
+want to define algorithms (policies) that take into account which rewards
+they received in the past.
+We will also do this but stick to the standard and 
+never attempt to evaluate ideal value functions of
+policies that depend on rewards.
+Thus we will let \cref{asm:rewardIndep} hold
+from now on and throughout this paper.
+
+The majority of sources considered in this paper also specialize
+with the following:
 \begin{asm}[One state and action space]
   $\Cal{S}_1 = \Cal{S}_2 = \dots \defeq \Cal{S}$
   $\Cal{A}_1 = \Cal{A}_2 = \dots \defeq \Cal{A}$
   \label{asm:oneStateActionSpace}
 \end{asm}
-However we will do without this for the rest of this section in order to
+We will do without this for the rest of this section in order to
 present some results in the generality they deserve.
-One could ask if it is possible to embed the general DP model into one
+And later we will look at settings which do not specialize this way.
+One could ask if it is possible to embed the general decision process into one
 with \cref{asm:oneStateActionSpace} by setting
 $\Cal{S} \defeq \bigcup_{i\in\N} \Cal{S}_i$ and
 $\Cal{A} \defeq \bigcup_{i\in\N} \Cal{A}_i$ or similar.
@@ -57,12 +93,11 @@ but this will not be covered here. %consider covering it
 
 Other ways to specialize include reducing one or both of the
 transition and reward kernels to functions defined on
-$\Cal{S} \times \Cal{A}$. These models are often called
+$\Cal{S} \times \Cal{A}$. These processes are often called
 \emph{deterministic}, but the exact definitions vary across sources, and we will
 instead specify each setting individually.
 
-
-For a DP model we can define
+For a decision process we can define
 \begin{defn}[Policy]
   A (randomized) \defemph{policy} $\pi = (\pi_n)_{n \in \N}$
   is a sequence of $\Cal{H}_n \leadsto \Cal{A}_n$ kernels.
@@ -71,20 +106,23 @@ For a DP model we can define
   on the first and last state in the history
   and is called \defemph{Markov} if only the last.
   The sets are denoted $sM\Pi$ and $M\Pi$.
- SFurthermore $\pi$ is called \defemph{deterministic} if all $\pi_i$
-  are degenerate, i.e. are actually measurable functions from
-  $\Cal{H}_n$ to $\Cal{A}_n$. 
+  Furthermore $\pi$ is called \defemph{deterministic} if all $\pi_i$
+  are degenerate, i.e. for all $i$ we have
+  $\pi_i(\{a_i\} \mid h_i) = 1$ for some $a_i \in \Cal{A}_{i}$.
   Under \cref{asm:oneStateActionSpace}
   it makes sense to make a (Markov) policy $(\pi, \pi, \dots)$,
   where $\pi$ only depends on the last state.
   Such a policy is called \defemph{stationary},
   and the set of them denoted $S\Pi$.
+  We denote the deterministic version of the policy classes
+  by the letter $D$.
 \end{defn}
 We have the following inclusions
-\begin{align*}
-  S\Pi \subseteq M\Pi &\subseteq sM\Pi \subseteq R\Pi
-  \\ DS\Pi \subseteq DM\Pi &\subseteq DsM\Pi \subseteq D\Pi
-\end{align*}
+\[ \begin{matrix}
+  S\Pi &\subseteq M\Pi &\subseteq sM\Pi &\subseteq R\Pi
+  \\ \rleft{\subseteq} & \rleft{\subseteq} & \rleft{\subseteq} & \rleft{\subseteq} 
+  \\ DS\Pi &\subseteq DM\Pi &\subseteq DsM\Pi &\subseteq D\Pi
+\end{matrix} \] 
 
 \begin{prop}
 A dynamic progamming model together with a policy $\pi$ defines a
@@ -109,58 +147,94 @@ on pairs of states and actions can be called (state)
 The idea behind such functions are commonly to estimate the
 cumulative rewards associated with a state or state-action pair
 and the trajectory of states it can lead to.
-In order to define some of the most standard of value functions,
-which we call \defemph{ideal} to avoid confusion, we will need one of
+In order to define some standard value functions
+we will need one of
 the following conditions:
 
-\begin{cond}{$F^+$}
-  $R_i(\{\infty\} \mid h) = 0$ for all
-  $h \in \Cal{H}_{i+1}$ and $i \in \N$
-  \label{cond:F+}
-\end{cond}
-\begin{cond}{$F^-$}
-  $R_i(\{-\infty\} \mid h) = 0$ for all
+\begin{cond}{$F^-$}[Reward finity from above]
+  $\int_{[0,\infty]} x \difd R_i(x \mid h) < \infty$ for all
   $h \in \Cal{H}_{i+1}$ and $i \in \N$
   \label{cond:F-}
 \end{cond}
+\begin{cond}{$F^+$}[Reward finity from below]
+  $\int_{[-\infty,0]} x \difd R_i(x \mid h) > -\infty$ for all
+  $h \in \Cal{H}_{i+1}$ and $i \in \N$
+  \label{cond:F+}
+\end{cond}
+The letter \emph{F} comes from [todo ref Bertekas SOC].
 When assuming either of (\cref{cond:F+}) or (\cref{cond:F-})
-adding rewards cannot lead to a $\infty - \infty$ situation,
-and the following definition makes sense 
-\begin{defn}
-  Let $\Cal{R}_i : \Cal{H}_\infty \to \ol{\ul{\R}}$ be the projection onto the
+we ensure that the summation of finitely many rewards
+has a well defined mean in $\Rext$,
+and then the following definition makes sense 
+\begin{defn}[Finite horizon value function]
+  Let $\ul{R}_i : \Cal{H}_\infty \to \ol{\ul{\R}}$ be the projection onto the
   $i$th reward. Define
-  \[ V_{n,\pi}(s) = \E_s^\pi \sum_{i=1}^n \Cal{R}_i \]
-  called the $k$th finite \defemph{ideal} value function.
+  \[ V_{n,\pi}(s) = \E_s^\pi \sum_{i=1}^n \ul{R}_i \]
+  called the $k$th finite horizon value function.
   When $n=0$ $\forall \pi : V_{0,\pi} = V_0 \defeq 0$.
 \end{defn}
-These are also called \emph{finite horizon} value functions.
-
+The finite horizon value function
+measures the expected total reward of starting in state $s$
+and then follow the policy $\pi$ for $n$ steps.
+This way it measures the \emph{value} of that particular state
+given a policy and \emph{horizon} (number of steps).
 We would like to extend this to an infinite horizon value function,
 i.e. letting $n$ tend to $\infty$. To ensure that the integral is well-defined
 we need one of the following conditions
-\begin{cond}{P} $R_i([0,\infty] \mid h) = 1$,
+\begin{cond}{P}[Reward non-negativity] $R_i([0,\infty] \mid h) = 1$,
   $\forall h \in \Cal{H}_{i+1}, i \in \N$
   \label{cond:P}
 \end{cond}
-\begin{cond}{N} $R_i([-\infty, 0] \mid h) = 1$
+\begin{cond}{N}[Reward non-positivity] $R_i([-\infty, 0] \mid h) = 1$
   $\forall h \in \Cal{H}_{i+1}, i \in \N$
   \label{cond:N} 
 \end{cond}
-\begin{cond}{D} There exist a bound $R_{\max} > 0$ and a
+\begin{cond}{D}[Discounting] There exist a bound $R_{\max} > 0$ and a
   $\gamma \in [0,1)$ called the \defemph{discount} factor such that
   $R_i([-R_{\max} \gamma^i, R_{\max} \gamma^i]) = 1$
   $\forall h \in \Cal{H}_{i+1}, i \in \N$
   \label{cond:D}
 \end{cond}
-
+Again the letters P, N and D are adopted from [todo ref Bertsekas SOC].
 \begin{defn}
-  Assume (P), (N) or (D). We define the (infinite horizon) ideal value
-  function by
-  \[ V_\pi(s) = \E_s^\pi \lim_{n \to \infty} \sum_{i=1}^n \Cal{R}_i \]
+  We define the infinite horizon value function by
+  \[ V_\pi(s) = \E_s^\pi \lim_{n \to \infty} \sum_{i=1}^n \ul{R}_i \]
 \end{defn}
+The infinite horizon value function $V_\pi$ measures the expected total
+reward after following the policy $\pi$ an infinite number of steps.
 
-\begin{prop}
-  The ideal value functions $V_{n,\pi}, V_\pi$ are measurable
+\begin{rem}
+  Whenever we are working with the finite horizon value function
+  we will always assume that either ($F^+$) or ($F^-$) holds without
+  stating this explicitly.
+  If a result only holds under e.g. ($F^+$) we will of course be explicit
+  about this be marking it accordingly with a ($F^+$).
+
+  Similarly whenever we work with the infinite horizon value function we will
+  always assume that at least one of (P), (N) or (D) holds.
+  We will mark propositions and theorems
+  by e.g. (\cref{cond:D}) (\cref{cond:P}) when
+  the result only holds for if discounting \emph{or} reward non-negativity
+  is assumed.
+  Note that obviously (P) implies $F^+$ and (N) implies $F^-$.
+\end{rem}
+
+\begin{rem}
+Since we are under \cref{asm:rewardIndep}, when talking about the finite
+or infinite value functions,
+we can actually reduce the reward kernels to functions
+$r_i : \Cal{H}_{i+1} \to \Rext = h \mapsto \int r \difd R_i(r \mid h)$
+(note that $r_i$ is measurable due to \cref{prop:intKerMeas}).
+Another way of stating this is that the value functions are indifferent
+to whether we use deterministic or stochastic rewards.
+This however does not mean that we can dispose completely of stochastic
+rewards, as they still make a difference to model-free algorithms that
+do not know the reward kernel, and therefore cannot simply integrate it.
+\end{rem}
+
+For use later we mention some properties of these value functions.
+\begin{prop} 
+  When well-defined the value functions $V_{n,\pi}, V_\pi$ are measurable
   into $(\ul{\ol{\R}}, \ul{\ol{\bb{B}}})$.
 \end{prop}
 \begin{proof}  
@@ -168,59 +242,63 @@ we need one of the following conditions
 \end{proof}
 
 \begin{prop}
-  Under \cref{cond:P}, \cref{cond:N} or \cref{cond:D} we have
   $\lim_{n\to\infty} V_{n, \pi} = V_\pi $
   for all $\pi \in R\Pi$.
+  \label{prop:VnLimV}
 \end{prop}
 \begin{proof}
   By monotone or dominated convergence.
 \end{proof}
 
+\begin{prop} Under (D) for any $\pi \in R\Pi$ we have
+
+  $\abs{V_{n,\pi}}, \abs{V_\pi} \leq R_{\max} (1 - \gamma) < \infty$.
+  \label{prop:Vbounded}
+\end{prop}
+\begin{proof}
+  For any $\pi \in R\Pi$
+  \[ \abs{V_\pi(s)} \leq \E_s^\pi \sum_{i \in \N} \abs{\ul{R}_i}
+    \leq \sum_{i \in \N} \gamma^{i-1} R_{\max}
+  = R_{\max} / (1-\gamma) \]
+  This also covers $V_{n, \pi}$.
+\end{proof}
+As this bound will occur again and again we denote it
+\[ V_{\max} \defeq R_{\max}(1-\gamma) \]
+
 \subsubsection{Optimal policies}
 
-Let $(\Cal{S}_n, \Cal{A}_n, P_n, R_n)_{n \in \N}$ be a DP model.
-
-\begin{asm}(Reward independence)
-  $P_n, R_n$ and policies are only allowed to depend on the
-  states and actions.
-  \label{asm:rewardIndep}
-\end{asm}
-
-In all sources known to this writer \cref{asm:rewardIndep} is assumed.
-This is a bit of a puzzle since it is obvious that one could
-want to define algorithms (policies) that take into account which rewards
-they received in the past.
-We will also do this but stick to the standard and 
-never attempt to evaluate ideal value functions of
-policies that depend on rewards.
-Thus we will assume \cref{asm:rewardIndep} henceforth with including the
-shrinkage of the set of general policies $R\Pi$ that it entails.
-
-A neat consequence of \cref{asm:rewardIndep} when talking about
-value functions is that we can reduce the reward kernels to functions
-$r_i : \Cal{H}_{i+1} \to \ul{\R} = h \to \int r \difd R_i(r \mid h)$
-which are measurable (due to \cref{prop:intKerMeas}).
+Let $(\Cal{S}_n, \Cal{A}_n, P_n, R_n)_{n \in \N}$ be a decision process.
 
 \begin{defn}[Optimal value functions] 
   \begin{align*}
-    V_n^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_n^\pi(s) &
-    V^*(s) \defeq & \; \sup_{\pi \in R\Pi} V^\pi(s)
+    V_n^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_{n,\pi}(s) &
+    V^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_\pi(s)
   \end{align*}
-  are called the \defemph{optimal} value functions.
+  This is called the \defemph{optimal value function} (and the $n$th
+  optimal value function).
   A policy $\pi^* \in R\Pi$ for which $V_{\pi^*} = V^*$ is called an
-  \defemph{optimal} policy.
+  \defemph{optimal policy}.
   If $V_{n, \pi^*} = V^*_n$ it is called $n$-optimal.
+  \label{defn:optimalValue}
 \end{defn}
 
+\begin{prop} (D)
+
+  $\abs{V^*_k},\; \abs{V^*} \leq V_{\max}$.
+\end{prop}
+\begin{proof}
+  By \cref{prop:Vbounded} all terms in the suprema are within this bound.
+\end{proof}
+
+\begin{rem}
 An interesting fact about the optimal value functions is that they
 might not be Borel measurable [todo ref to counterexample]
 even in the finite case.
 After all we are taking a supremum over
 sets of policies which have cardinality of at least the continuum.
-However it is sometimes possible to show that they are
-universally measurable, thus Lebesgue measurable and therefore
-standard Lebesgue integration is possible.
+However it is sometimes possible to show that they are.
 We will take these discussions as they occur in various settings.
+\end{rem}
 
 At this point some central questions can be asked.
 \begin{enumerate}
@@ -231,14 +309,15 @@ At this point some central questions can be asked.
     $\pi^*$?
 \end{enumerate}
 These questions has been answered in a variety of settings.
-We will try to address these question in order by strength of assumptions
+We will try to address them in order by strength of assumptions
 they require.
 
+\subsubsection{Schäls theorem}
 In a quite general setting, questions 1 and 2
 was investigated by M. Schäl in 1974
 [todo ref. to On Dynamic Programming:
 Compactness of the space of policies, 1974].
-Here some additional structure on our model is imposed:
+Here some additional structure on our process is imposed:
 \begin{sett}[Schäl]
   \begin{enumerate}
     \item $V_\pi < \infty$ for all policies $\pi \in R\Pi$.
@@ -281,41 +360,250 @@ of an optimal policy:
   \label{cond:W}
 \end{cond}
 
-\begin{thm}[Existence and convergence of optimal policies in DP]
-  When either \cref{cond:S} or \cref{cond:W} hold then
+\begin{thm}[Schäl]
+  When either (\cref{cond:S}) or (\cref{cond:W}) hold then
   \begin{enumerate}
     \item There exist an optimal policy $\pi^* \in R\Pi$.
     \item $V^*_n \to V^*$ as $n \to \infty$.
   \end{enumerate}
+  \label{thm:SchalExi}
 \end{thm}
 \begin{proof}
   We refer to [todo ref: On Dynamic Programming: Compactness of the space of
   policies, M. Schäl 1974]. %todo: or do we?
 \end{proof}
 
-\subsection{Markov decision model}
+Schäls theorem tells us that optimal policies exist in a wide class
+of decision processes. However in many cases we are looking at processes
+in which the next state in independent of the history.
+In such cases it makes sense to ask if optimal policies can be chosen
+within the system of policy subclasses.
+Such questions will be addressed in the next section.
 
-\begin{sett}[Markov decision model]
-  \begin{itemize}
-    \item A decision model (\cref{sett:DM}) under
-      \Cref{asm:oneStateActionSpace} i.e. there is only one state
-      and action space $\Cal{S}$, $\Cal{A}$.
-    \item $P_n$ depends only on $s_n$ and $a_n$ and does not
-      differ with $n$. I.e. there exists a kernel $P$ such that
-      $P_n(\cdot \mid s_1, \dots, s_n, a_n) = P(\cdot \mid s_n, a_n)$
-      for all $n \in \N$. We will write $P$ instead of $P_n$ understanding
-      kernel compositions as if using $P_n$.
-    \item $r_n$ depends only on $s_n$ and $a_n$ and does not differ
-      with $n$ except for a potential discount.
-      I.e. there exists a measurable function
-      $r:\Cal{S}\times\Cal{A} \to \ol{\ul{\R}}$
-      such that
-      $r = r_n/\gamma^{n-1}$ for all $n \in \N$ (in the case where we 
-      are not discounting set $\gamma = 1$).
-  \end{itemize}
-  \label{sett:MDM}
-\end{sett}
-%
+\subsection{The Markov decision process and its operators}
+
+\begin{defn}[Markov decision process]
+  A \defemph{Markov decision process} (MDP) consists of
+  \begin{enumerate}
+    \item $(\Cal{S}, \Sigma_{\Cal{S}})$ a 
+      measurable space of states.
+    \item $(\Cal{A}, \Sigma_{\Cal{A}})$ a 
+      measurable space of actions.
+    \item $P : \Cal{S} \times \Cal{A} \leadsto \Cal{S}$
+      a transition kernel.
+    \item $R : \Cal{S} \times \Cal{A} \leadsto \ol{\ul{\R}}$
+      a reward kernel.
+    \item An optional disount factor $\gamma \in [0,1]$
+      (when not discounting put $\gamma = 1$).
+  \end{enumerate}
+  \label{sett:MDP}
+\end{defn}
+This is a special case of the general decision process (\cref{sett:DP}) with
+\begin{itemize}
+  \item \Cref{asm:oneStateActionSpace} is satisfied i.e. 
+    $\Cal{S}_1 = \Cal{S}_2 = \dots, \Cal{A}_1 = \dots = \Cal{A}$.
+  \item $P_n$ depends only on $s_n$ and $a_n$ and does not
+    differ with $n$. I.e. 
+    $P_n(\cdot \mid s_1, \dots, s_n, a_n) = P(\cdot \mid s_n, a_n)$
+    for all $n \in \N$.
+  \item $R_n$ depends only on $s_n$ and $a_n$ and does not differ
+    with $n$ except for a potential discount.
+    I.e. $R = R_n/\gamma^{n-1}$ for all $n \in \N$
+\end{itemize}
+We will write $P$ instead of $P_n$ understanding
+kernel compositions as if using $P_n$.
+
+%todo write here how value functions in MDPs look under (D)
+
+At this point it makes sense to define
+
+\begin{defn}[The $T$-operators]
+  For a stationary policy $\pi$ and measurable $V:\Cal{S} \to \ol{\ul{\R}}$
+  with $V \geq 0$, $V \leq 0$ or $\abs{V} < \infty$
+  we define the operators 
+  \[ P_\pi V \defeq s \mapsto \int V(s') \difd P\pi(s' \mid s) \]
+  \[ T_\pi V \defeq s \mapsto \int r(s, a)
+  + \gamma V(s') \difd (P \pi)(a, s'\mid s) \]
+  \[ T V \defeq s \mapsto \sup_{a \in \Cal{A}} T_a V(s) \]
+  where $T_a = T_{\delta_a}$.
+\end{defn}
+
+We want to define
+
+\begin{prop}[Properties of the $T$-operators]
+  Let $\pi = (\pi_1, \pi_2, \dots)$ be a Markov policy.
+  \begin{enumerate}
+    \item The operators $P_\pi, T_\pi$ and $T$ commutes with limits.
+    \item $V_{k, \pi} = T_{\pi_1} V_{k-1, (\pi_2, \dots)}
+      = T_{\pi_1} \dots T_{\pi_k} V_0$.
+    \item $V_\pi = \lim_{k \to \infty} T_{\pi_1} \dots T_{\pi_k} V_0$
+    \item If $\pi$ is stationary $T_\pi V_\pi = V_\pi$.
+    \item (D) $T$ and $T_\pi$ are $\gamma$-contractive
+      on $\Cal{L}_\infty(\Cal{S})$.
+    \item (D) $V_\pi$ is the unique bounded fixed point of $T_\pi$
+      in $\Cal{L}_\infty(\Cal{S})$
+  \end{enumerate} 
+  \label{prop:propTV}
+\end{prop}
+\begin{proof}
+  \leavevmode
+  \begin{enumerate}
+    \item By monotone or dominated convergence theorems.
+      \label{commLimits}
+    \item 
+      \begin{align*}
+	&T_{\pi_1} V_{k,(\pi_2, \dots)}(s_1)
+	\\ &= \int r(s_1, a_1) + \gamma
+	\int \sum_{i=2}^{k+1} \gamma^{i-2} r(s_i, a_i)
+	\difd \kappa_{\pi_2, \dots} (a_2, s_3, a_3, \dots \mid s_2)
+	\difd P \pi_1(a_1, s_2 \mid s_1)
+	\\ &= \int \sum_{i=1}^{k+1} \gamma^{i-1} r(s_i, a_i)
+	\difd \dots P \pi_2 P \pi_1 (a_1, s_2, \dots \mid s_1)
+	\\ &= \int \sum_{i=1}^{k+1} \gamma^{i-1} r(s_i, a_i)
+	\difd \kappa_\pi (a_1, s_2, \dots \mid s_1)
+	\\ &= V_{k+1, \pi}(s_1)
+      \end{align*}
+      Now use this inductively.
+    \item This is by 2. and \cref{prop:VnLimV}.
+    \item By 3. $T_\pi V_\pi = T_\pi \lim_{k \to\infty} T_{\pi}^k V_0
+      = \lim_{k \to\infty} T_\pi^{k+1} V_0 = V_\pi$.
+    \item Let $V, V' \in \Cal{L}_\infty(\Cal{S})$
+      and let $K = \norm{V - V'}_\infty$.
+      Then since the rewards are bounded
+      \[ \abs{T^\pi V - T^\pi V'}
+	= \gamma \abs{\int V(s') - V'(s') \difd P\pi(s' \mid s)}
+      \leq \gamma K \]
+      For $T$ use the same argument and the fact that
+      $\abs{\sup_x f(x) - \sup_{y} g(y)} \leq
+      \abs{\sup_x f(x) - g(x)}$ for any $f,g : X \to \ul{\R}$.
+    \item By 4., 5. and Banach fixed point theorem.
+  \end{enumerate}
+\end{proof}
+
+\subsection{Q-functions}
+\begin{defn}
+  Let $\pi \in R\Pi$.
+  Define
+  \[ Q_{k, \pi}(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V_{k, \pi}
+  ,\qquad Q_\pi = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V_\pi \]
+  \[ Q^*_k = \sup_{\pi \in R\Pi} Q_{k, \pi}
+  , \qquad Q^* = \sup_{\pi \in R\Pi} Q_\pi \]
+  Define $Q_0 = r$ then we make the convention that
+  $Q^*_0 = Q_{0,\pi} = Q_0 = r$.
+\end{defn}
+The letter Q originates to a PhD thesis by C. Watkins from 1989
+[todo ref C. Watkins, 1989]. Upon his definition he noted
+\begin{displayquote}
+  ``This is much simpler to calculate than [$V_\pi$]
+  for to calculate [$Q_\pi$] it is only necessary to look one
+  step ahead [\ldots]''
+\end{displayquote}
+A clear advantage of working with Q-function
+$Q:\Cal{S}\times\Cal{A} \to \Rext$ rather than a value function
+$V:\Cal{S}\to \Rext$,
+is that finding the optimal action in state $s$
+requires only a maximization over the Q-function itself:
+$a = \argmax_{a \in \Cal{A}} Q(s,a)$.
+This should be compared to finding a best action according to a value
+function $V$:
+$a = \argmax_{a \in \Cal{A}} r(s,a) + \gamma \E_{P(\cdot \mid s,a)} V$.
+Besides being less simple,
+this requires taking an expectation with respect to 
+both the reward and transition kernel.
+Later we will study settings where we are not allowed to know
+the process kernels when attempting to find the optimal strategy.
+In these situations the advantage of Q-functions is clear.
+For now however the transition kernel will remain known and we
+will in this section see how the results of state-value functions
+translate to Q-functions.
+The results in this section are original in the generality here presented,
+as I was unable to find them elsewhere.
+
+\begin{prop}
+  Let $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$ then
+  $\lim_{k \to \infty} Q_{k, \pi} = Q_\pi$. Furthermore it holds that
+  $\abs{Q_{k, \pi}}, \abs{Q_\pi}, \abs{Q^*_k}, \abs{Q^*} \leq V_{\max}$.
+\end{prop}
+\begin{proof}
+  By dominated convergence or monotone convergence and \cref{prop:Vbounded}.
+\end{proof}
+
+In parallel to the operators for state-value functions we define
+\begin{defn}[$T$ operators for Q-functions]
+  For any stationary policy $\pi \in S\Pi$
+  and measurable $Q:\Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$ with
+  $Q \geq 0, Q \leq 0$ or $\abs{Q} < \infty$ we define
+  \[ P_\pi Q(s, a) = \int Q(s', a') \difd \pi P(s', a' \mid s, a) \]
+  \[ T_\pi Q = r + \gamma P_\pi Q \]
+  \[ T Q(s, a) = r(s, a) + \gamma
+  \int \sup_{a' \in \Cal{A}} Q(s', a') \difd P(\cdot \mid s, a) \]
+  where $T_a = T_{\delta_a}$.
+\end{defn}
+ 
+\begin{prop}[Properties of T-operators for Q-functions]
+  Let $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$.
+  \leavevmode
+  \begin{enumerate}
+    \item If $\pi$ is Markov and $\mu$ is a stationary policy then
+      $T_\mu Q_{k, \pi}
+      = r + \gamma \E T_\mu V_{k, \pi}$
+    \item $Q_{k, \pi} = T_{\pi_1} \dots T_{\pi_k} Q_0$. 
+    \item For stationary $\pi \in S\Pi$ we have
+      $T_\pi Q_\pi = Q_\pi$.
+    \item (D) $T_\pi$ is $\gamma$-contractive on
+      $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
+      and $Q_\pi$ is the unique fixed point of $T_\pi$ in
+      $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
+  \end{enumerate}
+  \label{prop:TQ}
+\end{prop}
+\begin{proof}
+  \leavevmode
+  \begin{enumerate}
+    \item This is essentially due to properties of the kernels. The idea is
+      sketched here
+      \begin{align*}
+	T_\mu Q_{k, \pi} = r + \gamma \int r + \gamma V_{k, \pi}
+	\difd P \difd \mu P
+	= r + \gamma \int r + \gamma V_{k, \pi} \difd P \mu \difd P
+	= r + \gamma \int T_\mu V_{k, \pi} \difd P
+      \end{align*}
+    \item Use 1. iteratively starting with
+      $\mu = \pi_1, \pi = (\pi_2, \pi_3, \dots)$.
+    \item By 2. $T_\pi Q_\pi = T_\pi (r + \gamma \E \lim_{k\to\infty} T_\pi^k V_0)
+      = \lim_{k\to\infty} T_\pi (r + \gamma \E T_\pi^k V_0)
+      = \lim_{k\to\infty} (r + \gamma \E T_\pi^{k+1} V_0)
+      = r + \gamma \E \lim_{k\to\infty} T^{k+1}_\pi V_0
+      = r + \gamma \E V_\pi = Q_\pi$.
+    \item The contrativeness of $T_\pi$ follows from the same argument as for
+      value functions. 2. and Banach fixed point theorem does the rest.
+  \end{enumerate}
+\end{proof}
+
+\begin{defn}
+  Let $\pi : \Cal{S} \leadsto \Cal{A}$ be a stationary policy. Define
+  $A_s = \argmax_{a \in \Cal{A}} Q(s, a)$.
+  If there exist a measurable subset $B_s \subseteq A_s$
+  for every $s \in \Cal{S}$ such that
+  \[ \pi \left( B_s \Mid s \right) = 1 \]
+  then $\pi$ is said to be \defemph{greedy} with respect to $Q$ and is
+  denoted $\pi_Q$.
+\end{defn}
+
+\begin{prop}[Properties of greedy policies]
+  For any integrable $Q : \Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$
+  if $\pi_Q$ is greedy with respect to $Q$ then $T_{\pi_Q} Q = TQ$.
+\end{prop}
+\begin{proof}
+  \begin{align*}
+    T_{\pi_Q} Q &= r + \gamma \int Q(s, a) \difd \pi P(s, a \mid \cdot)
+    \\ &= r + \gamma \int \int Q(s, a)
+    \difd \pi_Q(a \mid s) \difd P(s \mid \cdot)
+    \\ &= r + \gamma \int \max_{a \in \Cal{A}} Q(s, a)
+    \difd P(s \mid \cdot)
+    \\ &= T Q
+  \end{align*}
+\end{proof}
 
 \subsection{Bertsekas-Shreve framework}
 The theory described here is largely based on
@@ -325,8 +613,8 @@ This means that positive and negative, upper and lower, supremum and infimum,
 ect. are opposite to the source.
 \begin{sett}[BS]
   \begin{itemize}
-    \item We consider an MDM $(\Cal{S}, \Cal{A}, P, R, \gamma)$
-      (see \cref{sett:MDM}).
+    \item We consider an MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$
+      (see \cref{sett:MDP}).
     \item $\Cal{S}$ and $\Cal{A}$ are Borel spaces.
     \item $\Cal{A}$ is compact.
     \item $P(S \mid \cdot)$ is continuous for any $S \in \Sigma_{\Cal{S}}$.
@@ -335,6 +623,8 @@ ect. are opposite to the source.
       (least upper bound denoted $0 < R_{\max} < \infty$).
     \item The policies must consist of
       universally measurable probability kernels.
+    \item One of (\cref{cond:P}), (\cref{cond:N}) or (\cref{cond:D})
+      is always assumed.
   \end{itemize}
   \label{sett:BS}
 \end{sett}
@@ -357,93 +647,27 @@ $g$ is required to be semi \emph{lower}continuous.
 By setting $P(\cdot \mid s, a) = f(s, a, p(\cdot \mid s, a))$
 and maximizing rewards of upper semicontinuous instead of
 minimizing lower semicontinuous ones, we fully capture
-all aspects of the original model and its results,
+all aspects of the original process and its results,
 except the for the action constrains. %todo make a more precise argument
 
 Notice that \cref{sett:BS} implies (\cref{cond:F+}).
-Throughout this section (\cref{cond:P}), (\cref{cond:N}) or (\cref{cond:D})
-are always assumed. Some results only hold for some of these conditions
-and we will indicate this by e.g. (\cref{cond:D}) (\cref{cond:P}) when
-the result only holds for the discounted and positive case.
-At this point it makes sense to define
-
-\begin{defn}[The $T$-operators]
-  For a stationary policy $\pi$ and measurable $V:\Cal{S} \to \ol{\ul{\R}}$
-  with $V \geq 0$, $V \leq 0$ or $\abs{V} < \infty$
-  we define the operators 
-  \[ P_\pi V \defeq s \mapsto \int V(s') \difd P\pi(s' \mid s) \]
-  \[ T_\pi V \defeq s \mapsto \int r(s, a)
-  + \gamma V(s') \difd (P \pi)(a, s'\mid s) \]
-  \[ T V \defeq s \mapsto \sup_{a \in \Cal{A}} T_a V(s) \]
-  where $T_a = T_{\delta_a}$.
-\end{defn}
+Throughout this section 
+are always assumed. 
 
 \begin{prop}
-  The operators $P_\pi, T_\pi$ and $T$ commutes with limits.
+  Let $\Cal{X}, \Cal{Y}$ be separable and metrizable,
+  $\kappa : \Cal{X} \to \Cal{Y}$ be a continuous probability kernel
+  and $f:\Cal{X} \times \Cal{Y} \to \ul{\ol{\R}}$ be Borel-measurable
+  satisfying one of
+  $f \leq 0, f \geq 0, \abs{f} < \infty$.
+  If $f$ is bounded from above (below) and upper (lower) semicontinuous
+  then
+  \[ x \mapsto \int f \difd \kappa(\cdot \mid x) \]
+  is bounded from above (below) and upper (lower) semicontinuous. 
+  \label{prop:BS7_31}
 \end{prop}
 \begin{proof}
-  By monotone or dominated convergence theorems.
-\end{proof}
-
-\begin{prop} Let $\pi = (\pi_1, \pi_2, \dots)$ be a Markov policy. Then
-  $V_{k, \pi} = T_{\pi_1} \dots T_{\pi_k} V_0$ and
-  $V_\pi = \lim_{k \to \infty} T_{\pi_1} \dots T_{\pi_k} V_0$.
-  \label{prop:VpiTLimit}
-\end{prop}
-\begin{proof}
-  todo
-\end{proof}
-
-\begin{prop} Let $\pi$ be a stationary policy then
-  $T_\pi V_\pi = V_\pi$.
-  \label{prop:VpiFP}
-\end{prop}
-\begin{proof}
-  By \cref{prop:VpiTLimit}
-  $T_\pi V_\pi = T_\pi \lim_{k \to\infty} T_{\pi}^k V_0
-  = \lim_{k \to\infty} T_\pi^{k+1} V_0 = V_\pi$.
-\end{proof}
-
-\begin{prop}
-  Under (\cref{cond:D}) for any $\pi \in R\Pi$ we have
-  \[ \abs{V_{n,\pi}}, \abs{V_\pi}, \abs{V^*_k}, \abs{V^*}
-  \leq V_{\max} \defeq R_{\max}/(1-\gamma) \]
-  \label{prop:Vbounded}
-\end{prop}
-\begin{proof}
-  For any $\pi \in R\Pi$
-  \[ \abs{V_\pi(s)} \leq \E_s^\pi \sum_{i \in \N} \abs{r_i}
-    \leq \sum_{i \in \N} \gamma^{i-1} R_{\max}
-  = R_{\max} / (1-\gamma) \]
-  This also covers $V_{n, \pi}$.
-\end{proof}
-
-\begin{prop} (\cref{cond:D})
-
-  $T$ and $T_\pi$ are $\gamma$-contractive on $\Cal{L}_\infty(\Cal{S})$.
-  \label{prop:TpiContracts}
-\end{prop}
-\begin{proof}
-  Let $V, V' \in \Cal{L}_\infty(\Cal{S})$
-  and let $K = \norm{V - V'}_\infty$.
-  Then
-  \[ \abs{T^\pi V - T^\pi V'}
-    = \gamma \abs{\int V(s') - V'(s') \difd P\pi(s' \mid s)}
-  \leq \gamma K \]
-  For $T$ use that same argument and the fact that
-  $\abs{\sup_x f(x) - \sup_{y} g(y)} \leq
-  \abs{\sup_x f(x) - g(x)}$ for any $f,g : X \to \ul{\R}$.
-\end{proof}
-
-\begin{cor} (\cref{cond:D})
-
-  Let $\pi \in S\Pi$ be a stationary policy.
-  $V_\pi$ is the unique bounded fixed point of $T_\pi$
-  in $\Cal{L}_\infty(\Cal{S})$.
-\end{cor}
-\begin{proof}
-  By \cref{prop:VpiFP} $V_\pi$ is a fixed point.
-  By \cref{prop:TpiContracts} and Banach fixed point theorem we get uniqueness.
+  We refer to [BS SOC, prop. 7.31]. %todo do it yourself
 \end{proof}
 
 %proposition 8.6 Stoch. Opt. Control
@@ -452,10 +676,10 @@ At this point it makes sense to define
   Furthermore for any $k \in \N$
   there exists a deterministic, Markov, Borel-measurable $k$-optimal policy
   $\pi^*_k = (\pi^*_{k,1}, \pi^*_{k,2}, \dots, \pi^*_{k,k}, \dots) \in DM\Pi$.
-  These policies satisfy for any $i < k$
-  $\pi^*_{i} = (\pi^*_{k,k-i}, \dots, \pi^*_{k,k}, \dots)$.
+  These policies satisfy
+  $\pi^*_{i} = (\pi^*_{k,k-i}, \dots, \pi^*_{k,k}, \dots)$ for any $i < k$.
+  \label{prop:BSprop8_6}
 \end{prop}
-
 
 %cor. 9.17.2
 \begin{thm}[Cor. 9.17.2 in BS]
@@ -465,20 +689,6 @@ At this point it makes sense to define
   stationary, Borel-measurable policy $\pi^*$.
   \label{thm:BScor9.17.2}
 \end{thm}
-
-\begin{prop}
-  $V^* = T_{\pi^*} V^* = T V^*$
-  
-  (D) $V^*$ is the unique fixed point of $T$ in $\Cal{L}_\infty(\Cal{S})$.
-\end{prop}
-\begin{proof}
-  Since $\pi^*$ is optimal $V^* = V_{\pi^*} = T_{\pi^*} V_{\pi^*}$ by
-  \cref{prop:VpiFP}.
-  By \cref{thm:BScor9.17.2} $T V^* = T \lim_{k\to\infty} T^k V_0 =
-  \lim_{k\to\infty} T^{k+1} V_0 = V^*$.
-  If (D) holds $V^* \in \Cal{L}_\infty(\Cal{S})$ so \cref{prop:TpiContracts}
-  and Banach fixed point theorem ensures uniqueness.
-\end{proof}
 
 \subsubsection{Analytic setting}
 
@@ -506,278 +716,152 @@ At this point it makes sense to define
   The Discrete-Time Case, prop. 9.17].
 \end{proof}
 
-\subsection{Q-functions}
-
-The letter Q originates to a PhD thesis by C. Watkins from 1989
-[todo ref C. Watkins, 1989]. Upon his definition he noted
-\begin{displayquote}
-  ``This is much simpler to calculate than [$V_\pi$]
-  for to calculate [$Q_\pi$] it is only necessary to look one
-  step ahead [\ldots]''
-\end{displayquote}
-A clear advantage of working with Q-function
-$Q:\Cal{S}\times\Cal{A} \to \Rext$ rather than a value function
-$V:\Cal{S}\to \Rext$,
-is that finding the optimal action in state $s$
-requires only a maximization over the Q-function itself:
-$a = \argmax_{a \in \Cal{A}} Q(s,a)$.
-This should be seen in contrast to finding a best action according to $V$:
-$a = \argmax_{a \in \Cal{A}} r(s,a) + \gamma \E_{P(\cdot \mid s,a)} V$.
-This requires taking an expectation with respect to the transition kernel
-$P$. Later we will study settings where we are not allowed to know
-the transition kernel when attempting to find the optimal strategy.
-In these situations the advantage of Q-functions is clear.
-For now however the transition kernel will remain known and we
-will in this section see how the results of state-value functions
-translate to Q-functions.
-The results in this section is original in the generality here presented,
-as I was unable to find them elsewhere.
-
-\begin{defn}
-  Let $\pi \in R\Pi$.
-  Define
-  \[ Q_{k, \pi}(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V_{k, \pi}
-  ,\qquad Q_\pi = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V_\pi \]
-\end{defn}
-We define $Q_{0,\pi} = r + \gamma \E V_0 = r \defeq Q_0$.
-
+\subsubsection{Implications for value-functions}
+Let \cref{sett:BS} hold.
 
 \begin{prop}
-  $\lim_{k \to \infty} Q_{k, \pi} = Q_\pi$
-  \label{prop:QpiConverges}
+  $V^* = V_{\pi^*} = T_{\pi^*} V^* = T V^*$
+  
+  (D) $V^*$ is the unique fixed point of $T$ in $\Cal{L}_\infty(\Cal{S})$.
+  \label{prop:VoptEqVpiOpt}
 \end{prop}
 \begin{proof}
-  (D) By dominated convergence or (P/N) by monotone convergence theorem.
-\end{proof}
-
-\begin{defn}
-  \[ Q^*_k = \sup_{\pi \in R\Pi} Q_{k, \pi}
-  , \qquad Q^* = \sup_{\pi \in R\Pi} Q_\pi \]
-\end{defn}
-
-\begin{defn}[$T$ operators for Q-functions]
-  For any stationary policy $\pi \in S\Pi$
-  and measurable $Q:\Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$ with
-  $Q \geq 0, Q \leq 0$ or $\abs{Q} < \infty$ we define
-  \[ P_\pi Q(s, a) = \int Q(s', a') \difd \pi P(s', a' \mid s, a) \]
-  \[ T_\pi Q = r + \gamma P_\pi Q \]
-  \[ T Q(s, a) = r(s, a) + \gamma
-  \int \sup_{a' \in \Cal{A}} Q(s', a') \difd P(\cdot \mid s, a) \]
-  where $T_a = T_{\delta_a}$.
-\end{defn}
-
-\begin{prop} Let $\pi = (\pi_1, \dots, \pi_k, \dots) \in M\Pi$ then
-  \begin{itemize}
-    \item $T_{\pi_k} Q_{k-1, \pi}
-      = r + \gamma \E T_{\pi_k} V_{k-1, \pi}$
-    \item $Q_{k, \pi} = T_{\pi_1} \dots T_{\pi_k} r$.
-  \end{itemize}
-  \label{prop:QpiVpi}
-\end{prop}
-\begin{proof} %todo do this more thoroughly
-  The first statement is almost by definition.
-  For the second use the first inductively.
+  Since $\pi^*$ is optimal $V^* = V_{\pi^*}$ which by \cref{prop:propTV}
+  equals $T_{\pi^*} V_{\pi^*}$.
+  By \cref{thm:BScor9.17.2} and \cref{prop:BSprop8_6}
+  $T V^* = T \lim_{k\to\infty} T^k V_0 =
+  \lim_{k\to\infty} T^{k+1} V_0 = V^*$.
+  If (D) holds $V^* \in \Cal{L}_\infty(\Cal{S})$ so by \cref{prop:propTV} 5.
+  and 6. we are done.
 \end{proof}
 
 \begin{prop}
-  $Q^*_k = r + \gamma \E V^*_k$
-  and $Q^* = r + \gamma \E V^*$.
-  \label{prop:Q*V*}
+  \leavevmode
+  \begin{enumerate}
+    \item $Q^*_k = r + \gamma \E V^*_k$ and is upper semicontinuous.
+    \item (N) (D) $Q^* = r + \gamma \E V^*$ and is upper semicontinuous.
+    \item (N) (D) $\sup_{a \in \Cal{A}} Q^*(s, a) = V^*(s)$.
+    \item (N) (D) $Q^* = \lim_{k\to\infty} Q_k^*$.
+    \item (N) (D) $Q^* = Q_{\pi^*}$.
+  \end{enumerate}
 \end{prop}
 \begin{proof}
-  $Q^* = \sup_\pi Q_\pi = \sup_\pi (r + \gamma \E V_\pi)
-  = r + \gamma \sup_\pi \E V_\pi
-  = r + \gamma \E V^*$
-  where in the fourth equality we have used that
-  $V^* \geq V_\pi$ uniformly so 
-  $\sup_\pi \E V_\pi \leq \E V^*$
-  while trivially $\E V^* = \E V_{\pi^*} \leq \sup_\pi \E V_\pi$.
-  For $Q_k^*$ the argument is similar.
+  \leavevmode
+  \begin{enumerate}
+    \item Since $V_k^*$ is measurable due to \cref{prop:BSprop8_6}
+      we see that
+      $Q_k^* = \sup_{\pi \in R\Pi} (r + \gamma \E V_{k,\pi})
+      \leq r + \gamma \E V_k^* = r + \gamma \E V_{\pi_k^*}
+      \leq Q_k^*$.
+      \Cref{prop:BS7_31} gives upper semicontinuity.
+    \item Since $V^*$ is measurable due to \cref{thm:BScor9.17.2}.
+      Now follow the argument for 1.
+    \item Let $s \in \Cal{S}$ then $\sup_{a \in \Cal{A}} Q^*(s, a) = 
+      \sup_{a \in \Cal{A}} (r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*)
+      = T V^*(s) = V^*(s)$.
+    \item By monotone or dominated convergence and \cref{thm:BScor9.17.2}.
+    \item By \cref{prop:VoptEqVpiOpt} and 2.
+      $Q^* = r + \gamma \E V^* = r + \gamma \E V_{\pi^*} = Q_{\pi^*}$.
+      \end{enumerate}
 \end{proof}
 
 \begin{prop}
-  $\sup_{a \in \Cal{A}} Q^*(s, a) = V^*(s)$
-\end{prop}
-\begin{proof}
-  This is by definition after considering \cref{prop:Q*V*}.
-\end{proof}
-
-\begin{prop}
-  $TQ^*_k = r + \gamma \E T V^*_k$ and if
-  $\pi^* = (\pi^*_1, \dots, \pi^*_k, \dots)$
-  is $k$-optimal then
-  $Q^*_k = T_{\pi^*_1} \dots T_{\pi^*_k} r = T^k r$.
-  \label{prop:Qk*}
-\end{prop}
-\begin{proof}
-  \begin{align*}
-    TQ^*_k(s,a) &= T(r + \gamma \E V^*_k)(s,a)
-    \\ &= r(s,a) + \gamma
-    \int \sup_{a' \in \Cal{A}} (r(s',a') + \gamma \E_{P(\cdot \mid s', a')} V^*_k)
-    \difd P(s' \mid s,a)
-    \\ &=r(s,a) + \gamma
-    \int \sup_{a' \in \Cal{A}} \left(r(s',a') + \gamma
-    \int V_k^*(s'') \difd P(s'' \mid s', a') \right)
-    \difd P(s' \mid s,a)
-    \\ &= r(s, a) + \gamma
-    \int T V^*_k(s') \difd P(s' \mid s, a)
-  \end{align*}
-  To get $Q^*_k = T^k r$ use this inductively
-  $Q^*_k = r + \gamma \E V^*_k = r+ \gamma TV^*_{k-1}
-  = T Q^*_{k-1} = \dots$.
-  For $Q^*_k = T_{\pi^*_1} \dots T_{\pi^*_k} r$ use
-  $Q^*_k = r + \gamma \E V^*_k =
-  r + \gamma T_{\pi^*_1} \dots T_{\pi^*_k} V_0$
-  and first statement in \cref{prop:QpiVpi} inductively.
-\end{proof}
-The proof of \cref{prop:Qk*} also shows
-\begin{prop}
-  $TQ^* = r + \gamma \E T V^*$.
-\end{prop}
-implying
-\begin{prop}
-  $TQ^* = Q^*$.
-  \label{prop:Q*FP}
-\end{prop}
-
-\begin{prop}
-  For stationary $\pi \in S\Pi$ we have
-  $T_\pi Q_\pi = Q_\pi$.
-  \label{prop:QpiFP}
-\end{prop}
-\begin{proof}
-  Using \cref{prop:QpiVpi} and \cref{prop:VpiFP}
-  $T_\pi Q_\pi = T_\pi (r + \gamma \E \lim_{k\to\infty} T_\pi^k V_0)
-  = \lim_{k\to\infty} T_\pi (r + \gamma \E T_\pi^k V_0)
-  = \lim_{k\to\infty} (r + \gamma \E T_\pi^{k+1} V_0)
-  = r + \gamma \E \lim_{k\to\infty} T^{k+1}_\pi V_0
-  = r + \gamma \E V_\pi = Q_\pi$.
-\end{proof}
-
-\begin{prop}
-  $Q^* = Q_{\pi^*}$ and
-  $T_{\pi^*} Q^* = Q^*$.
-  \label{prop:Q*=Qpi*}
-\end{prop}
-\begin{proof}
-  $Q^* = r + \gamma \E V^* = r + \gamma \E V_{\pi^*} = Q_{\pi^*}$
-  for the second statement use \cref{prop:QpiFP}.
-\end{proof}
-
-\begin{prop}
-  $Q^* = \lim_{k\to\infty} Q_k^*$.
-\end{prop}
-\begin{proof}
-  By monotone or dominated convergence and \cref{thm:BScor9.17.2}.
-\end{proof}
-
-\begin{prop}
-  $T$ and $T_\pi$ is $\gamma$-contractive on
-  $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
-  If furthermore (D) holds, then
-  $\abs{Q_{k, \pi}}, \abs{Q_\pi}, \abs{Q^*_k}, \abs{Q^*} \leq V_{\max}$
-  and $Q_\pi, Q^*$ are the unique fixed points of $T_\pi, T$ in 
-  $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
-  \label{prop:Qcontracts}
+  \leavevmode
+  \begin{enumerate}
+    \item $TQ^*_k = r + \gamma \E T V^*_k$ and if
+      $\pi^* = (\pi^*_1, \pi^*_2 \dots)$
+      is $k$-optimal then
+      $Q^*_k = T_{\pi^*_1} \dots T_{\pi^*_k} r = T^k r$.
+    \item $TQ^* = r + \gamma \E T V^*$ and $TQ^* = Q^*$.
+    \item (D) $T$ is $\gamma$-contractive on
+      $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
+      and $Q^*$ is the unique fixed point of $T$ in 
+      $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
+  \end{enumerate}
+  \label{prop:TQfp}
 \end{prop}
 
 \begin{proof}
-  The contrativeness of $T,T_\pi$ follows from the same argument as in
-  \cref{prop:TpiContracts}. If (D) holds
-  the boundedness of the $Q$ functions
-  follow from an argument similar to the proof of \cref{prop:Vbounded}.
-  Then \cref{prop:Q*FP}, \cref{prop:QpiFP} and Banach fixed point theorem
-  implies uniqueness.
+  \leavevmode
+  \begin{enumerate}
+    \item \begin{align*}
+	TQ^*_k(s,a) &= T(r + \gamma \E V^*_k)(s,a)
+	\\ &= r(s,a) + \gamma
+	\int \sup_{a' \in \Cal{A}} (r(s',a')
+	+ \gamma \E_{P(\cdot \mid s', a')} V^*_k)
+	\difd P(s' \mid s,a)
+	\\ &=r(s,a) + \gamma
+	\int \sup_{a' \in \Cal{A}} \left(r(s',a') + \gamma
+	\int V_k^*(s'') \difd P(s'' \mid s', a') \right)
+	\difd P(s' \mid s,a)
+	\\ &= r(s, a) + \gamma
+	\int T V^*_k(s') \difd P(s' \mid s, a)
+      \end{align*}
+      To get $Q^*_k = T^k r$ use this inductively
+      $Q^*_k = r + \gamma \E V^*_k = r+ \gamma TV^*_{k-1}
+      = T Q^*_{k-1} = \dots$.
+      The statement $Q^*_k = T_{\pi^*_1} \dots T_{\pi^*_k} r$
+      is from \cref{prop:TQ}.
+    \item The argument from 1. also implies this first statement in
+      2. Now $TQ^* = r + \gamma \E TV^* = r + \gamma \E V^* = Q^*$
+      by \cref{prop:VoptEqVpiOpt}.
+    \item The argument is similar to \cref{prop:propTV} pt. 5.
+  \end{enumerate}
 \end{proof}
 
-\begin{prop}(D)
+\begin{cor} (D)
 
   For any $Q \in \Cal{L}_\infty(\Cal{S} \times \Cal{A})$
   $T^k Q$ converges to $Q^*$ with rate $\gamma^k$.
-
   That is
-  $\norm{T^k Q - Q^*}_\infty \leq \gamma^k \norm{Q - Q^*}_\infty$.
-  \label{prop:Qrate}
-\end{prop}
-\begin{proof} 
-  By \cref{prop:Qcontracts} $T$ $\gamma$-contracts so
-  \begin{align*}
-    \norm{T^k Q - Q^*}_\infty &= \norm{T^k Q - T^k Q^*}
-    \\ &\leq \gamma^k \norm{Q - Q^*}
-  \end{align*}
-\end{proof}
-
-\begin{prop}(D)(N)
-
-  $Q^*(s, \cdot)$ is upper semicontinuous.
-\end{prop}
+  \[ \norm{T^k Q - Q^*}_\infty \leq \gamma^k \norm{Q - Q^*}_\infty \]
+  \label{cor:QrateSimple}
+\end{cor}
 \begin{proof}
-  Since $P$ is continuous and $V^*$ is upper semicontinuous by
-  \cref{thm:BScor9.17.2} the proposition follow by
-  \cref{prop:BS7_31}.
-\end{proof}
-
-\begin{defn}
-  Let $\pi : \Cal{S} \to \Cal{A}$ be a stationary policy. If
-  \[ \pi \left(\argmax_{a \in \Cal{A}} Q(s, a) \Mid s \right) = 1 \]
-  then $\pi$ is said to be \defemph{greedy} with respect to $Q$ and is
-  denoted $\pi_Q$.
-\end{defn}
-
-\begin{prop} (D)(N)
-
-  Let $Q:\Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$ be measurable
-  and upper semicontinuous in the second entry.
-  Then there exists a deterministic greedy policy for $Q$.
-  \label{prop:greedyExistence}
-\end{prop}
-\begin{proof}
-  Since $Q$ is upper semicontinuous in the second entry
-  the set $A_s = \argmax_{a \in \Cal{A}} Q(s, a)$ is non-empty
-  and measurable for all $s$.
-  Pick (by axiom of choice) an $a_s \in A_s$ for every $s \in \Cal{S}$.
-  Then $\pi(\cdot \mid s) = \delta_{a_s}$ is greedy with respect to $Q$.
-  %todo is pi actually measurable?
+  This is directly from \cref{prop:TQfp} pt. 3.
 \end{proof}
 
 \begin{prop}
-  For any $Q : \Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$ if $\pi_Q$ is greedy
-  with respect to $Q$ then $T_{\pi_Q} Q = TQ$.
-  \label{prop:Tgreedy}
+  \leavevmode
+  \begin{enumerate}
+    \item Let $\pi_i$ be greedy w.r.t. $Q_{i-1}^*$ then
+      $(\pi_i, \pi_{i-1}, \dots, \pi_1)$ is $i$-optimal for any $i \in \N$.
+    \item (N) (D) Any greedy strategy for $Q^*$ is optimal and such exist.
+  \end{enumerate}
 \end{prop}
 \begin{proof}
-  \begin{align*}
-    T_{\pi_Q} Q &= r + \gamma \int Q(s, a) \difd \pi P(s, a \mid \cdot)
-    \\ &= r + \gamma \int \int Q(s, a)
-    \difd \pi_Q(a \mid s) \difd P(s \mid \cdot)
-    \\ &= r + \gamma \int \max_{a \in \Cal{A}} Q(s, a)
-    \difd P(s \mid \cdot)
-    \\ &= T Q
-  \end{align*}
+  \begin{enumerate}
+    \item Such greedy policies exist because $Q_{k, \pi}$ is upper
+      semicontinuous by \cref{prop:BSprop8_6}.
+      For induction base observe that
+      $ Q_{1, \pi_1} = T_{\pi_1} Q_0 = T Q_0 = Q_1^*$.
+      Now assume $Q_{i-1, {\pi_{i-1}, \dots, \pi_1}} = Q^*_{i-1}$.
+      Then
+      $Q_{i, (\pi_i, \dots, \pi_1)}
+      = T_{\pi_i} Q_{i-1, (\pi_{i-1}, \dots, \pi_1)}
+      = T_{\pi_i} Q^*_{i-1} = T Q_{i-1}^* = Q_i^*$.
+    \item Since $Q$ is upper semicontinuous in the second entry
+      the set $A_s = \argmax_{a \in \Cal{A}} Q(s, a)$ is non-empty
+      and measurable for all $s$.
+      Pick (by axiom of choice) an $a_s \in A_s$ for every $s \in \Cal{S}$.
+      Then $\pi(\cdot \mid s) = \delta_{a_s}$ is greedy with respect to $Q$.
+      %todo is pi measurable?
+  \end{enumerate}
 \end{proof}
 
-\begin{prop}
-  Let $\pi_i$ be greedy with respect to $Q_{i-1}^*$ for $k \in \N$.
-  Then $Q^*_k = T_{\pi_1} \dots T_{\pi_k} Q_0$ for all $k \in \N$.
-  \label{prop:greedyOptFinite}
-\end{prop}
-%todo proof
+\begin{rem}
+  Most of the results of this section hold
+  also under \cref{sett:BSA} with the addition
+  that 'semicontinuous' is replaced by 'semianalytic'.
+\end{rem}
 
-\begin{prop}(D)(N)
+Based on the results established so far we can as a non-practical
+example design the following algorithm:
 
-  Any greedy policy with respect to $Q^*$ is
-  optimal and can be chosen to be deterministic.
-\end{prop}
-\begin{proof}
-  By \cref{prop:greedyExistence} we can pick a greedy policy $\pi$ for $Q^*$
-  which can be chosen to be deterministic but let $\pi$ stay general.
-  Then by \cref{prop:Tgreedy} $T_\pi Q^* = T Q^*$
-  and by \cref{prop:Q*=Qpi*} $Q_\pi = Q^*$ implying that $\pi$ is optimal.
-\end{proof}
-
+\begin{figure}[H]
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
 \caption{Simple theoretical Q-iteration}
-\KwIn{MDM $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
+\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
 $\forall (s, a) \in \Cal{S} \times \Cal{A} :
 r(s, a) \leftarrow \int x \difd R(x \mid s, a)$.
 
@@ -792,15 +876,27 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
 \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
 \label{alg:theoSimpleQ}
 \end{algorithm}
+\end{figure}
+
+\begin{prop}(D)
+
+  The output $\wt{Q}_K$ of \cref{alg:theoSimpleQ} converges to the optimal
+  Q-function $Q^*$ with rate $\gamma^K$ concretely
+  $\norm{\wt{Q}_K - Q^*}_\infty \leq \gamma^K \norm{Q^*}_\infty$.
+  \label{prop:theoSimpleQConv}
+\end{prop}
+\begin{proof}
+  This is by \cref{cor:QrateSimple}.
+\end{proof}
 
 \subsubsection{Finite Q-iteration}
 Concluding on the results so far
 we have showed how if one knows the dynamics
-of a stationary decision model satisfying rather broad criteria, 
+of a stationary decision process satisfying rather broad criteria, 
 such as continuity and compactness,
 the optimal policy and state-value function can be found
 simply by iteration over the $T$-operator and picking a greedy strategy
-(see \cref{prop:Qrate}).
+(see \cref{prop:theoSimpleQConv}).
 Of course this is practical computationally, only if
 the resulting $Q$ functions can be represented and computed in finite
 space and time.
@@ -821,14 +917,14 @@ then the algorithm becomes
 
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
 \caption{Simple finite Q-iteration}
-\KwIn{DP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
+\KwIn{MPD $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
 Set $ r \leftarrow \left(\int r \difd R(\cdot \mid s_1, a_1),
 \dots, \int r \difd R(\cdot \mid s_k, a_\ell) \right)^T $
 
-and $ \wt{Q}_0 = r$.
+and $ \wt{Q}_0 \leftarrow r$.
 
 \For{$k = 0,1,2,\dots,K-1$}{
-  Set $m(\wt{Q}_k) \defeq (\max_{a \in \Cal{A}} Q(s_1, a), \dots,
+  Set $m(\wt{Q}_k) \leftarrow (\max_{a \in \Cal{A}} Q(s_1, a), \dots,
   \max_{a \in \Cal{A}}Q(s_k, a))^T$
 
   Update action-value function:
@@ -847,7 +943,7 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
   $\norm{\wt{Q}_K - Q^*}_\infty \leq \gamma^K \norm{Q^*}_\infty$.
 \end{prop}
 \begin{proof}
-  See \cref{prop:Qrate} and \cref{prop:greedyOptFinite}.
+  See \cref{prop:theoSimpleQConv}.
 \end{proof}
 
 
@@ -856,7 +952,7 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
 \subsection{Approximation}
 
 In this section we will look at what happens if we
-instead use approximations the $Q$-functions and $T$ operator.
+instead use approximations of the $Q$-functions and $T$ operator.
 We first look at a naive approach using $Q$-functions.
 
 Let $\wt{Q}_0$ be any bounded Q-function.
@@ -885,7 +981,10 @@ Then we can bound
   + \ve_a(k)
 \end{align*}
 
-The first term converges quickly while the other depends on our
+These terms are sometimes called the \emph{algorithmic}
+and \emph{approximation} errors.
+
+The algorithmic error quickly while the other depends on our
 step-wise approximations. For example
 $\ve_i(k) = \ve$ we easily get the bound
 $ \ve_a(k) = \ve \frac{1-\gamma^k}{1-\gamma} \leq \frac{\ve}{1-\gamma} $
@@ -909,4 +1008,13 @@ Generally if one can show that $\ve_i \to 0$ we have
   \end{align*}
 \end{proof}
 
+Let $\Cal{F}$ be a class of functions
+
+\begin{thm}[Universal Approximation Theorem for ANNs]
+  Let $\sigma: \R \to \R$ be non-constant, bounded and continuous function.
+  Let $\ve > 0$ and $f \in C(I_m)$.
+  Then there exists a ANN $F$ with one hidden layer
+  and activation function $\sigma$ such that
+  \[ \norm{F - f}_\infty < \ve \]
+\end{thm}
 
