@@ -1,46 +1,53 @@
 This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
-The style file: plain.bst
+The style file: plainnat.bst
 Database file #1: bib.bib
-You've used 1 entry,
-            2118 wiz_defined-function locations,
-            502 strings with 4023 characters,
-and the built_in function-call counts, 217 in all, are:
-= -- 17
-> -- 7
-< -- 0
-+ -- 3
-- -- 2
-* -- 8
-:= -- 41
-add.period$ -- 2
-call.type$ -- 1
-change.case$ -- 4
-chr.to.int$ -- 0
-cite$ -- 1
-duplicate$ -- 7
-empty$ -- 23
-format.name$ -- 2
-if$ -- 44
-int.to.chr$ -- 0
+Warning--I didn't find a database entry for "lem:holderapprox"
+Warning--empty journal in CCR90
+Warning--empty booktitle in L62
+Warning--empty publisher in RH14
+Warning--empty booktitle in S97
+Warning--empty journal in W89
+You've used 17 entries,
+            2773 wiz_defined-function locations,
+            728 strings with 7898 characters,
+and the built_in function-call counts, 8061 in all, are:
+= -- 719
+> -- 469
+< -- 15
++ -- 161
+- -- 144
+* -- 625
+:= -- 1265
+add.period$ -- 71
+call.type$ -- 17
+change.case$ -- 97
+chr.to.int$ -- 17
+cite$ -- 39
+duplicate$ -- 371
+empty$ -- 640
+format.name$ -- 173
+if$ -- 1695
+int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 0
-newline$ -- 7
-num.names$ -- 2
-pop$ -- 9
+missing$ -- 20
+newline$ -- 111
+num.names$ -- 68
+pop$ -- 197
 preamble$ -- 1
-purify$ -- 3
+purify$ -- 82
 quote$ -- 0
-skip$ -- 8
+skip$ -- 289
 stack$ -- 0
-substring$ -- 5
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 231
+swap$ -- 46
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 4
-warning$ -- 0
-while$ -- 2
-width$ -- 2
-write$ -- 10
+type$ -- 172
+warning$ -- 5
+while$ -- 62
+width$ -- 0
+write$ -- 255
+(There were 6 warnings)

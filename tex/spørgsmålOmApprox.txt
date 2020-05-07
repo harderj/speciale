@@ -1,0 +1,1 @@
+Det handler om approksimation af 'pæne' funktioner $\R^n \to \R$ på en uniform måde. Ligenu har jeg en kilde som gør det med neurale netværk, men kunne godt tænke mig at prøve med noget mere normalt, fx. splines eller en linearkombination af mere vilkårlige funktioner. En reference til et godt sted at læse om sådan noget vil fx. hjælpe mig meget.

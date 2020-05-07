@@ -1,10 +1,8 @@
 
 In this section we will develop general theory about
 decision processes and value function (including Q-functions)
-that is used across all sources considered in this paper.
-We will also take up the question of optimal policy existence and 
-prove this in different settings for reference
-in the latter sections.
+that is used across all sources considered in this paper,
+including the question of optimal policy existence.
 
 \subsection{History dependent decision process}
 We define in this section a quite general framework.
@@ -52,11 +50,11 @@ $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
 \end{defn}
 The name \emph{decision process} is used for many different processes
 across litterature but many of them generalize to the above.
-Some authors use the name \emph{dynamic progamming model} to refer to
-such processes.
+Some authors also use the name \emph{dynamic progamming model}.
+
 Notice the slight irregularity in the beginning of the history spaces:
-We are missing a reward state after $\Cal{S}_1$. We could avoid
-this by introducing some start reward we will do without.
+We are missing a reward state after $\Cal{S}_1$. This could have been avoided
+by introducing some start reward but we will do without.
 
 \begin{asm}(Reward independence)
   $P_n, R_n$ and policies are only allowed to depend on the past
@@ -77,18 +75,18 @@ from now on and throughout this paper.
 The majority of sources considered in this paper also specialize
 with the following:
 \begin{asm}[One state and action space]
-  $\Cal{S}_1 = \Cal{S}_2 = \dots \defeq \Cal{S}$
+  $\Cal{S}_1 = \Cal{S}_2 = \dots \defeq \Cal{S}$,
   $\Cal{A}_1 = \Cal{A}_2 = \dots \defeq \Cal{A}$
   \label{asm:oneStateActionSpace}
 \end{asm}
 We will do without this for the rest of this section in order to
 present some results in the generality they deserve.
-And later we will look at settings which do not specialize this way.
+Later we will look at settings which do not specialize this way.
 One could ask if it is possible to embed the general decision process into one
 with \cref{asm:oneStateActionSpace} by setting
 $\Cal{S} \defeq \bigcup_{i\in\N} \Cal{S}_i$ and
 $\Cal{A} \defeq \bigcup_{i\in\N} \Cal{A}_i$ or similar.
-One attempt at this can be found in [BS SOC, chp. 10],
+One attempt at this can be found in \ncite{BS07} chapter 10,
 but this will not be covered here. %consider covering it
 
 Other ways to specialize include reducing one or both of the
@@ -134,7 +132,7 @@ probability kernel $\kappa_\pi : \Cal{S}_1 \to \Cal{H}_\infty$.
 \end{proof}
 This kernel yields a probability measure $\kappa_\pi \mu$ on $\Cal{H}_\infty$
 for every $\mu \in \Cal{S}_1$. In particular for any $s \in \Cal{S}_1$
-$\kappa_\pi \delta_s$ yields the measure $\kappa(\cdot \mid s)$
+$\kappa_\pi \delta_s$ yields the measure $\kappa_\pi(\cdot \mid s)$
 and we shall occasionally write this $\kappa_\pi s$ and
 integration with respect to it $\E^\pi_s$.
 
@@ -161,7 +159,7 @@ the following conditions:
   $h \in \Cal{H}_{i+1}$ and $i \in \N$
   \label{cond:F+}
 \end{cond}
-The letter \emph{F} comes from [todo ref Bertekas SOC].
+The letter \emph{F} comes from \ncite{BS07}.
 When assuming either of (\cref{cond:F+}) or (\cref{cond:F-})
 we ensure that the summation of finitely many rewards
 has a well defined mean in $\Rext$,
@@ -171,7 +169,7 @@ and then the following definition makes sense
   $i$th reward. Define
   \[ V_{n,\pi}(s) = \E_s^\pi \sum_{i=1}^n \ul{R}_i \]
   called the $k$th finite horizon value function.
-  When $n=0$ $\forall \pi : V_{0,\pi} = V_0 \defeq 0$.
+  When $n=0$ we say $V_{0,\pi} = V_0 \defeq 0$ for any $\pi$.
 \end{defn}
 The finite horizon value function
 measures the expected total reward of starting in state $s$
@@ -195,7 +193,7 @@ we need one of the following conditions
   $\forall h \in \Cal{H}_{i+1}, i \in \N$
   \label{cond:D}
 \end{cond}
-Again the letters P, N and D are adopted from [todo ref Bertsekas SOC].
+Again the letters P, N and D are adopted from \ncite{BS07}.
 \begin{defn}
   We define the infinite horizon value function by
   \[ V_\pi(s) = \E_s^\pi \lim_{n \to \infty} \sum_{i=1}^n \ul{R}_i \]
@@ -291,12 +289,11 @@ Let $(\Cal{S}_n, \Cal{A}_n, P_n, R_n)_{n \in \N}$ be a decision process.
 \end{proof}
 
 \begin{rem}
-An interesting fact about the optimal value functions is that they
-might not be Borel measurable [todo ref to counterexample]
-even in the finite case.
-After all we are taking a supremum over
+It is known that the optimal value function
+might not be Borel measurable (see ex. 2 p. 233 \ncite{BS07}).
+Perhaps this is not suprising since we are taking a supremum over
 sets of policies which have cardinality of at least the continuum.
-However it is sometimes possible to show that they are.
+However it is often possible to show that they are.
 We will take these discussions as they occur in various settings.
 \end{rem}
 
@@ -314,9 +311,7 @@ they require.
 
 \subsubsection{Schäls theorem}
 In a quite general setting, questions 1 and 2
-was investigated by M. Schäl in 1974
-[todo ref. to On Dynamic Programming:
-Compactness of the space of policies, 1974].
+is investigated in \mcite{S75}.
 Here some additional structure on our process is imposed:
 \begin{sett}[Schäl]
   \begin{enumerate}
@@ -369,8 +364,7 @@ of an optimal policy:
   \label{thm:SchalExi}
 \end{thm}
 \begin{proof}
-  We refer to [todo ref: On Dynamic Programming: Compactness of the space of
-  policies, M. Schäl 1974]. %todo: or do we?
+  We refer to \ncite{S75}. %todo: or do we?
 \end{proof}
 
 Schäls theorem tells us that optimal policies exist in a wide class
@@ -398,12 +392,14 @@ Such questions will be addressed in the next section.
   \end{enumerate}
   \label{sett:MDP}
 \end{defn}
-This is a special case of the general decision process (\cref{sett:DP}) with
+This is a special case of the
+history dependent decision process (\cref{sett:HDP}) with
 \begin{itemize}
   \item \Cref{asm:oneStateActionSpace} is satisfied i.e. 
-    $\Cal{S}_1 = \Cal{S}_2 = \dots, \Cal{A}_1 = \dots = \Cal{A}$.
+    $\Cal{S}_1 = \Cal{S}_2 = \dots = \Cal{S},
+    \quad \Cal{A}_1 = \Cal{A}_2 = \dots = \Cal{A}$.
   \item $P_n$ depends only on $s_n$ and $a_n$ and does not
-    differ with $n$. I.e. 
+    differ with $n$, i.e. 
     $P_n(\cdot \mid s_1, \dots, s_n, a_n) = P(\cdot \mid s_n, a_n)$
     for all $n \in \N$.
   \item $R_n$ depends only on $s_n$ and $a_n$ and does not differ
@@ -427,8 +423,6 @@ At this point it makes sense to define
   \[ T V \defeq s \mapsto \sup_{a \in \Cal{A}} T_a V(s) \]
   where $T_a = T_{\delta_a}$.
 \end{defn}
-
-We want to define
 
 \begin{prop}[Properties of the $T$-operators]
   Let $\pi = (\pi_1, \pi_2, \dots)$ be a Markov policy.
@@ -491,8 +485,8 @@ We want to define
   Define $Q_0 = r$ then we make the convention that
   $Q^*_0 = Q_{0,\pi} = Q_0 = r$.
 \end{defn}
-The letter Q originates to a PhD thesis by C. Watkins from 1989
-[todo ref C. Watkins, 1989]. Upon his definition he noted
+The idea of Q-functions (and the letter Q) originates to
+\mcite{W89}. Upon the definition he notes
 \begin{displayquote}
   ``This is much simpler to calculate than [$V_\pi$]
   for to calculate [$Q_\pi$] it is only necessary to look one
@@ -519,8 +513,8 @@ translate to Q-functions.
 The results in this section are original in the generality here presented,
 as I was unable to find them elsewhere.
 
-\begin{prop}
-  Let $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$ then
+\begin{prop} (D)
+
   $\lim_{k \to \infty} Q_{k, \pi} = Q_\pi$. Furthermore it holds that
   $\abs{Q_{k, \pi}}, \abs{Q_\pi}, \abs{Q^*_k}, \abs{Q^*} \leq V_{\max}$.
 \end{prop}
@@ -541,18 +535,17 @@ In parallel to the operators for state-value functions we define
 \end{defn}
  
 \begin{prop}[Properties of T-operators for Q-functions]
-  Let $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$.
+  Let $\pi = (\pi_1, \pi_2, \dots) \in M\Pi$ be a Markov policy
+  and $\tau \in S\Pi$ stationary.
   \leavevmode
   \begin{enumerate}
-    \item If $\pi$ is Markov and $\mu$ is a stationary policy then
-      $T_\mu Q_{k, \pi}
-      = r + \gamma \E T_\mu V_{k, \pi}$
+    \item $T_\tau Q_{k, \pi}
+      = r + \gamma \E T_\tau V_{k, \pi}$
     \item $Q_{k, \pi} = T_{\pi_1} \dots T_{\pi_k} Q_0$. 
-    \item For stationary $\pi \in S\Pi$ we have
-      $T_\pi Q_\pi = Q_\pi$.
-    \item (D) $T_\pi$ is $\gamma$-contractive on
+    \item $T_\tau Q_\tau = Q_\tau$.
+    \item (D) $T_\tau$ is $\gamma$-contractive on
       $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
-      and $Q_\pi$ is the unique fixed point of $T_\pi$ in
+      and $Q_\tau$ is the unique fixed point of $T_\tau$ in
       $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
   \end{enumerate}
   \label{prop:TQ}
@@ -590,7 +583,7 @@ In parallel to the operators for state-value functions we define
   denoted $\pi_Q$.
 \end{defn}
 
-\begin{prop}[Properties of greedy policies]
+\begin{prop}
   For any integrable $Q : \Cal{S} \times \Cal{A} \to \ol{\ul{\R}}$
   if $\pi_Q$ is greedy with respect to $Q$ then $T_{\pi_Q} Q = TQ$.
 \end{prop}
@@ -605,14 +598,18 @@ In parallel to the operators for state-value functions we define
   \end{align*}
 \end{proof}
 
+%todo greedy policy
+
 \subsection{Bertsekas-Shreve framework}
-The theory described here is largely based on
-[ref to Bertsekas-Shreve, Stochastic Optimal Control].
+The theory described here is largely based on the text book
+\emph{Stochastic Optimal Control: Discrete-time Case} by
+\mcite{BS07}.
 Their framework is cost-based as opposed to the this paper reward-based outset.
-This means that positive and negative, upper and lower, supremum and infimum,
-ect. are opposite to the source.
+This means that (P) and (N), upper and lower semicontinuity,
+suprema and infima, ect. are opposite to the source.
 \begin{sett}[BS]
-  \begin{itemize}
+  \leavevmode
+  \begin{enumerate}
     \item We consider an MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$
       (see \cref{sett:MDP}).
     \item $\Cal{S}$ and $\Cal{A}$ are Borel spaces.
@@ -623,12 +620,10 @@ ect. are opposite to the source.
       (least upper bound denoted $0 < R_{\max} < \infty$).
     \item The policies must consist of
       universally measurable probability kernels.
-    \item One of (\cref{cond:P}), (\cref{cond:N}) or (\cref{cond:D})
-      is always assumed.
-  \end{itemize}
+  \end{enumerate}
   \label{sett:BS}
 \end{sett}
-The original setup in [ref to Bertsekas-Shreve, Stochastic Optimal Control]
+The original setup in \ncite{BS07}
 is slightly different than the setup here presented.
 Besides having a state and action space, it also features a 
 non-empty Borel space called the
@@ -667,17 +662,16 @@ are always assumed.
   \label{prop:BS7_31}
 \end{prop}
 \begin{proof}
-  We refer to [BS SOC, prop. 7.31]. %todo do it yourself
+We refer to \ncite{BS07} prop. 7.31. %todo do it yourself
 \end{proof}
 
 %proposition 8.6 Stoch. Opt. Control
 \begin{prop}[Prop. 8.6 in BS]
   $V^*_k = T^k V_0$ and is upper semicontinuous.
-  Furthermore for any $k \in \N$
-  there exists a deterministic, Markov, Borel-measurable $k$-optimal policy
-  $\pi^*_k = (\pi^*_{k,1}, \pi^*_{k,2}, \dots, \pi^*_{k,k}, \dots) \in DM\Pi$.
-  These policies satisfy
-  $\pi^*_{i} = (\pi^*_{k,k-i}, \dots, \pi^*_{k,k}, \dots)$ for any $i < k$.
+  Furthermore there exists a sequence of deterministic, stationary,
+  Borel-measurable policies
+  $\tau^*_1, \tau^*_2, \dots \in DS\Pi$
+  such that $\pi^*_k = (\tau^*_k, \dots, \tau^*_1)$ is $k$-optimal.
   \label{prop:BSprop8_6}
 \end{prop}
 
@@ -691,6 +685,8 @@ are always assumed.
 \end{thm}
 
 \subsubsection{Analytic setting}
+For comparison, we include here an similar result in an alternative setting,
+also considered by \ncite{BS07}.
 
 \begin{sett}[BS Analytic]
   The same as \cref{sett:BS} except:
@@ -704,6 +700,9 @@ are always assumed.
   is a compact subset of $\Cal{A}$.
   \label{sett:BSA}
 \end{sett}
+This \cref{sett:BSA}, was actually more widely discussed in \ncite{BS07}.
+We have put more emphasis on the semicontinuous setting, as it
+appears restrictive to assume the semianalytical property.
 
 \begin{thm}[Prop. 9.17 BS]
   Under \cref{sett:BSA} we have
@@ -712,8 +711,7 @@ are always assumed.
   and deterministic.
 \end{thm}
 \begin{proof}
-  We refer to [todo ref to Bertsekas and Schreve, Stochastic Optimal Control:
-  The Discrete-Time Case, prop. 9.17].
+We refer to \mcite{BS07} prop. 9.17.
 \end{proof}
 
 \subsubsection{Implications for value-functions}
@@ -855,6 +853,8 @@ Let \cref{sett:BS} hold.
   that 'semicontinuous' is replaced by 'semianalytic'.
 \end{rem}
 
+\subsection{Theoretical Q-iteration}
+
 Based on the results established so far we can as a non-practical
 example design the following algorithm:
 
@@ -890,8 +890,7 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
 \end{proof}
 
 \subsubsection{Finite Q-iteration}
-Concluding on the results so far
-we have showed how if one knows the dynamics
+We have shown how if one knows the dynamics
 of a stationary decision process satisfying rather broad criteria, 
 such as continuity and compactness,
 the optimal policy and state-value function can be found
@@ -900,7 +899,8 @@ simply by iteration over the $T$-operator and picking a greedy strategy
 Of course this is practical computationally, only if
 the resulting $Q$ functions can be represented and computed in finite
 space and time.
-This is trivially the case when
+An obvious situation in which such a representation and computation is possible,
+is the finite case.
 \begin{asm}
   $\Cal{S}\times\Cal{A}$ is finite.
   \label{asm:finite}
@@ -918,8 +918,8 @@ then the algorithm becomes
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
 \caption{Simple finite Q-iteration}
 \KwIn{MPD $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
-Set $ r \leftarrow \left(\int r \difd R(\cdot \mid s_1, a_1),
-\dots, \int r \difd R(\cdot \mid s_k, a_\ell) \right)^T $
+Set $ r \leftarrow \left(\int r \difd R(r \mid s_1, a_1),
+\dots, \int r \difd R(r \mid s_k, a_\ell) \right)^T $
 
 and $ \wt{Q}_0 \leftarrow r$.
 
@@ -950,45 +950,72 @@ Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
 %todo check measurability (universal) issues in the above sections
 
 \subsection{Approximation}
-
 In this section we will look at what happens if we
-instead use approximations of the $Q$-functions and $T$ operator.
-We first look at a naive approach using $Q$-functions.
+instead use approximations of the Q-functions and $T$ operator.
+This means that we are in a setting where we can somehow
+calculate $r$ and $TQ$ for any $(s,a) \in \cl{S} \times \cl{A}$,
+but it is hard or infeasible to represent them (or at least one of them)
+directly.
+This setting is not very well-studied in the case of a
+continuous state space (at least in the sources known to this writer).
+This is perhaps because it is considered solved
+by the results of theoretical Q-learning presented in the previous section.
+However as we have argued, this only have practical relevance 
+when it is feasible to represent $TQ$.
+Therefore we find it relevant to consider this setting in more detail.
+What \emph{is} very well-studied is a further generalized setting
+where $T$ and $r$ are assumed to be unknown,
+that is, one has only access to their distributions via sampling from them.
+We will deal with this setting in the next section.
+In following we present some rather simple bounding techniques
+which is inspired by arguments found in e.g. \ncite{F20},
+together with some standard results from approximation theory
+on artificial neural networks and Bernstein polynomials.
+Throughout this section we assume (D)
+i.e. that we are discounting with some $\gamma \in [0,1)$.
 
-Let $\wt{Q}_0$ be any bounded Q-function.
+Let us consider any norm $\norm{\cdot}$ on
+$(\cl{F}, \norm{\cdot})$ where $\cl{F} \subseteq \cl{Q}$ is
+a subset of the space of bounded
+Q-functions $\cl{Q} = \cl{L}_\infty(\cl{S}\times\cl{A})$.
+Let $\wt{Q}_0$ be any Q-function which is bounded in $\norm{\cdot}$.
 Suppose we approximate $T\wt{Q}_0$ by a Q-function $\wt{Q}_1$
-to $\ve_1 > 0$ precision and then approximate $T\wt{Q}_1$ and so on
-getting a sequence of Q-functions satisfying
-\[ \abs{T\wt{Q}_{k-1} - \wt{Q}_k} \leq \ve_k, \forall k \in \N \]
+to $\ve_1 > 0$ precision and then approximate $T\wt{Q}_1$ by $\wt{Q}_2$
+and so on. This way we get a sequence of Q-functions satisfying
+\[ \norm{T\wt{Q}_{k-1} - \wt{Q}_k} \leq \ve_k, \forall k \in \N \]
 
 First observe that
 \begin{align*}
-  \abs{T^k \wt{Q}_0 - \wt{Q}_k}
-  &\leq \abs{T^k \wt{Q}_0 - T \wt{Q}_{k-1}} + \abs{T\wt{Q}_{k-1} - \wt{Q}_k}
-  \\ &\leq \gamma \abs{T^{k-1} \wt{Q}_0 - \wt{Q}_{k-1}}
-  + \abs{T\wt{Q}_{k-1} - \wt{Q}_k}
+  \norm{T^k \wt{Q}_0 - \wt{Q}_k}
+  &\leq \norm{T^k \wt{Q}_0 - T \wt{Q}_{k-1}} + \norm{T\wt{Q}_{k-1} - \wt{Q}_k}
+  \\ &\leq \gamma \norm{T^{k-1} \wt{Q}_0 - \wt{Q}_{k-1}}
+  + \norm{T\wt{Q}_{k-1} - \wt{Q}_k}
 \end{align*}
 
 Using this iteratively we get
-\[ \abs{T^k \wt{Q}_0 - \wt{Q}_k} \leq \sum_{i=1}^k \gamma^{k-i} \ve_i
-\defeq \ve_a(k) \]
+\[ \norm{T^k \wt{Q}_0 - \wt{Q}_k} \leq \sum_{i=1}^k \gamma^{k-i} \ve_i
+\defeq \ve_{\mathrm{approx}}(k) \]
 
 Then we can bound
 \begin{align*}
-  \abs{Q^* - \wt{Q}_k}
-  &\leq \abs{Q^* - T^k \wt{Q}_0} + \abs{T^k \wt{Q}_0 - \wt{Q}_k}
-  \\ &\leq \gamma^k \abs{Q^* - \wt{Q}_0}
-  + \ve_a(k)
+  \norm{Q^* - \wt{Q}_k}
+  &\leq \norm{Q^* - T^k \wt{Q}_0} + \norm{T^k \wt{Q}_0 - \wt{Q}_k}
+  \\ &\leq \gamma^k \norm{Q^* - \wt{Q}_0}
+  + \ve_{\mathrm{approx}}(k)
 \end{align*}
 
-These terms are sometimes called the \emph{algorithmic}
-and \emph{approximation} errors.
+These terms are called respectively the \emph{algorithmic} error
+and the \emph{approximation} error.
 
-The algorithmic error quickly while the other depends on our
-step-wise approximations. For example
-$\ve_i(k) = \ve$ we easily get the bound
-$ \ve_a(k) = \ve \frac{1-\gamma^k}{1-\gamma} \leq \frac{\ve}{1-\gamma} $
-Or if $\ve_i \leq c\gamma^i$ we get $\ve_a(k) \leq ck \gamma^k \to 0$ as
+The algorithmic error converges exponentially, so one is often happy with this
+part not spending time trying to bound this tighter.
+The approximation error depends on our step-wise approximations. For example
+if $\ve_i(k) = \ve$ for some $\ve > 0$ we easily get the bound
+\begin{equation}
+  \ve_{\mathrm{approx}}(k) = \ve \frac{1-\gamma^k}{1-\gamma} \leq \frac{\ve}{1-\gamma}
+  \label{eq:approxEpsBound}
+\end{equation}
+If $\ve_i \leq c\gamma^i$ we get $\ve_{\mathrm{approx}}(k) \leq ck \gamma^k \to 0$ as
 $k \to \infty$.
 Generally if one can show that $\ve_i \to 0$ we have
 \begin{prop} $ \sum_{i-1}^k \gamma^{k-i} \ve_i \to 0 $
@@ -1008,13 +1035,162 @@ Generally if one can show that $\ve_i \to 0$ we have
   \end{align*}
 \end{proof}
 
-Let $\Cal{F}$ be a class of functions
+\subsubsection{Using artifical neural networks}
+
+\begin{sett}
+  An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ with
+  $\cl{S} = [0,1]^w$ and $\cl{A}$ finite.
+  Assume that $r$ is continuous and
+  $P$ is setwise-continuous.
+  \label{sett:annApprox}
+\end{sett}
+
+\begin{defn}\label{def_ANN}
+  An \textbf{ANN} (Artificial Neural Network) with structure
+  $(d_i)_{i=0}^{L+1} \subseteq \N$,
+  activation functions $\sigma_i = (\sigma_{ij})_{j=1}^{d_i}$, where
+  $\sigma_{ij} : \R \to \R$ are real-valued functions on $\R$,
+  and weights $W_i \in M^{d_i \times d_{i-1}}, \; v_i \in \R^{d_i}, \;
+  i \in [L+1]$
+  is the function $F:\R^{d_0} \to \R^{d_{L+1}}$ 
+  \[ F = w_{L+1} \circ \sigma_L \circ w_L
+  \circ \sigma_{L-1} \circ \dots \circ w_1 \]
+  where $w_i$ is the affine function $x \mapsto W_i x + v_i$ for all $i$.
+\end{defn}
+
+To clarify we have $\sigma_i(x_1, \dots, x_{d_i})
+= (\sigma_{i1}(x_1), \dots, \sigma_{id_{i}}(x_{d_{i}}))$.
+$L \in \N_0$ is interpreted as the number of \emph{hidden layers} and
+$d_i$ is the number of neurons or nodes in layer $i$.
+
+We denote the class of these networks (or functions)
+\[ \cl{DN} \left(\sigma_{ij}, ( d_i )_{i=0}^{L+1} \right) \]
+
+An ANN is called \emph{deep} if there are two or more hidden layers.
+
+%Todo note that ANNs imbed nicely in each other
 
 \begin{thm}[Universal Approximation Theorem for ANNs]
-  Let $\sigma: \R \to \R$ be non-constant, bounded and continuous function.
-  Let $\ve > 0$ and $f \in C(I_m)$.
-  Then there exists a ANN $F$ with one hidden layer
+  Let $\sigma: \R \to \R$ be non-constant, bounded and continuous
+  activation function.
+  Let $\ve > 0$ and $f \in C([0,1]^w)$.
+  Then there exists an $N \in \N$ and a network
+  $F \in \cl{DN}(\sigma, (w, N, 1))$
+  with one hidden layer
   and activation function $\sigma$ such that
   \[ \norm{F - f}_\infty < \ve \]
+  In other words $\bigcup_{N \in \N} \cl{DN}(\sigma, (w, N, 1))$ is
+  dense in $C([0,1]^w)$.
+  \label{thm:uniApprox}
 \end{thm}
+\begin{proof}[Discussion of proofs]
+  The original proof in \mcite{C89} is very short and elegant,
+  but non-constructive,
+  using the Riesz Representation and Hahn-Banach theorems to
+  obtain a contractiction to the statement that
+  $\bigcup_{N \in \N} \cl{DN}(\sigma, (w,N,1))$
+  is dense in $C([0,1]^w)$.
+  Furthermore it considered only \emph{sigmoidal} activations
+  functions, meaning that $\sigma$ should satisfy
+  \[ \sigma(x) \to \begin{cases} 0 & x \to -\infty
+  \\ 1 & x \to \infty \end{cases} \]
+  
+  This was extended in \mcite{CCR90} to the statement as presented above
+  and their proof is constructive. 
+\end{proof}
+
+\begin{prop}
+  Consider \cref{sett:annApprox} let
+  and $\sigma : \R \to \R$ be a non-constant, bounded, continuous
+  activation function. Let $\varepsilon > 0$.
+  Then for every $k \in \N$ there exists a $N\in \N$ and a sequence of
+  Q-networks $(\wt{Q}_i)_{i=1}^k \subseteq \cl{DN}(\sigma,
+  \{w \abs{\cl{A}}, N, 1\})$ such that
+  \[ \norm{T\wt{Q}_{i-1} - \wt{Q}_i}_\infty < \ve \]
+  for all $i \in [k]$.
+  In particular
+  \[ \norm{Q^* - \wt{Q}_k}_\infty < \varepsilon/(1 - \gamma) \]
+\end{prop}
+
+This gives us the first method of how to approximate
+$Q^*$ arbitrarily closely on continuous state spaces, in the case
+where it is infeasible to represent $TQ$ directly.
+
+\subsubsection{Using Bernstein polynomials}
+
+We here discuss another approach using multivariate Bernstein polynomials
+for approximation instead of neural networks.
+In this case the need a slightly stronger form of continuity, namely
+Lipschitz continuity, to establish the bounds.
+
+\begin{sett}
+  An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ with
+  $\cl{S} = [0,1]^w$ and $\cl{A}$ finite.
+  Assume that there exists a probability measure $\mu \in \cl{S}$, such that
+  $P(\cdot \mid s, a)$ has density
+  $p(\cdot \mid s, a) : \cl{S} \to \R$ with respect to
+  $\mu$ for all $(s, a) \in \cl{S}\times\cl{A}$. 
+  Furthermore assume that $r(\cdot, a), \; p(s \mid \cdot, a)$ are
+  Lipschitz
+  with constants $L_r,\; L_p$ respectively for all
+  $(s, a) \in \cl{S} \times \cl{A}$.
+  \label{sett:polyApprox}
+\end{sett}
+
+\begin{defn}[Bernstein polynomial]
+  The multivariate Bernstein polynomial $B_{f, n}$ with exponents
+  $n=(n_1, \dots, n_w) \in \N^w$ approximating the function $f:[0,1]^w \to \R$
+  is defined by
+  \begin{equation*}
+    B_{f, n}(x_1, \dots, x_w) =
+    \sum_{j = 1}^w \sum_{k_j = 0}^{n_j}
+    f\left( \frac{k_1}{n_1}, \dots, \frac{k_w}{n_w} \right)
+    \prod_{\ell = 1}^w \left(
+    \binom{n_\ell}{k_\ell} x_\ell^{k_\ell}(1-x_\ell)^{n_\ell - k_\ell} \right)
+  \end{equation*}
+  \label{defn:Bfn}
+\end{defn}
+Notice that this a polynomial of (multivariate) degree $n_1 + \dots + n_w$.
+
+\begin{thm}
+  Let $f : [0,1]^w \to \R$ be Lipschitz (see \cref{defn:Lipschitz})
+  w.r.t. the standard euclidean 2-norm induced metrics on $[0,1]^w$ and $\R$
+  with constant $L$. 
+  Then for any $n = (n_1, \dots, n_w) \in \N^w$ there exists a polynomial
+  $B_{f,n} : [0,1]^w \to \R$ of degree $\leq \norm{n}_1$ such that
+  \begin{enumerate}
+    \item $\norm{f - B_{f,n}}_2
+      \leq \frac{L}{2} \sqrt{\sum_{j=1}^w \frac{1}{n_j}}$
+    \item $\norm{B_{f,n}}_\infty \leq \norm{f}_\infty$
+  \end{enumerate}
+\end{thm}
+
+\begin{lem}
+  $TQ(\cdot, a)$ is Lipschitz in $\norm{\cdot}_2$ with constant
+  $ L_T = (L_r + \gamma V_{\max} L_p) $
+  for all $a \in \cl{A}$ and $Q : \cl{S} \times \cl{A} \to [-V_{\max},V_{\max}]$.
+\end{lem}
+
+Now we can bound
+
+\begin{prop}
+  \[ \ve_{\mathrm{approx}} \leq \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)}
+  \sqrt{\sum_{j=1}^w \frac{1}{n_j}} \]
+\end{prop}
+
+For example if we put $n_j = m$ for all $j$ we get
+
+\begin{prop}
+  \[ \norm{Q^* - \wt{Q}_k} \leq \norm{Q^* - \wt{Q}_0}
+    + \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)} \sqrt{w}
+  m^{-1/2} \]
+  In particular $\norm{Q^* - \wt{Q}_k}_\infty
+  = \cl{O}(\gamma^{-k} + \frac{1}{\sqrt{m}})$
+  when using $k$ iterations and approximating
+  with multivariate polynomials of maximum degree $w \cdot m$.
+\end{prop}
+
+This gives a very concrete way of constructing an arbitrarily good
+approximation to $Q^*$ using polynomials.
+
 

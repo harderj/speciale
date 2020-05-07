@@ -8,7 +8,7 @@ The reader may skip this if already familiar with such theory
 and use this section as a reference when going into the technical
 details in the following sections.
 
-\subsubsection{Background and notation}
+\subsubsection{Notation}
 
 We work with a background probability space $(\Omega, \Sigma_\Omega, \Prob)$.
 For a measurable space $(\Cal{X}, \Sigma_{\Cal{X}})$ we denote
@@ -61,7 +61,7 @@ We now state some fundamental results on probability kernels
   We denote this measure $\lambda = \kappa \mu$.
 \end{thm}
 \begin{proof}
-  We refer to [ref to EH markov, thm. 1.2.1].
+  We refer to \ncite{RH14} thm. 1.2.1.
 \end{proof}
 
 Notice that by \cref{thm:intKer}
@@ -98,7 +98,7 @@ we here include
   \label{thm:extTonFub}
 \end{thm}
 \begin{proof}
-  We refer to [ref to EH markov, thm. 1.3.2 + 1.3.3]
+  We refer to \ncite{RH14} thm. 1.3.2 and 1.3.3.
 \end{proof}
 
 \begin{prop}[Composition of kernels]
@@ -121,13 +121,13 @@ we here include
 \begin{proof}
   The first assertion is a trivial verification of the two conditions
   in \cref{defn:probKer} and left as an exercise.
-  For the associativity we refer to [todo ref to EH markov, lem. 4.5.4].
+  For the associativity we refer to \ncite{RH14} lem. 4.5.4.
 \end{proof}
 
 \Cref{prop:compKer} actually makes the class of measurable spaces
-into a category [todo ref: see Lawvere, The Category of Probabilistic
-Mappings], with identity $\id_{\Cal{X}}(\cdot \mid x) = \delta_x$.
-Notice that the mapping $(A, x) \mapsto \delta_x(A) \kappa(A \mid x)$
+into a category \mcite{L62},
+with identity $\id_{\Cal{X}}(\cdot \mid x) = \delta_x$.
+Notice that the mapping $(A\times B, x) \mapsto \delta_x(A) \kappa(B \mid x)$
 defines a probability kernel $\Cal{X} \leadsto \Cal{X} \times \Cal{Y}$
 which we could denote $\id_{\Cal{X}} \times \kappa$.
 Now if $\psi : \Cal{X} \times \Cal{Y} \leadsto \Cal{Z}$ is a kernel
@@ -162,12 +162,12 @@ $\Sigma_{\Cal{X}^{\ul{n}}} \defeq \Sigma_{\Cal{X}_1} \otimes
 and let
 $\kappa_n : \Cal{X}^{\ul{n}} \leadsto \Cal{X}_{n+1}$ be a probability kernel.
 Then $\kappa^{\ul{n}} \defeq \kappa_n \dots \kappa_1$ is a kernel
-from $\Cal{X}_1$ to $\Cal{X}^{\ul{n}}$.
+from $\Cal{X}_1$ to $\Cal{X}^{\ul{n+1}}$.
 So for any probability measure $\rho_1 \in \Cal{P}(\Cal{X}_1)$
 there exists a unique probability measure 
 $\rho_n$ on $\Cal{X}^{\ul{n}}$ defined by
-$\kappa^{\ul{n}} \rho_1$.
-This does however not imply existence of a measure on
+$\kappa^{\ul{n-1}} \rho_1$.
+This however does not imply existence of a measure on
 \[ \left(\Cal{X}^{\ul{\infty}},
   \Sigma_{\Cal{X}^{\ul{\infty}}} \right) \]
 where $\Cal{X}^{\ul{\infty}} \defeq \prod_{n \in \N} \Cal{X}_n$ and
@@ -187,7 +187,7 @@ by C. Ionescu-Tulcea (1949):
   \label{thm:ionescuTulcea}
 \end{thm}
 \begin{proof}
-  We refer to [Kallenberg, Foundations, thm. 5.17]. %todo do the proof instead
+  We refer to \mcite{K02} thm. 5.17. %todo do the proof instead
 \end{proof}
 
 We will also need to integrate with respect to starting conditions
@@ -217,14 +217,14 @@ an original proof is included here.
   The cylinder algebra
   \[ \bb{C} = \left\{ A_1 \times \dots \times A_i \times \Cal{X}_{i+1},
   \dots \Mid A_i \in \Sigma_{\Cal{X}_i}, i \in \N \right\} \]
-  Is a generator for $\Sigma_{\Cal{X}^{\ul{\infty}}}$ stabile under 
+  is a generator for $\Sigma_{\Cal{X}^{\ul{\infty}}}$ stable under 
   finite intersections.
   By contruction $\bb{C} \subseteq \bb{G}$ since
   \[ \phi_{A_1 \times \dots \times A_i \times \Cal{X}_{i+1} \times \dots}
   = \kappa^{\ul{i-1}}(A_1 \times \dots \times A_i \mid \cdot) \]
   and any $\kappa^{\ul{i-1}}$ is a kernel (\cref{prop:compKer}).
   We will show that $\bb{G}$ is a Dynkin class.
-  Then by Dynkins $\pi$-$\lambda$ theorem
+  Then by Dynkins $\pi$-$\lambda$ theorem (see \cref{thm:DynkinPiLambda})
   \[ \sigma(\bb{C}) = \Sigma_{\Cal{X}^{\ul{\infty}}}
   \subseteq \bb{G} \]
   implying that $\phi_A$ is measurable

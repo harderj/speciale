@@ -1,0 +1,8 @@
+[0] Config.pm:302> INFO - This is Biber 2.9
+[1] Config.pm:305> INFO - Logfile is 'bibtest1.blg'
+[153] biber:313> INFO - === Sun Apr 26, 2020, 16:19:34
+[242] Biber.pm:371> INFO - Reading 'bibtest1.bcf'
+[308] Utils.pm:185> ERROR - Error: Found biblatex control file version 3.0, expected version 3.4.
+This means that your biber (2.9) and biblatex () versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+[308] Biber.pm:114> INFO - ERRORS: 1

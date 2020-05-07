@@ -2,33 +2,76 @@
 In Reinforcement Learning (RL) in general
 we are concerned with finding an optimal policy
 for an agent in some environment.
-This environment is described by a so-called decision process
-consisting of a sequence of state and action spaces
+This environment is described by
+a sequence of state and action spaces
 $\Cal{S}_1, \Cal{A}_1, \Cal{S}_2, \dots$
 and rules $P_1, R_1, P_2, \dots$ specifying which states and rewards
 and likely to follow after some action is chosen.
-In the general case $\Cal{S}_i, \Cal{A}_i$ are measurable spaces
-and $P_i, R_i$ are probability kernels on $S_{i+1}$ and $\Rext$, respectively.
-One then attempts to find a \emph{policy} (behavior or strategy) that
-maximizes the rewards returned from the environment.
-A policy and a distribution over starting states
-$\mu \in \Cal{P}(\Cal{S}_1)$
-give rise to a countable stochastic process,
-$ (X_i)_{i\in \N} = (S_i, A_i, R_i)_{i\in \N}$ 
-that is a probability measure $P^\pi_\mu$ on
-$\Cal{S}_1 \times \Cal{A}_1 \times \dots$.
-Intuitively $S_1$ is drawn from $\mu$,
-then for all $i \in \N$
-$A_i$ is drawn from $\pi(\cdot \mid S_i)$,
-a reward is then drawn from $R(\cdot \mid S_i, A_i)$,
-then $S_{i+1}$ is drawn from $P(\cdot \mid S_i, A_i)$ and so on.
-We devote a considerable part of this paper discussing how this is 
-constructed in concrete term, in the chapters on measure theory
-and decision processes. 
+One can then specify rules $\pi$, called a \emph{policy},
+for how the agent should act in every situation is the environment.
+Given an environment and a policy one obtains stochastic process,
+that is, a distribution on sequences of states, actions and
+rewards.
+One can then measure the performance of the policy by looking at
+the expected sum of rewards called the \emph{value function}
+$V_\pi$ of the policy.
+The goal of reinforcement learning is to find an optimal policy $\pi^*$,
+maximizing the value function.
 
+$V_\pi$ is viewed as function that evaluates for each \emph{starting state}
+$s \in \cl{S}_1$ the expected total return.
+There might therefore be different optimal policies for each such starting
+state.
+Traditionally one defines an optimal value function $V^*(s)$
+by taking supremum over all policies $\sup_\pi V_\pi(s)$ for every state
+$s \in \cl{S}_1$.
+Then an optimal policy $\pi^*$ should satisfy $V_{\pi^*} = V^*$,
+i.e. it should be optimal uniformly across all starting states $\cl{S}_1$.
+The existence of optimal policies defined in this way is a non-trivial
+question and we will devote some time on this.
 
+A particular kind class of environments are called Markov decision processes
+(MDPs),
+and work with the same state space $\cl{S}$, action space $\cl{A}$ and rules
+$P, R$ throughout the process.
+In an MDP we can use a value function $V_1$ to obtain a policy $\pi_1$
+by choosing actions
+leading to states with high values (according to $V_1$).
+We can then evaluate value of $\pi_1$ yielding a new value function $V_2$.
+This process can be continued indefinitely yielding a sequence of value
+functions and policies.
+Variations of this idea are called \emph{value iteration} and
+\emph{policy iteration}, and have been shown to converge to the optimal
+policy in many cases.
 
-In RL there is a categorization of algorithms into
+A problem with value functions defined on the set of states $\cl{S}$ is that
+picking optimal actions require knowledge of the transition dynamics $P$.
+Often we want to design algorithms that do not require such knowledge of $P$,
+so called \emph{model-free} algorithms.
+To meet this requirement \emph{Q-functions} are introduced, which evaluates
+the value of a state-action pair, instead of only a state.
+Given a Q-function $Q$, picking best actions according to $Q$ now
+merely require maximization over $Q$ itself.
+This is obviously an advantage if we are in situations where $P$ is actually
+unknown (for example the stock market).
+However it turns out also to be more convenient to work with computationally.
+In this paper we show that value and policy iteration can be done
+for Q-functions in a virtually identical manner, when the process dynamics
+are known.
+
+When the process dynamics are hidden designing algorithms becomes trickier.
+In such settings approaches to the problem
+fall in two categories. In the \emph{direct} approaches
+one attempts to estimate the process dynamics first and then afterwards
+methods for the known-dynamics are applied.
+The \emph{indirect} approaches basically covers \emph{the rest}.
+Here the process dynamics is not directly estimated but
+somehow captured by the Q-function anyway.
+In the indirect category we find the popular \emph{temporal difference}
+algorithms on which \emph{fitted Q-iteration}
+and \emph{deep Q-learning} as used in \ncite{M15} is based.
+
+A further categorization of RL-algorithms can be made into
 \emph{off-policy} and \emph{on-policy} classes.
 This is simply whether the algorithm learns from data
 (states, actions and rewards) arising from 
@@ -37,4 +80,6 @@ arbitrary data (off-policy).
 This \emph{more arbitrary data} could for example be
 the trajectory of another algorithm when interacting with a decision process,
 or simply state-action-reward pairs drawn from some distribution.
-In this paper we exclusively consider off-policy algorithms.
+As an example \emph{fitted Q-iteration} is off-policy while
+\emph{deep Q-learning} is on-policy.
+

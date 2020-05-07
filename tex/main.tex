@@ -2,16 +2,24 @@
 
 \input{preamble}
 
-\title{A Theorical Analysis of Fitted Q-Iteration}
+\title{Theorical aspects of Q-learning}
 
 \author{Jacob Harder \\ University of Copenhagen}
 
 \begin{document}
 
-\maketitle
+%\maketitle
+\input{frontpage}
 
 \subsection*{Abstract}
 \input{abstract}
+
+\newpage
+\renewcommand{\baselinestretch}{1.0}\normalsize
+\tableofcontents
+\renewcommand{\baselinestretch}{1.3}\normalsize
+
+\newpage
 \section{Introduction}
 \subsection{Foreword}
 \input{foreword}
@@ -31,41 +39,30 @@
 \section{Deep fitted Q-iteration}
 \subsection{Introduction}
 \input{introFan}
-\subsection{Notational deviations from [TODO ref YangXieWang]}
-\input{notationDiffYang}
 \subsection{Assumptions}
 \input{assumptions}
 \subsection{Main theorem}
 \input{mainTheorem}
 \subsection{Proofs}
-The proof of \cref{thm:main} combines two results.
-The first on the error propagation and the second on the error
-ocurring in a single step.
-\input{errorpropthm}
-\input{onestepthm}
-The proofs of \cref{thm:errorprop} and \cref{thm:oneStep} are
-found below, but first 
-we will show how to combine them to obtain
-\cref{thm:main}.
-\input{mainProof}
-Now for \cref{thm:errorprop}.
-\input{C1proof}
-Finally we show \cref{thm:oneStep}.
-\input{C2proof}
+\input{fanProofs}
+\subsection{Critique}
+\input{fanCrit}
 
-\section{Further directions}
-\input{furtherDir}
+\section{Conclusion}
+\input{conclusion}
 
+\newpage
 \section{Appendices}
-\subsection{Disambiguation}
-\input{disambiguation}
 \subsection{Lemmas for Fan et al.}
 \input{variousLemmas}
 \subsection{Other notes}
 \input{otherNotes}
 
-
-
+\newpage
+\subsection{Disambiguation}
+\input{disambiguation}
+\newpage
+%bibliography
 \bibliography{bib}{}
 
 \end{document}

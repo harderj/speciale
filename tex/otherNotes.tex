@@ -1,3 +1,10 @@
+\begin{defn}[Lipschitz continuity]
+  Let $(\cl{X}, d_\cl{X}), \; (\cl{Y}, d_\cl{Y})$ be metric spaces.
+  A function $f: \cl{X} \to \cl{Y}$ is
+  said to \defemph{Lipschitz} with constant $L > 0$ if
+  \[ d_\cl{Y}(f(x),f(y)) \leq L d_\cl{X}(x,y) \]
+  \label{defn:Lipschitz}
+\end{defn}
 
 \begin{defn} [Almost sure uniform convergence of random processes]
   A sequence of random processes $X_n : \Cal{X} \times \Omega \to \R$
@@ -12,3 +19,48 @@
   in probability} to $X : \Cal{X} \times \Omega \to \R$ if and only if
   \[ \sup_{x \in \Cal{X}} \abs{X_n(x) - X(x)} \overset{P}{\to} 0 \]
 \end{defn}
+
+\begin{prop}
+  $id_{\cl{P}(X)} = \mu \mapsto \kappa \circ \mu$
+  where $\kappa(\cdot \mid x) = \delta_x(\cdot)$.
+  Thus $\kappa$ can be seen as an identity mapping on $\cl{P}(X)$.
+  \label{prop:identityKernel}
+\end{prop}
+\begin{proof}
+  \[ \kappa \mu A = \int \delta_x(A) \difd \mu(x) = \mu A \]
+\end{proof}
+
+
+\begin{thm}[Banach fixed point theorem]
+  Let $(\Cal{X}, d)$ be a complete metric space
+  and $T:\Cal{X} \to \Cal{X}$ be a contraction,
+  i.e. $d(Tx, Ty)<\gamma d(x, y)$ for some $0 < \gamma < 1$
+  and all $x,y \in \Cal{X}$.
+  Then $T$ has a unique fixed point $x^*$ and for every $x\in \Cal{X}$
+  it holds that $T^k x \to x^*$ as $k \to \infty$, with rate
+  $d(T^k x, x^*) < \gamma^k d(x, x^*)$.
+\end{thm}
+
+\begin{defn}[Dynkin class]
+  Let $D$ be a pavement of $X$,
+  that is a collection of subsets of $X$.
+  $D$ is called a \defemph{Dynkin class} if
+  \begin{enumerate}
+    \item $X \in D$,
+    \item If $A, B \in D$ and $A \subseteq B$ then $B \setminus A \in D$,
+    \item If $A_1, A_2, \dots \in D$ with $A_n \subseteq A_{n+1}$ for
+      all $n \in \N$ then $\bigcup_{n=1}^\infty A_n \in D$.
+  \end{enumerate}
+  \label{defn:DynkinClass}
+\end{defn}
+
+\begin{thm}[Dynkins $\pi$-$\lambda$ theorem]
+  Let $P$ be a pavement of $X$ which is stable under finite intersections
+  (such are called $\pi$-systems) and $D$ a Dynkin class
+  (see \cref{defn:DynkinClass}).
+  If $P \subseteq D$ then $\sigma(P) \subseteq D$
+  where $\sigma(P)$ is the smallest $\sigma$-algebra containing $P$.
+  \label{thm:DynkinPiLambda}
+\end{thm}
+
+

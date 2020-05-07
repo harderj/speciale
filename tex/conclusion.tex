@@ -1,0 +1,74 @@
+
+In this paper we have build up the theory behind Q-learning,
+covering decision models, optimality of policies,
+value functions and their iteration methods.
+This gave an introduction to Q-learning 
+and a general framework from which to understand
+and compare results within the field.
+We then turned to model-free algorithms 
+and presented convergence results for such in a variety
+of settings with state space being both finite and infinite and
+dynamics being allowed to depend on history or not.
+Finally we presented and proved convergence of the fitted Q-iteration
+algorithm as obtained in \ncite{F20}.
+All together this paints a picture of what Q-learning is,
+how it was developed, which topics it is related to,
+what its challenges are and what it is possible to
+say theoretically about its convergence to optimaliy at present.
+Theoretically you could say that Q-learning is solved in many situations,
+since, as we have established,
+there is convergence guarrantees for broad classes of problems.
+However as to how these convergence results relate to practical aspects of
+Q-learning we can still say little and as to the succes of the DQN of
+\ncite{M15} we are not much further in understanding.
+The major reason is that the computational aspects are so important to their 
+succes, and this part is mostly ignored in the results we have covered.
+Even though we establish results of the related FQI algorithm in \ncite{F20},
+it is unclear if it captures the critical aspects of DQN,
+such as experience replay.
+In \ncite{F20} convergence of FQI is guaranteed given corresponding
+increases in iterations, batch size and function space complexity.
+It is hard to interpret exactly how large these increases must be
+or whether it is practical.
+
+\subsection{Further directions}
+
+The litterature on Q-learning algorithms and relating topics such as 
+function approximation, dynamic programming and artificial neural networks
+is vast, and only very little made it into this thesis. 
+An obvious direction to go is to review more of the most recent results
+in order to give a more complete picture of the field.
+
+\subsubsection{Suboptimality of policies}
+This is relating to decision processes and value functions.
+Through out the paper we discuss a wide array of
+approximations of $Q^*$.
+The default strategy is then to accept some close-enough approximation $\wt{Q}$
+and then pick the greedy policy $\wt{\pi}$ with respect to $\wt{Q}$.
+We then measure our deviation from optimality in terms of the distance
+$\norm{Q^* - \wt{Q}}_\infty$.
+However in most cases we do not estimate the deviation of
+$Q_{\wt{\pi}}$ from $Q^*$ which from a theorical point of view should be
+a better measure of the sub-optimality of $\wt{\pi}$ compared to $\pi^*$.
+Some sources like \ncite{F20} succeed in bounding
+$\norm{Q^* - Q_{\wt{\pi}}}_\infty$,
+while many others make do with a bound on $\norm{Q^* - \wt{Q}}_\infty$.
+To this end it could be interesting to establish relations
+between $\norm{Q^* - Q_{\wt{\pi}}}_\infty$ and $\norm{Q^* - \wt{Q}}_\infty$.
+
+\subsubsection{Bernstein polynomials vs. orthogonal projection}
+A Bernstein polynomial $B_f$ approximating a function $f$
+are constructed by evaluating the
+functions at a finite number of points (see \cref{defn:Bfn}).
+Since we in this setting are concerned with approximation in the 2-norm,
+another approach would be to simply take the orthogonal projection of
+$TQ$ onto the span of polynomials of degree less than $n$.
+One should keep in mind that this requires integration of
+$\abs{TQ(\cdot, a) f_i}$ for every basis polynomial $f_i$,
+which is potentially hard to compute.
+On the other hand, as the orthogonal projection is distance minimizing,
+it should provide the best approximation with polynomials.
+The relation between the performances of the Berstein polynomial
+and the orthogonal projection, both in terms of accuracy and 
+computational complexity, could be interesting analyse.
+

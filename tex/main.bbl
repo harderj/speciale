@@ -1,7 +1,128 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{17}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem{Nobody06}
-Nobody Jr.
-\newblock My article, 2006.
+\bibitem[Bertsekas and Shreve(2007)]{BS07}
+Dimitri~P. Bertsekas and Steven~E. Shreve.
+\newblock \emph{Stochastic Optimal Control: The Discrete-Time Case}.
+\newblock Athena Scientific, 2007.
+\newblock ISBN 1886529035.
+
+\bibitem[Chen et~al.(1990)Chen, Chen, and Liu]{CCR90}
+Tianping Chen, Hong Chen, and Reuy-wen Liu.
+\newblock A constructive proof and an extension of cybenko’s approximation
+  theorem.
+\newblock 03 1990.
+\newblock \doi{10.1007/978-1-4612-2856-1}.
+
+\bibitem[Cybenko(1989)]{C89}
+George Cybenko.
+\newblock Approximation by superpositions of a sigmoidal function.
+\newblock \emph{Mathematics of Control, Signals and Systems}, 2:\penalty0
+  303--314, 1989.
+
+\bibitem[Devraj and Meyn(2017)]{DM17}
+Adithya~M. Devraj and Sean~P. Meyn.
+\newblock Fastest convergence for q-learning.
+\newblock \emph{CoRR}, abs/1707.03770, 2017.
+\newblock URL \url{http://arxiv.org/abs/1707.03770}.
+
+\bibitem[Fan et~al.(2020?)Fan, Yang, Xie, and Wang]{F20}
+Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
+\newblock A theoretical analysis of deep q-learning.
+\newblock \emph{CoRR}, abs/1901.00137, 2020?
+\newblock URL \url{http://arxiv.org/abs/1901.00137}.
+
+\bibitem[Jaakkola et~al.(1994)Jaakkola, Jordan, and Singh]{J94}
+Tommi Jaakkola, Michael Jordan, and Satinder Singh.
+\newblock On the convergence of stochastic iterative dynamic programming
+  algorithms.
+\newblock \emph{Neural Computation}, 6:\penalty0 1185--1201, 11 1994.
+\newblock \doi{10.1162/neco.1994.6.6.1185}.
+
+\bibitem[Kallenberg(2002)]{K02}
+Olav Kallenberg.
+\newblock \emph{Foundations of modern probability}.
+\newblock Probability and its Applications (New York). Springer-Verlag, New
+  York, second edition, 2002.
+\newblock ISBN 0-387-95313-2.
+\newblock \doi{10.1007/978-1-4757-4015-8}.
+\newblock URL \url{http://dx.doi.org/10.1007/978-1-4757-4015-8}.
+
+\bibitem[Lawvere(1962)]{L62}
+F.~William Lawvere.
+\newblock The category of probabilistic mappings.
+\newblock 1962.
+
+\bibitem[Majeed and Hutter(2018)]{MH18}
+Sultan~Javed Majeed and Marcus Hutter.
+\newblock On q-learning convergence for non-markov decision processes.
+\newblock In \emph{Proceedings of the Twenty-Seventh International Joint
+  Conference on Artificial Intelligence, {IJCAI-18}}, pages 2546--2552.
+  International Joint Conferences on Artificial Intelligence Organization, 7
+  2018.
+\newblock \doi{10.24963/ijcai.2018/353}.
+\newblock URL \url{https://doi.org/10.24963/ijcai.2018/353}.
+
+\bibitem[{Melo} and {Ribeiro}(2007)]{MR07}
+F.~S. {Melo} and M.~I. {Ribeiro}.
+\newblock Convergence of q-learning with linear function approximation.
+\newblock In \emph{2007 European Control Conference (ECC)}, pages 2671--2678,
+  2007.
+
+\bibitem[Mnih et~al.(2015)Mnih, Kavukcuoglu, Silver, Rusu, Veness, Bellemare,
+  Graves, Riedmiller, Fidjeland, Ostrovski, Petersen, Beattie, Sadik,
+  Antonoglou, King, Kumaran, Wierstra, Legg, and Hassabis]{M15}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei~A. Rusu, Joel Veness,
+  Marc~G. Bellemare, Alex Graves, Martin Riedmiller, Andreas~K. Fidjeland,
+  Georg Ostrovski, Stig Petersen, Charles Beattie, Amir Sadik, Ioannis
+  Antonoglou, Helen King, Dharshan Kumaran, Daan Wierstra, Shane Legg, and
+  Demis Hassabis.
+\newblock Human-level control through deep reinforcement learning.
+\newblock \emph{Nature}, 518\penalty0 (7540):\penalty0 529--533, February 2015.
+\newblock ISSN 00280836.
+\newblock URL \url{http://dx.doi.org/10.1038/nature14236}.
+
+\bibitem[Rønn-Nielsen and Hansen(2014)]{RH14}
+Anders Rønn-Nielsen and Ernst Hansen.
+\newblock \emph{Conditioning and Markov properties}.
+\newblock 2014.
+\newblock ISBN 978-87-7078-980-6.
+
+\bibitem[Schmidt-Hieber(2017)]{SH17}
+Johannes Schmidt-Hieber.
+\newblock Nonparametric regression using deep neural networks with relu
+  activation function.
+\newblock \emph{ArXiv}, abs/1708.06633, 2017.
+\newblock URL \url{https://arxiv.org/abs/1708.06633v4}.
+
+\bibitem[Schäl(1975)]{S75}
+Manfred Schäl.
+\newblock On dynamic programming: Compactness of the space of policies.
+\newblock \emph{Stochastic Processes and their Applications}, 3\penalty0
+  (4):\penalty0 345 -- 364, 1975.
+\newblock ISSN 0304-4149.
+\newblock \doi{https://doi.org/10.1016/0304-4149(75)90031-9}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/0304414975900319}.
+
+\bibitem[Szepesvári(1997)]{S97}
+Csaba Szepesvári.
+\newblock The asymptotic convergence-rate of q-learning.
+\newblock 01 1997.
+
+\bibitem[Watkins(1989)]{W89}
+Christopher Watkins.
+\newblock Learning from delayed rewards.
+\newblock 01 1989.
+
+\bibitem[Watkins and Dayan(1992)]{WD92}
+Christopher Watkins and Peter Dayan.
+\newblock Technical note: Q-learning.
+\newblock \emph{Machine Learning}, 8:\penalty0 279--292, 05 1992.
+\newblock \doi{10.1007/BF00992698}.
 
 \end{thebibliography}

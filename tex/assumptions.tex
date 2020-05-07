@@ -60,17 +60,18 @@ Seting $\Cal{D}=[0,1]^r$, $q=1$
 and taking both the expected reward function and transition kernel
 to be Hölder smooth.
 
-\begin{prop}
+\begin{example}
   Assume for all $a \in \Cal{A}$ that
   $P(\cdot \mid s,a)$ is absolutely continuous w.r.t. $\lambda^k$
+  (the $k$ dimensional Lebesgue measure)
   with density $p(\cdot \mid s, a)$,
-  Assume for all $s' \in \Cal{S}$ that
+  that for all $s' \in \Cal{S}$ we have
   $s \mapsto p\left(s' \Mid s, a \right)$
-  and $s \mapsto r(s, a)$
-  are both in $C_w([0,1]^r, \beta, H)$.
-  Then $T \Cal{F}_0 \subseteq C_w([0,1]^r, \beta, (1 + \gamma V_{\max}) H)$.
-\end{prop}
-\begin{proof}
+  and $s \mapsto r(s, a)$ are both Hölder smooth in the class
+  $C_w([0,1]^r, \beta, H)$.
+  Then
+  \[ T \Cal{F}_0 \subseteq C_w([0,1]^r, \beta, (1 + \gamma V_{\max}) H) \] 
+  To see this let
   Let $f \in \Cal{F}_0$ and $\alpha \in \N_0^w$.
   Observe that
   \begin{align*}
@@ -108,7 +109,7 @@ to be Hölder smooth.
     \\ \leq & \; H + \gamma V_{\max} H = (1 + \gamma V_{\max}) H
   \end{align*}
   
-\end{proof}
+\end{example}
 
 
 \subsubsection{Concentration coefficients}

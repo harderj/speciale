@@ -28,24 +28,8 @@
   starting with $\omega(\Cal{F}_0)$.
 
   \textbf{Step 1}. %todo: proper ref below
-  We want to employ the following lemma by [Schmidt-Hieber 2019, thm. 5, p. 22]
-  \begin{lem}[Approximation of Hölder Smooth Functions]
-    Let $m,M \in \Z_+$ with $N \geq \max\{(\beta + 1)^r, (H + 1) e^r\}$,
-    $L = 8 + (m + 5) (1 + \ceil{\log_2(r + \beta)})$, 
-    $d_0 = r, d_j = 6(r + \ceil{\beta}) N, d_{L+1} = 1$.
-    Then for any $g \in \Cal{C}_r \left( [0,1]^r, \beta, H \right)$
-    there exists a ReLU network
-    $f \in \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, \infty \right)$
-    with $s \leq 141 (r + \beta + 1)^{3 + r} N (m+6)$
-    such that
-    \begin{equation*}
-      \norm{f - g}_\infty \leq (2 H + 1) 6^r N (1 + r^2 + \beta^2) 2^{-m}
-      + H 3^{\beta} N^{-\beta/r}
-    \end{equation*}
-    \label{lem:holderapprox} 
-    %todo: decide whether to do this proof
-  \end{lem} 
-  \vspace*{-\baselineskip}
+  We want to employ the following lemma by \mcite{SH17} p. 22.
+  \ncite{lem:holderapprox} 
   to each Hölder smooth part of $g$ and then piece it together somehow,
   using that ReLU networks are easily stitched together into bigger
   ReLU networks.
