@@ -1,46 +1,41 @@
-\contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {subsection}{\numberline {1.1}Foreword}{3}
-\contentsline {subsection}{\numberline {1.2}Reinforcement learning in general}{3}
-\contentsline {subsection}{\numberline {1.3}Measure theory}{4}
-\contentsline {subsubsection}{\numberline {1.3.1}Notation}{4}
-\contentsline {subsubsection}{\numberline {1.3.2}Kernels}{4}
-\contentsline {subsubsection}{\numberline {1.3.3}Kernel derived processes}{6}
-\contentsline {section}{\numberline {2}Decision models and value functions}{7}
-\contentsline {subsection}{\numberline {2.1}History dependent decision process}{7}
-\contentsline {subsubsection}{\numberline {2.1.1}Optimal policies}{10}
-\contentsline {subsubsection}{\numberline {2.1.2}Sch\IeC {\"a}ls theorem}{11}
-\contentsline {subsection}{\numberline {2.2}The Markov decision process and its operators}{11}
-\contentsline {subsection}{\numberline {2.3}Q-functions}{13}
-\contentsline {subsection}{\numberline {2.4}Bertsekas-Shreve framework}{15}
-\contentsline {subsubsection}{\numberline {2.4.1}Analytic setting}{16}
-\contentsline {subsubsection}{\numberline {2.4.2}Implications for value-functions}{16}
-\contentsline {subsection}{\numberline {2.5}Theoretical Q-iteration}{18}
-\contentsline {subsubsection}{\numberline {2.5.1}Finite Q-iteration}{18}
-\contentsline {subsection}{\numberline {2.6}Approximation}{19}
-\contentsline {subsubsection}{\numberline {2.6.1}Using artifical neural networks}{20}
-\contentsline {subsubsection}{\numberline {2.6.2}Using Bernstein polynomials}{21}
-\contentsline {section}{\numberline {3}Hidden dynamics}{22}
-\contentsline {subsection}{\numberline {3.1}Finite case}{22}
-\contentsline {subsubsection}{\numberline {3.1.1}History dependent setting}{24}
-\contentsline {subsection}{\numberline {3.2}Results for continuous settings}{26}
-\contentsline {subsubsection}{\numberline {3.2.1}Linear function approximation}{26}
-\contentsline {section}{\numberline {4}Deep fitted Q-iteration}{29}
-\contentsline {subsection}{\numberline {4.1}Introduction}{29}
-\contentsline {subsubsection}{\numberline {4.1.1}Differences in notation}{29}
-\contentsline {subsubsection}{\numberline {4.1.2}The decision model}{29}
-\contentsline {subsubsection}{\numberline {4.1.3}ReLU Networks}{29}
-\contentsline {subsubsection}{\numberline {4.1.4}Fitted Q-Iteration}{29}
-\contentsline {subsection}{\numberline {4.2}Assumptions}{30}
-\contentsline {subsubsection}{\numberline {4.2.1}H\IeC {\"o}lder Smoothness}{30}
-\contentsline {subsubsection}{\numberline {4.2.2}Concentration coefficients}{31}
-\contentsline {subsection}{\numberline {4.3}Main theorem}{31}
-\contentsline {subsection}{\numberline {4.4}Proofs}{32}
-\contentsline {subsection}{\numberline {4.5}Critique}{46}
-\contentsline {section}{\numberline {5}Conclusion}{46}
-\contentsline {subsection}{\numberline {5.1}Further directions}{46}
-\contentsline {subsubsection}{\numberline {5.1.1}Suboptimality of policies}{47}
-\contentsline {subsubsection}{\numberline {5.1.2}Bernstein polynomials vs. orthogonal projection}{47}
-\contentsline {section}{\numberline {6}Appendices}{48}
-\contentsline {subsection}{\numberline {6.1}Lemmas for Fan et al.}{48}
-\contentsline {subsection}{\numberline {6.2}Other notes}{48}
-\contentsline {subsection}{\numberline {6.3}Disambiguation}{50}
+\contentsline {chapter}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {1.1}Reinforcement learning in general}{4}
+\contentsline {chapter}{\numberline {2}Decision models and value functions}{5}
+\contentsline {section}{\numberline {2.1}Policy evaluation and value functions}{9}
+\contentsline {subsection}{\numberline {2.1.1}The optimal value function}{10}
+\contentsline {section}{\numberline {2.2}Markov decision processes}{12}
+\contentsline {subsection}{\numberline {2.2.1}Greedy policies}{14}
+\contentsline {subsection}{\numberline {2.2.2}Existence of optimal policies}{16}
+\contentsline {subsection}{\numberline {2.2.3}Value iteration}{17}
+\contentsline {subsection}{\numberline {2.2.4}Q-functions}{18}
+\contentsline {subsection}{\numberline {2.2.5}Finite Q-iteration}{20}
+\contentsline {section}{\numberline {2.3}Approximation}{21}
+\contentsline {subsection}{\numberline {2.3.1}Using artifical neural networks}{22}
+\contentsline {subsection}{\numberline {2.3.2}Using Bernstein polynomials}{23}
+\contentsline {chapter}{\numberline {3}Model-free algorithms}{25}
+\contentsline {subsection}{\numberline {3.0.1}Finite case}{25}
+\contentsline {subsubsection}{History dependent setting}{28}
+\contentsline {subsection}{\numberline {3.0.2}Results for continuous settings}{29}
+\contentsline {subsubsection}{Linear function approximation}{29}
+\contentsline {section}{\numberline {3.1}Deep fitted Q-iteration}{32}
+\contentsline {subsection}{\numberline {3.1.1}Introduction}{32}
+\contentsline {subsubsection}{Differences in notation}{32}
+\contentsline {subsubsection}{The decision model}{32}
+\contentsline {subsubsection}{ReLU Networks}{32}
+\contentsline {subsubsection}{Fitted Q-Iteration}{32}
+\contentsline {subsection}{\numberline {3.1.2}Assumptions}{33}
+\contentsline {subsubsection}{H\IeC {\"o}lder Smoothness}{33}
+\contentsline {subsubsection}{Concentration coefficients}{34}
+\contentsline {subsection}{\numberline {3.1.3}Main theorem}{34}
+\contentsline {subsection}{\numberline {3.1.4}Proofs}{35}
+\contentsline {subsection}{\numberline {3.1.5}Critique}{49}
+\contentsline {chapter}{\numberline {4}Conclusion}{50}
+\contentsline {subsection}{\numberline {4.0.1}Further directions}{50}
+\contentsline {subsubsection}{Suboptimality of policies}{50}
+\contentsline {subsubsection}{Bernstein polynomials vs. orthogonal projection}{51}
+\contentsline {subsection}{\numberline {4.0.2}Notes on references}{51}
+\contentsline {subsection}{\numberline {4.0.3}Credits}{51}
+\contentsline {chapter}{\numberline {5}Appendices}{52}
+\contentsline {subsection}{\numberline {5.0.1}Lemmas for Fan et al.}{52}
+\contentsline {subsection}{\numberline {5.0.2}Other notes}{52}
+\contentsline {subsection}{\numberline {5.0.3}Disambiguation}{54}

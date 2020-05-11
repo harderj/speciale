@@ -53,21 +53,19 @@ the value of a state-action pair, instead of only a state.
 Given a Q-function $Q$, picking best actions according to $Q$ now
 merely require maximization over $Q$ itself.
 This is obviously an advantage if we are in situations where $P$ is actually
-unknown (for example the stock market).
+unknown. %todo find good example
 However it turns out also to be more convenient to work with computationally.
-In this paper we show that value and policy iteration can be done
+In this thesis we show that value and policy iteration can be done
 for Q-functions in a virtually identical manner, when the process dynamics
 are known.
 
 When the process dynamics are hidden designing algorithms becomes trickier.
 In such settings approaches to the problem
-fall in two categories. In the \emph{direct} approaches
+fall in two categories. In the \emph{indirect} approaches
 one attempts to estimate the process dynamics first and then afterwards
 methods for the known-dynamics are applied.
-The \emph{indirect} approaches basically covers \emph{the rest}.
-Here the process dynamics is not directly estimated but
-somehow captured by the Q-function anyway.
-In the indirect category we find the popular \emph{temporal difference}
+The \emph{direct} approaches basically covers \emph{the rest}.
+In the direct category we find the popular \emph{temporal difference}
 algorithms on which \emph{fitted Q-iteration}
 and \emph{deep Q-learning} as used in \ncite{M15} is based.
 

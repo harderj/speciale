@@ -1,0 +1,57 @@
+The purpose of this thesis was initially 
+to investigate what has been proven
+about the convergence of Q-learning algorithms
+and what mathematical theory is relevant to establish such proofs.
+In particular Q-learning algorithms using artificial neural networks.
+
+The topic was inspired by the performance of the algorithms
+implemented by \mcite{M15}.
+In \ncite{M15} it was shown how a single algorithm was able to achieve super
+human performances in a variety of problems, namely playing Atari 2600 video
+games, only using raw pixels and a reward (score) as input and a large number of
+interactions with the environment.
+The algorithm used in \ncite{M15} is based on an \emph{Q-learning}
+algorithm called the \emph{deep Q-network} (DQN) algorithm.
+The `Q' comes from the concepts of \emph{value functions} and
+\emph{value iteration} in \emph{dynamic progamming}.
+\emph{Q-functions} are a certain kind of value function which assigns a value
+(real number) to every action of every state of an environment,
+evaluating how good or bad the action is, in terms of whether it leads to
+high or low total reward.
+From a Q-function one can then obtain a \emph{policy} (strategy for interaction)
+simply by picking the action with highest value.
+\emph{Q-learning} is the category of algorithms that iteratively updates
+Q-functions in the attempt to improve the derived policy.
+The \emph{deep network} in DQN comes from the concept of (\emph{deep})
+\emph{artificial neural networks} (ANNs)
+which is a class of function approximators.
+The central idea of DQN is then simply to use deep neural networks
+to as approximators for the Q-functions.
+
+The work began by considering the preprint
+\mcite{F20} which claims to establish theoretical justification for
+the convergence of DQN to \emph{the optimal Q-function}.
+Instead of analysing DQN directly,
+a related algorithm called \emph{fitted Q-iteration} (FQI) is
+analysed instead and bounds on its convergence is established.
+The bound on FQI is quite remarkable in terms of the broad class
+of environments (problems) that it shows can be solved approximatively by using
+sampling from the environment to update a ANN-represented Q-function.
+In particular it is the most general result on convergence rates for
+\emph{model-free} and \emph{continuous state space} algorithms,
+among the sources we survey in this thesis.
+
+Surveying other results related to \ncite{F20}
+it became clear that the frameworks
+and settings in which various Q-leaning algorithms are analysed
+varies greatly.
+Also questions as to in which degree optimal strategies
+exist in these various frameworks turns out to be
+non-trivial when the state and action spaces are uncountable.
+
+Therefore this thesis is partially about building a framework
+for analysing Q-learning algorithms in a variety of settings.
+And partially to present the results that occur in each setting
+and discuss their importance and generality.
+
+

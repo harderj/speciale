@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: pdfNewDecision.aux
+The style file: plainnat.bst
+Database file #1: bib.bib
+Warning--empty booktitle in L62
+Warning--empty journal in W89
+You've used 6 entries,
+            2773 wiz_defined-function locations,
+            640 strings with 5738 characters,
+and the built_in function-call counts, 2296 in all, are:
+= -- 205
+> -- 100
+< -- 5
++ -- 36
+- -- 30
+* -- 159
+:= -- 376
+add.period$ -- 27
+call.type$ -- 6
+change.case$ -- 27
+chr.to.int$ -- 6
+cite$ -- 14
+duplicate$ -- 121
+empty$ -- 206
+format.name$ -- 38
+if$ -- 477
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 8
+newline$ -- 46
+num.names$ -- 24
+pop$ -- 58
+preamble$ -- 1
+purify$ -- 22
+quote$ -- 0
+skip$ -- 83
+stack$ -- 0
+substring$ -- 39
+swap$ -- 6
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 56
+warning$ -- 2
+while$ -- 19
+width$ -- 0
+write$ -- 97
+(There were 2 warnings)

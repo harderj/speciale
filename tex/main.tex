@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{report}
 
 \input{preamble}
 
@@ -20,20 +20,16 @@
 \renewcommand{\baselinestretch}{1.3}\normalsize
 
 \newpage
-\section{Introduction}
-\subsection{Foreword}
-\input{foreword}
-%\input{intro} %old intro
-\input{introduction.tex}
-\subsection{Reinforcement learning in general}
+\chapter{Introduction}
+\input{introduction}
+\section{Reinforcement learning in general}
 \input{generalNotes}
-\subsection{Measure theory}
-\input{measureTheory}
+%\subsection{Measure theory}
+%\input{measureTheory}
+\chapter{Decision models and value functions}
+\input{newDecision.tex}
 
-\section{Decision models and value functions}
-\input{decisionAndValue.tex}
-
-\section{Hidden dynamics}
+\chapter{Model-free algorithms}
 \input{hiddenDynamics}
 
 \section{Deep fitted Q-iteration}
@@ -48,11 +44,11 @@
 \subsection{Critique}
 \input{fanCrit}
 
-\section{Conclusion}
+\chapter{Conclusion}
 \input{conclusion}
 
 \newpage
-\section{Appendices}
+\chapter{Appendices}
 \subsection{Lemmas for Fan et al.}
 \input{variousLemmas}
 \subsection{Other notes}

@@ -1,0 +1,49 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bertsekas and Shreve(2007)]{BS07}
+Dimitri~P. Bertsekas and Steven~E. Shreve.
+\newblock \emph{Stochastic Optimal Control: The Discrete-Time Case}.
+\newblock Athena Scientific, 2007.
+\newblock ISBN 1886529035.
+
+\bibitem[Fan et~al.(2020?)Fan, Yang, Xie, and Wang]{F20}
+Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
+\newblock A theoretical analysis of deep q-learning.
+\newblock \emph{CoRR}, abs/1901.00137, 2020?
+\newblock URL \url{http://arxiv.org/abs/1901.00137}.
+
+\bibitem[Kallenberg(2002)]{K02}
+Olav Kallenberg.
+\newblock \emph{Foundations of modern probability}.
+\newblock Probability and its Applications (New York). Springer-Verlag, New
+  York, second edition, 2002.
+\newblock ISBN 0-387-95313-2.
+\newblock \doi{10.1007/978-1-4757-4015-8}.
+\newblock URL \url{http://dx.doi.org/10.1007/978-1-4757-4015-8}.
+
+\bibitem[Lawvere(1962)]{L62}
+F.~William Lawvere.
+\newblock The category of probabilistic mappings.
+\newblock 1962.
+
+\bibitem[Schäl(1975)]{S75}
+Manfred Schäl.
+\newblock On dynamic programming: Compactness of the space of policies.
+\newblock \emph{Stochastic Processes and their Applications}, 3\penalty0
+  (4):\penalty0 345 -- 364, 1975.
+\newblock ISSN 0304-4149.
+\newblock \doi{https://doi.org/10.1016/0304-4149(75)90031-9}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/0304414975900319}.
+
+\bibitem[Watkins(1989)]{W89}
+Christopher Watkins.
+\newblock Learning from delayed rewards.
+\newblock 01 1989.
+
+\end{thebibliography}

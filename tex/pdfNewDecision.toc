@@ -1,0 +1,12 @@
+\contentsline {chapter}{\numberline {1}Decision models and value functions}{2}
+\contentsline {section}{\numberline {1.1}Policy evaluation and value functions}{6}
+\contentsline {subsection}{\numberline {1.1.1}The optimal value function}{7}
+\contentsline {section}{\numberline {1.2}Markov decision processes}{9}
+\contentsline {subsection}{\numberline {1.2.1}Greedy policies}{11}
+\contentsline {subsection}{\numberline {1.2.2}Existence of optimal policies}{13}
+\contentsline {subsection}{\numberline {1.2.3}Value iteration}{14}
+\contentsline {subsection}{\numberline {1.2.4}Q-functions}{15}
+\contentsline {subsection}{\numberline {1.2.5}Finite Q-iteration}{17}
+\contentsline {subsection}{\numberline {1.2.6}Approximation}{18}
+\contentsline {subsubsection}{Using artifical neural networks}{19}
+\contentsline {subsubsection}{Using Bernstein polynomials}{20}
