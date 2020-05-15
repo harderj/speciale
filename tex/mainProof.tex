@@ -1,8 +1,4 @@
 
-
-
-
-
 \begin{proof}[Proof of main theorem] %todo write intro
   Using \cref{thm:errorprop} we get
   \begin{equation}
@@ -28,9 +24,11 @@
   starting with $\omega(\Cal{F}_0)$.
 
   \textbf{Step 1}. %todo: proper ref below
-  We want to employ the following lemma by \mcite{SH17} p. 22.
-  \ncite{lem:holderapprox} 
-  to each Hölder smooth part of $g$ and then piece it together somehow,
+  We want to employ the lemma by \ncite{SH17}
+  (\cref{lem:holderapprox})
+  to each Hölder smooth part of $g = Tf$ where $f$ is an arbitrary network
+  in $\cl{F}_0$
+  and then piece it together somehow,
   using that ReLU networks are easily stitched together into bigger
   ReLU networks.
   Therefore the first step is to refit our
@@ -63,6 +61,11 @@
     & j \in \{2, \dots, q-1\} \notag
     \\ h_q \in &\; C_{t_q}([0,1]^{t_q}, \beta_q, H_q(2H_{q-1})^{\beta_q})
   \end{align}
+  This concludes our construction of the refit of the components of $g$
+  to unit intervals.
+
+  \textbf{Step 1.1}
+
   Define %todo: define N
   $N \defeq \max_{j \in [q]} n^{t_j/(2 \beta^*_j + t_j)}$
   $\eta \defeq \log \left((2W + 1) 6^{t_j} N
@@ -114,6 +117,8 @@
     \\ \leq &\; \norm{\wh{h}_{jk} - h_{jk}}_\infty
     \\ \leq &\; 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
   \end{align}
+  Having employed \cref{lem:holderapprox} we now need to stitch it
+  back together:
 
   \textbf{Step 2}.
   Now define $\wt{f}:\Cal{S} \to \R$

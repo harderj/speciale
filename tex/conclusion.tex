@@ -1,3 +1,4 @@
+\section{Conclusion}
 
 In this paper we have build up the theory behind Q-learning,
 covering decision models, optimality of policies,
@@ -31,7 +32,7 @@ increases in iterations, batch size and function space complexity.
 It is hard to interpret exactly how large these increases must be
 or whether it is practical.
 
-\subsection{Further directions}
+\section{Further directions}
 
 The litterature on Q-learning algorithms and relating topics such as 
 function approximation, dynamic programming and artificial neural networks
@@ -39,7 +40,7 @@ is vast, and only very little made it into this thesis.
 An obvious direction to go is to review more of the most recent results
 in order to give a more complete picture of the field.
 
-\subsubsection{Suboptimality of policies}
+\subsection{Suboptimality of policies}
 This is relating to decision processes and value functions.
 Through out the paper we discuss a wide array of
 approximations of $Q^*$.
@@ -56,7 +57,7 @@ while many others make do with a bound on $\norm{Q^* - \wt{Q}}_\infty$.
 To this end it could be interesting to establish relations
 between $\norm{Q^* - Q_{\wt{\pi}}}_\infty$ and $\norm{Q^* - \wt{Q}}_\infty$.
 
-\subsubsection{Bernstein polynomials vs. orthogonal projection}
+\subsection{Bernstein polynomials vs. orthogonal projection}
 A Bernstein polynomial $B_f$ approximating a function $f$
 are constructed by evaluating the
 functions at a finite number of points (see \cref{defn:Bfn}).
@@ -73,17 +74,20 @@ and the orthogonal projection, both in terms of accuracy and
 computational complexity, could be interesting analyse.
 
 
-\subsection{Notes on references}
+\section{Notes on references}
 The proofs on basic measure theory are inspired by ones found in
 \mcite{RH14} and \mcite{K02}.
 
 A good survey on results on optimal policy existence in the special case
 of Markov decision processes can be found in \mcite{F12}.
 
-\subsection{Credits}
+\section{Credits}
 I would like to thank PhD-student Jonas Rysgaard Jensen for helping me
 out with a proof on the Ionescu Tulcea kernel,
-my cousin Rune Harder Bak for helping me structure the text better,
-my dormmates for letting me have my spot in the library for long days.
-
+my cousin Rune Harder Bak for reading the mess I've made,
+my dormmates at the P.C.Petersens dorm for good company and very necessary
+recreational breaks from writing,
+my aunt Susanne for providing excellent bed and breakfast during the beginning
+of the covid-19 and
+my the rest of my family for love and support.
 

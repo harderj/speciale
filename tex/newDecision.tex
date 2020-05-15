@@ -45,10 +45,15 @@ A handy property of kernels is
   into $(\ol{\ul{\R}}, \ol{\ul{\bb{B}}})$.
   \label{prop:intKerMeas}
 \end{prop}
-\begin{proof}
+\begin{proof}[Proof of \cref{prop:intKerMeas}]
   Simple functions are measurable since $\kappa$ is a kernel.
   Now extend by sums and limits.
 \end{proof}
+Here we denote $\Rext = \R \cup \{\pm \infty\}$ and $\ol{\R} = \R \cup \{\infty\}$,
+$\ul{\R} = \R \cup \{-\infty\}$.
+These are endowed with the natural order topology
+(\cref{defn:orderTop}) and the Borel $\sigma$-algebra
+(\cref{defn:BorelAlg}) obtained from this.
 
 We can now state the definition of a decision process
 
@@ -255,7 +260,7 @@ It is even possible to view the Ionescu-Tulcea construction as a kernel
   By contruction $\bb{O} \subseteq \bb{G}$ since
   \[ \phi_{A_1 \times \dots \times A_i \times \Cal{X}_{i+1} \times \dots}
   = \kappa^{\ul{i-1}}(A_1 \times \dots \times A_i \mid \cdot) \]
-  and any $\kappa^{\ul{i-1}}$ is a kernel (\cref{prop:compKer}).
+  and any $\kappa^{\ul{i-1}}$ is a kernel making that function measurable.
   We will show that $\bb{G}$ is a Dynkin class.
   Then by Dynkins $\pi$-$\lambda$ theorem (see \cref{thm:DynkinPiLambda})
   \[ \sigma(\bb{O}) = \Sigma_{\Cal{X}^{\ul{\infty}}}
@@ -334,7 +339,7 @@ the following conditions:
   \label{cond:F+}
 \end{cond}
 
-Now the following definition makes sense 
+Under $(F^+)$ or $(F^-)$ following definition makes sense 
 \begin{defn}[Finite horizon value function]
   Let $\ul{R}_i : \Cal{H}_\infty \to \Rext$ be the projection map onto the
   $i$th reward. We define the function $V_{n, \pi} : \cl{S}_1 \to \Rext$ by
@@ -620,18 +625,18 @@ it should not be necessary that policies depend on the history.
 To talk about this topic we introduce
 
 \begin{defn}[Policy classes]
-  A policy $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$
+  A policy $\pi = (\tau_1, \tau_2, \dots) \in R\Pi$
   is called \defemph{Markov} if it
   only depends on the last state is the history.
   That is there exist $\tau_1, \tau_2, \dots : \cl{S} \leadsto \cl{A}$
-  such that $\pi_i(\cdot \mid s_1, \dots s_i) = \tau_i(\cdot \mid s_i)$.
+  such that $\tau_i(\cdot \mid s_1, \dots s_i) = \tau_i(\cdot \mid s_i)$.
   We denote the set of (random) Markov policies by $M\Pi$.
   If $\tau_1 = \tau_2 = \dots$ the Markov policy is called
   \defemph{stationary}
   and the set of them denote by $S\Pi$.
-  Furthermore $\pi$ is called \defemph{deterministic} if all $\pi_i$
+  Furthermore $\pi$ is called \defemph{deterministic} if all $\tau_i$
   are degenerate, i.e. for all $i$ we have
-  $\pi_i(\{a_i\} \mid h_i) = 1$ for some $a_i \in \Cal{A}_{i}$.
+  $\tau_i(\{a_i\} \mid h_i) = 1$ for some $a_i \in \Cal{A}_{i}$.
   We denote the deterministic version of the policy classes
   by the letter $D$.
 \end{defn}
@@ -644,22 +649,26 @@ To talk about this topic we introduce
   \end{matrix} \] 
   Note that stationary policies might not exist
   in HDPs, but always exist for MDPs.
-  A policy $(\pi_1, \pi_2, \dots)$ is deterministic
+  A policy $(\tau_1, \tau_2, \dots) \in R\Pi$ is deterministic
   if and only if there exist measurable
   functions $\varphi_n : \cl{H}_n \to \cl{A}$ such that
-  $\pi_n(\cdot \mid h_n) = \delta_{\varphi_n(h_n)}$. Therefore we shall sometimes
-  write $\pi_n(h_n) = \varphi_n(h_n)$, viewing $\pi_n$ as a function.
+  $\tau_n(\cdot \mid h_n) = \delta_{\varphi_n(h_n)}$. Therefore we shall sometimes
+  write $\tau_n(h_n) = \varphi_n(h_n)$, viewing $\tau_n$ as a function.
+  For convenience
+  will view stationary policies $\tau \in S\Pi$ interchangeably as kernels
+  $\tau : \cl{S} \leadsto \cl{A}$ and as the policy
+  $(\tau, \tau, \dots)$.
 \end{rem}
 
-We will prove that in MDPs under mild assumptions the optimal policy $\pi^*$
-can be chosen Markov, and even stationary. Before we can do this
-we need some tools for studying MDPs.
+We will prove that in MDPs under mild assumptions the optimal policy
+can be chosen to be deterministic, Markov, and even stationary.
+Before we do this we define some important tools for studying MDPs.
 
 \begin{defn}[The $T$-operators]
-  For a stationary policy $\pi$ and measurable $V:\Cal{S} \to \Rext$
+  For a stationary policy $\tau \in S\Pi$ and measurable $V:\Cal{S} \to \Rext$
   we define the operators 
-  \[ T_\pi V \defeq s \mapsto \int r(s, a)
-  + \gamma V(s') \difd (P \pi)(a, s'\mid s) \]
+  \[ T_\tau V \defeq s \mapsto \int r(s, a)
+  + \gamma V(s') \difd (P \tau)(a, s'\mid s) \]
   \[ T V \defeq s \mapsto \sup_{a \in A(s)} T_a V(s) \]
   where $T_a = T_{\delta_a}$ for $a \in A(s)$.
 \end{defn}
@@ -668,26 +677,38 @@ we need some tools for studying MDPs.
   under (P) that $V\geq 0$ and under (N) that $V \leq 0$.
 \end{rem}
 
-The $T$ operator is sometimes called the Bellman-operator. %todo check this
-It is harder to work with than $T_\pi$ because it envolves a supremum.
-Therefore we will first take a closer look at properties of $T_\pi$.
+The $T$ operator is sometimes called the \emph{Bellman-operator}. %todo check this
+It is harder to work with than $T_\tau$ because it envolves a supremum.
+Therefore we will first take a closer look at properties of $T_\tau$.
 
-\begin{prop}[Properties of the $T_\pi$-operator]
-  Let $\pi = (\pi_1, \pi_2, \dots)$ be a Markov policy.
+\begin{prop}[Properties of the $T_\tau$-operator]
+  Let $\pi = (\tau_1, \tau_2, \dots) \in M\Pi$ be a Markov policy,
+  and $\tau \in S\Pi$ be a stationary policy.
   \begin{enumerate}
-    \item $T_\pi$ is measurable and commutes with limits.
-    \item $V_{k, \pi} = T_{\pi_1} V_{k-1, (\pi_2, \dots)}
-      = T_{\pi_1} \dots T_{\pi_k} V_0$.
-    \item $V_\pi = \lim_{k \to \infty} T_{\pi_1} \dots T_{\pi_k} V_0$
-    \item If $\pi$ is stationary $T_\pi V_\pi = V_\pi$.
-    \item (D) $T$ and $T_\pi$ are $\gamma$-contractive
+    \item $T_\tau$ is measurable and commutes with limits.
+    \item $V_{k, \pi} = T_{\tau_1} V_{k-1, (\tau_2, \dots)}
+      = T_{\tau_1} \dots T_{\tau_k} V_0$.
+    \item $V_\pi = \lim_{k \to \infty} T_{\tau_1} \dots T_{\tau_k} V_0$
+    \item For the stationary policy $\tau$ we have $T_\tau V_\tau = V_\tau$.
+    \item (D) $T$ and $T_\tau$ are $\gamma$-contractive
       on $\Cal{L}_\infty(\Cal{S})$.
-    \item (D) $V_\pi$ is the unique bounded fixed point of $T_\pi$
+    \item (D) $V_\tau$ is the unique bounded fixed point of $T_\tau$
       in $\Cal{L}_\infty(\Cal{S})$
   \end{enumerate} 
   \label{prop:propTpiV}
 \end{prop}
-\begin{proof}
+
+\begin{rem}
+  Here $\cl{L}_\infty(\cl{S})$ denotes the set of essentially bounded
+  measurable functions on $\cl{S}$. Since we interested in integration
+  with respect to the variety of measures arising as the composition
+  $P \circ \tau$ we must assume essential boundedness with respect to
+  all such measures. Note that the set of every-bounded measurable functions
+  is a subset of $\cl{L}_\infty(\cl{S})$ defined in this way, so it is
+  non-empty.
+\end{rem}
+
+\begin{proof}[Proof of \cref{prop:propTpiV}]
   \leavevmode
   \begin{enumerate}
     \item Measurability is by \cref{prop:intKerMeas} the rest follows by
@@ -844,8 +865,8 @@ $fg$ is upper (lower) semicontinuous.
   $\rho_\cl{X} (\Gamma) = \cl{X}$, where
   $\rho_\cl{X}$ is projection onto $\cl{X}$
   and let $f : \Gamma \to \Rext$ be upper semicontinuous.
-  \[ f^* : \cl{X} \to \Rext = x \mapsto \sup_{y \in \Gamma^x} f(x, y) \]
-  where $\Gamma^x = \{ y \in \cl{Y} \mid (x, y) \in \Gamma \}$.
+  \[ f^* : \cl{X} \to \Rext = x \mapsto \sup_{y \in \Gamma(x)} f(x, y) \]
+  where $\Gamma(x) = \{ y \in \cl{Y} \mid (x, y) \in \Gamma \}$.
   Then $f^*$ is upper semicontinuous and there exists a Borel-measurable
   function $\varphi : \cl{X} \to \cl{Y}$ such that
   $\Gr(\varphi) \subseteq \Gamma$ and
@@ -880,8 +901,8 @@ makes sense for value functions.
     \item For every $s \in \cl{S}$ we have that
       $(s, a) \mapsto T_a V(s)$ is upper semicontinuous and bounded from above.
     \item For every $s \in \cl{S}$ we have that $G_V(s)$ is non-empty.
-    \item There exist a deterministic greedy policy $\tau_V$.
-    \item $T_{\tau_V} V = TV$ so $TV$ is measurable.
+    \item There exist a deterministic greedy policy $\tau_V$ for $V$.
+    \item $T_{\tau_V} V = TV$ and $TV$ is upper semicontinuous.
   \end{enumerate}
   \label{prop:greedyExi}
 \end{prop}
@@ -907,11 +928,17 @@ makes sense for value functions.
 
 \subsection{Existence of optimal policies}
 
+In the light of \cref{prop:greedyExi} (and induction)
+since $V_0^* = 0$ is upper semicontinuous for any $k \in \N$
+$T^k V^*_0$ is upper semicontinuous and thus has an associated greedy
+policy $\tau_{T^k V^*_0}$ which we will denote $\tau^*_k$.
+
 \begin{prop}
   Under \cref{sett:BS0} we have that
-  \[ V^*_k = T^k V_0^* = T_{\tau_{V^*_{k-1}}} \dots T_{\tau_{V^*_0}} V_0^* \]
+  \[ V^*_k = T^k V_0^* = T_{\tau^*_{k-1}} \dots T_{\tau^*_0} V_0^*
+  = V_{k, (\tau^*_{k-1}, \dots, \tau^*_0)} \]
   and this is an upper semicontinuous function.
-  Thus $(\tau_{V^*_k}, \dots, \tau_{V_0^*})$ is a deterministic
+  Thus $(\tau^*_{k-1}, \dots, \tau^*_0)$ is a deterministic
   $k$-optimal policy for any $k \in \N$.
   \label{prop:kOpt}
 \end{prop}
@@ -987,11 +1014,15 @@ makes sense for value functions.
   Under \cref{sett:BS0} and (D) we have that $\tau_{V^*}$ is optimal
   and for any $V \in \cl{L}(\cl{S} \times \cl{A})$ it holds that
   \[ \abs{T^k V - V^*} \leq \gamma^k \abs{V - V^*} \]
+  Furthermore $V_{k, \pi}, V_\pi, V^*_k, V^*$ are all upper semicontinuous.
   \label{cor:Viteration}
 \end{cor}
 \begin{proof}
   Since (D) implies the last point in \cref{sett:Schal} we can apply
-  \cref{prop:optPol}. The last part is by the Banach fixed point theorem.
+  \cref{prop:optPol}. The bound on $\abs{T^k V - V^*}$
+  is by the Banach fixed point theorem.
+  Upper semicontinuity of the value functions followed from the proofs
+  of \cref{prop:greedyExi} and \cref{prop:optPol}.
 \end{proof}
 
 \subsection{Value iteration}
@@ -1003,14 +1034,14 @@ an iterative application of the $T$ operator.
 
 \begin{figure}[H]
   \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
-    \caption{Simple value iteration}
+    \caption{Simple theoretical value iteration}
     \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$,
     initial value function $\wt{V}_0$}
     $r \leftarrow \int x \difd R(x \mid \cdot)$.
 
     \For{$k = 0,1,2,\dots,K-1$}{
-      $ \wt{V}_{k+1} \leftarrow r
-      + \gamma \int \sup_{a' \in \Cal{A}} \wt{V}_k(s', a') \difd P(s' \mid \cdot)$
+      $ \wt{V}_{k+1} \leftarrow \sup_{a \in \Cal{A}} r(\cdot, a)
+      + \gamma \int  \wt{V}_k(s') \difd P(s' \mid \cdot, a)$
     }
 
     \KwOut{An estimator $\widetilde{V}_K$ of $V^*$}
@@ -1021,17 +1052,91 @@ an iterative application of the $T$ operator.
 The results of the previous section, in particular \cref{cor:Viteration}
 is the theoretical foundation for
 \emph{value iteration}.
+In particular by \cref{cor:Viteration} we know under \cref{sett:BS0} and (D)
+that \cref{alg:valueIteration}
+convergences exponentially in $\gamma$ to the optimal value function.
+Furthermore by \cref{prop:kOpt} if we set $\wt{V}_0 = 0$ and define
+$\wt{\tau}_1, \dots, \wt{\tau}_k$ as the greedy policies with respect to
+the outputs
+$\wt{V}_1, \dots, \wt{V}_k$ of \cref{alg:valueIteration}. Then
+$\wt{\pi} = (\wt{\tau}_k, \dots, \wt{\tau}_1)$ is $k$-optimal.
 
 Value iteration was invented for finite state
 and action spaces, but as we have shown, exponential convergence to the optimal
 infinite horizon value function is guaranteed in far more general case
 (\cref{sett:BS0} and (D)), and therefore \cref{alg:valueIteration} could be
 applied in other cases if one has a practical way of representing the iterations
-$TV_0, T^2V_0, \dots$.
-We here include an example in the finite case.
-%todo example
+$TV_0, T^2V_0, \dots$. First however we will look at a finite example
+for simplicity.
 
-%todo: Policy iteration?
+Value iteration is a widely used as an example of simple
+reinforcement learning.
+In particular the following is a classic example original to a
+2015 course in RL by David Silver.
+\begin{example}[Gridworld]
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+      \draw[step=0.5cm, color=gray] (0,0) grid (2.5,2.5);
+      \node (A) at (0.75,2.25) {A};
+      \node (A') at (0.75,0.25) {A'};
+      \node (B) at (1.75,2.25) {B};
+      \node (B') at (1.75,1.25) {B'};
+      \draw [->][bend left=15] (A) edge node[left] {\scriptsize{+10}} (A');
+      \draw [->][bend left=15] (B) edge node[left] {\scriptsize{+5}} (B');
+    \end{tikzpicture}
+    \caption{The simple gridworld Markov decision process.}
+  \end{figure}
+  The \emph{gridworld} MDP consist of 25 states $\cl{S} = [5]^2$ and 4 actions
+  $\cl{A} = \{U, D, L, R\}$ for \emph{up}, \emph{down}, \emph{left} and 
+  \emph{right}. The transition $P$ and reward $R$ kernels are deterministic:
+  the agent moves 1 square up, down, left or right according to the chosen
+  action and receives a reward of 0, except:
+  \begin{itemize}
+    \item Any move that would move the
+      agent out of the grid results in no movement and a reward of -1.
+    \item Any action in the state $A = (2,1)$ results in $A' = (2,5)$ as
+      the next state and a reward of 10.
+    \item Any action in the state $B = (4,1)$ results in $B' = (4,3)$ as
+      the next state and a reward of 5.
+  \end{itemize}
+  Finite spaces are trivially standard Borel with the discrete topology,
+  which also makes every map $(s, a) \mapsto \cl{X}$ into some
+  topological space continuous. In particular $P$ is continuous and
+  $r$ is (upper semi)continuous.
+  The set of admissible actions $A(s)$ is equal to the
+  full action space $\cl{A}$ for all $s \in \cl{S}$, which is trivially
+  compact.
+  The rewards are bounded by $R_{\max} = 10$.
+  Setting $\gamma = 0.9$ makes (D) hold, and puts
+  $V_{\max} = 10/(1-0.9) = 100$.
+  Thus we can apply \cref{cor:Viteration} and for $\wt{V}_0 = 0$ get that
+  \[ \abs{\wt{V}_K - V^*} \leq \gamma^K \abs{V^*}
+  \leq \gamma^K V_{\max} = 100 \cdot 0.9^{-K} \]
+  
+  By \cref{prop:propTpiV} for any stationary policy $\tau \in S\Pi$ we have
+  that $T_\tau$ is also $\gamma$-contractive and we
+  easily get the same bound on the policy evaluation
+  \[ \abs{T_\tau^k V_0 - V_\tau} \leq \gamma^K V_{\max} \]
+  Measures over finite spaces can be represented as real vectors,
+  and kernels as matrices.
+  For example the transition kernel
+  $P: \cl{P}(\cl{S} \times \cl{A}) \to \cl{P}(\cl{S})$
+  is a $\abs{\cl{S}} \times (\abs{\cl{S}} \cdot \abs{\cl{A}})$-matrix.
+  Calculating $TV$ and $T_\pi V$ is then a matter of matrix multiplication
+  and taking maxima over vectors.
+
+  Define the stationary policy $\tau_r(\cdot \mid \cdot) = \frac{1}{4}$ which
+  chooses actions uniformly at random at every state.
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.7]{figs/gridworld1.png}
+    \caption{Value functions of the gridworld environment.}
+  \end{figure}
+
+  \label{ex:gridworld}
+\end{example}
 
 \subsection{Q-functions}
 Throughout this section we assume \cref{sett:BS0}, (D) and furthermore that
@@ -1055,6 +1160,7 @@ policy evaluations and greedy policies, can be defined analogously.
   , \qquad Q^* = \sup_{\pi \in R\Pi} Q_\pi \]
   Define $Q_0 = r$ then we make the convention that
   $Q^*_0 = Q_{0,\pi} = Q_0 = r$.
+  \label{defn:polEvalQ}
 \end{defn}
 \begin{defn}[Operators for Q-functions]
   For any stationary policy $\tau \in S\Pi$
@@ -1063,8 +1169,9 @@ policy evaluations and greedy policies, can be defined analogously.
   \[ P_\tau Q(s, a) = \int Q(s', a') \difd \tau P(s', a' \mid s, a) \]
   \[ T_\tau Q = r + \gamma P_\tau Q \]
   \[ T Q(s, a) = r(s, a) + \gamma
-  \int \max_{a' \in \Cal{A}} Q(s', a') \difd P(\cdot \mid s, a) \]
+  \int \max_{a' \in \Cal{A}} Q(s', a') \difd P(s' \mid s, a) \]
   where $T_a = T_{\delta_a}$.
+  \label{defn:opQ}
 \end{defn}
 \begin{rem}
   The $P_\tau$ operator is defined for simplications in proofs, especially
@@ -1078,6 +1185,7 @@ policy evaluations and greedy policies, can be defined analogously.
   \[ \tau \left( G_Q^\tau(s) \Mid s \right) = 1 \]
   then $\tau$ is said to be \defemph{greedy} with respect to $Q$ and is
   denoted $\tau_Q$.
+  \label{defn:greedyQ}
 \end{defn}
 
 The idea of Q-functions (and the letter Q) originates to
@@ -1111,98 +1219,115 @@ translate to Q-functions.
   and $\tau \in S\Pi$ stationary. Then
   \leavevmode
   \begin{enumerate}
-    \item $\E_{\tau(\cdot \mid s)} Q_{k, \pi} = V_{k+1, (\tau, \pi)}$
-    \item $T_\tau Q_{k, \pi}
-      = r + \gamma \E T_\tau V_{k, \pi}$
-    \item $\tau(V_{k, \pi}) = \tau(Q_{k, \pi})$ and
-      $\tau(V_\pi) = \tau(Q_\pi)$, in particular $\tau^*_k$ and $\tau^*$
-      are greedy for $Q^*_k$ and $Q^*$.
-    \item $\max_{a \in A(s)} Q^*(s, a) = V^*(s)$.
+    \item Policy evaluations are related by
+      $\E_{\tau(\cdot \mid s)} Q_{k, \pi} = V_{k+1, (\tau, \pi)}(s)$.
+    \item $T_\tau$-operators are related by $T_\tau Q_{k, \pi}(s, a)
+      = r + \gamma \E_{P(\cdot \mid s, a)} T_\tau V_{k, \pi}$.
+    \item Greedy policies for policy evaluations are the same,
+      that is
+      \[ \tau(Q_{k, \pi}) = \tau(V_{k, \pi}), \; \mathrm{and} \;
+      \tau(Q_\pi) = \tau(V_\pi) \]
+    \item Optimal policies are related by
+      $\max_{a \in A(s)} Q^*(s, a) = V^*(s)$ and
+      \[ Q^*_k(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*_k,
+      \quad Q^*(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^* \]
     \end{enumerate}
-  \label{prop:TQ}
+  \label{prop:relQV}
 \end{prop}
-\begin{proof}
-  \leavevmode
-  \begin{enumerate}
-    \item This is essentially due to properties of the kernels. The idea is
-      sketched here
-      \begin{align*}
-	T_\mu Q_{k, \pi} = r + \gamma \int r + \gamma V_{k, \pi}
-	\difd P \difd \mu P
-	= r + \gamma \int r + \gamma V_{k, \pi} \difd P \mu \difd P
-	= r + \gamma \int T_\mu V_{k, \pi} \difd P
-      \end{align*}
-  \end{enumerate}
-\end{proof}
 
-\begin{prop}[Derived properties of Q-functions]
+\begin{prop}[Properties of Q-functions]
   Let $\pi = (\tau_1, \tau_2, \dots) \in M\Pi$ be a Markov policy
   and $\tau \in S\Pi$ stationary. Then
   \leavevmode
   \begin{enumerate}
-    \item $\lim_{k \to \infty} Q_{k, \pi} = Q_\pi$
-      and $\abs{Q_{k, \pi}}, \abs{Q_\pi}, \abs{Q^*_k}, \abs{Q^*} \leq V_{\max}$.
-    \item $Q_{k, \pi} = T_{\tau_1} \dots T_{\tau_k} Q_0$.
-    \item $T, T_\tau$ is $\gamma$-contractive on
+    \item $Q_{k, \pi} = T_{\tau_1} \dots T_{\tau_k} Q_0$ and
+      $Q^*_k = T_{\tau_{k-1}^*} \dots T_{\tau_0^*} Q^*_0
+      = T^k Q^*_0$.
+    \item $Q_\pi = \lim_{k \to \infty} Q_{k, \pi}$ and
+      $Q^* = \lim_{k\to\infty} Q_k^*$. 
+    \item $T,\; T_\tau$ are $\gamma$-contractive on
       $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
-      and $Q^*, Q_\tau$ are the unique fixed points of $T, T_\tau$ in
-      $\Cal{L}_\infty(\Cal{S}\times\Cal{A})$.
-    \item $Q^*_k = r + \gamma \int V^*_k(s) \difd P(s \mid \cdot)$ and
-      $Q^* = r + \gamma \int V^*(s) \difd P(s \mid \cdot)$.
-      Furthermore $Q^*$ and $Q^*_k$ are upper semicontinuous.
-    \item $Q^* = Q_{\tau^*} = \lim_{k\to\infty} Q_k^*$.
+      and $Q^*,\; Q_\tau$ are their unique fixed points.
+    \item $Q^* = Q_{\tau^*}$ and
+      $Q_{k, \pi},\; Q_\pi,\; Q^*_k,\; Q^*$ are all upper semicontinuous
+      and bounded by $V_{\max}$.
   \end{enumerate}
+  \label{prop:propQ}
 \end{prop}
 
-\begin{proof} %todo fix this proof
-  \leavevmode
-  \begin{enumerate}
-    \item We see that
-      $Q_k^* = \sup_{\pi \in R\Pi} (r + \gamma \E V_{k,\pi})
-      \leq r + \gamma \E V_k^* = r + \gamma \E V_{\pi_k^*}
-      \leq Q_k^*$.
-      Upper semicontinuity follows from \cref{prop:intSemiC}.
-    \item Follow the argument for 1.
-    \item Let $s \in \Cal{S}$ then $\sup_{a \in A(s)} Q^*(s, a) = 
-      \sup_{a \in A(s)} (r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*)
-      = T V^*(s) = V^*(s)$.
-    \item By dominated convergence, 1., 2. and \cref{prop:optPol}
-      $\lim_{k\to\infty} Q^*_k = r + \gamma \lim_{k\to\infty} \int V^*_k
-      \difd P = \lim_{k\to\infty} V^* = Q^*$.
-    \item By 2. and the definition of $Q_{\pi^*}$ we have
-      $Q^* = r + \gamma \E V^* = r + \gamma \E V_{\pi^*} = Q_{\pi^*}$.
-    \item Use 1. iteratively starting with
-      $\mu = \pi_1, \pi = (\pi_2, \pi_3, \dots)$.
-    \item By 2. $T_\pi Q_\pi = T_\pi (r + \gamma \E \lim_{k\to\infty} T_\pi^k V_0)
-      = \lim_{k\to\infty} T_\pi (r + \gamma \E T_\pi^k V_0)
-      = \lim_{k\to\infty} (r + \gamma \E T_\pi^{k+1} V_0)
-      = r + \gamma \E \lim_{k\to\infty} T^{k+1}_\pi V_0
-      = r + \gamma \E V_\pi = Q_\pi$.
-    \item The contrativeness of $T_\pi$ follows from the same argument as for
-      value functions. 2. and Banach fixed point theorem does the rest.
-    \item \begin{align*}
-	TQ^*_k(s,a) &= T(r + \gamma \E V^*_k)(s,a)
-	\\ &= r(s,a) + \gamma
-	\int \sup_{a' \in \Cal{A}} (r(s',a')
-	+ \gamma \E_{P(\cdot \mid s', a')} V^*_k)
-	\difd P(s' \mid s,a)
-	\\ &=r(s,a) + \gamma
-	\int \sup_{a' \in \Cal{A}} \left(r(s',a') + \gamma
-	\int V_k^*(s'') \difd P(s'' \mid s', a') \right)
-	\difd P(s' \mid s,a)
-	\\ &= r(s, a) + \gamma
-	\int T V^*_k(s') \difd P(s' \mid s, a)
-      \end{align*}
-      To get $Q^*_k = T^k r$ use this inductively
-      $Q^*_k = r + \gamma \E V^*_k = r+ \gamma TV^*_{k-1}
-      = T Q^*_{k-1} = \dots$.
-      The statement $Q^*_k = T_{\pi^*_1} \dots T_{\pi^*_k} r$
-      is from \cref{prop:TQ}.
-    \item The argument from 1. also implies this first statement in
-      2. Now $TQ^* = r + \gamma \E TV^* = r + \gamma \E V^* = Q^*$
-      by \cref{prop:VoptEqVpiOpt}.
-    \item The argument is similar to \cref{prop:propTV} pt. 5.
-  \end{enumerate}
+\begin{proof}[Proof of \cref{prop:relQV} and \cref{prop:propQ}]
+%todo fix this proof
+  Measurability of $Q_{k, \pi}$ and $Q_\pi$
+  follow from measurability of $V_{k, \pi}$, $V_{\pi}$
+  and \cref{prop:intKerMeas}.
+  Upper semicontinuity of $Q_{k, \pi}$ and $Q_\pi$ follows
+  from \cref{prop:intSemiC} because $V_{k, \pi}$ and $V_\pi$ are
+  upper semicontinuous (see \cref{cor:Viteration}).
+
+  For \cref{prop:relQV}.1 we have \begin{align*}
+    \E_{\tau(\cdot \mid s)} Q_{k, \pi}
+    &= \int r(s,a) + \gamma \E_{P(\cdot \mid s, a)} V_{k, \pi}
+    \difd \tau(a \mid s)
+    \\ &= \int r(s,a) + \gamma \sum_{i=1}^{k} \gamma^{i-1} r(s_i, a_i)
+    \difd P \tau_k \dots P\tau_1 P\tau(a, s_1, a_1, \dots, s_k \mid s)
+  \\ &= V_{k+1, (\tau, \pi)} \end{align*}
+  
+  For \cref{prop:relQV}.2 we sketch the idea by
+  \begin{align*}
+    T_\tau Q_{k, \pi} = r + \gamma \int r + \gamma V_{k, \pi}
+    \difd P \difd \tau P
+    = r + \gamma \int r + \gamma V_{k, \pi} \difd P \tau \difd P
+    = r + \gamma \int T_\tau V_{k, \pi} \difd P
+  \end{align*}
+  
+  For $Q_{k,\pi} = T_{\tau_1} \dots T_{\tau_k} Q_0$ use \cref{prop:relQV}.2
+  iteratively starting with
+  $\tau = \tau_1, \pi = (\tau_2, \tau_3, \dots)$.
+  
+  The $\tau(Q_{k, \pi}) = \tau(V_{k, \pi})$ part of \cref{prop:relQV}.3
+  is by definition of the two concepts of
+  greedy functions.
+
+  That $Q_\pi = \lim_{k \to \infty} Q_{k, \pi}$
+  follows from dominated convergence and
+  \cref{prop:VpiMeas}.3.
+
+  For \cref{prop:relQV}.4 $Q_k^* = \sup_{\pi \in R\Pi} (r + \gamma \E V_{k,\pi})
+  \leq r + \gamma \E V_k^* = r + \gamma \E V_{\pi_k^*}
+  \leq Q_k^*$. The same argument works for the second part.
+
+  Let $s \in \Cal{S}$ then $\sup_{a \in A(s)} Q^*(s, a) = 
+  \sup_{a \in A(s)} (r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*)
+  = T V^*(s) = V^*(s)$.
+  
+  By the definition of $Q_{\tau^*}$ we have
+  $Q^* = r + \gamma \E V^* = r + \gamma \E V_{\pi^*} = Q_{\tau^*}$.
+
+  $T_\tau Q_\tau = T_\tau (r + \gamma \E \lim_{k\to\infty} T_\tau^k V_0)
+  = \lim_{k\to\infty} T_\tau (r + \gamma \E T_\tau^k V_0)
+  = \lim_{k\to\infty} (r + \gamma \E T_\tau^{k+1} V_0)
+  = r + \gamma \E \lim_{k\to\infty} T^{k+1}_\tau V_0
+  = r + \gamma \E V_\tau = Q_\tau$.
+
+    We $T_{\tau_Q} Q = T Q$ for any measurable $Q$ because
+  \[ T_{\tau_Q}(s, a) = r(s, a) + \gamma \int \max_{a' \in A(s')} Q(s', a')
+  \difd P(s' \mid s, a) = TQ(s, a) \]
+  Therefore by \cref{prop:propQ}.1
+  \[ T_{\tau_{k-1}^*} Q_{k-1, (\tau_{k-2}^*, \dots, \tau_0^*)}
+  = T Q_{k-1}^* \]
+  since by \cref{prop:relQV}.3 $\tau_{k-1}^*$ is greedy for $Q_{k-1}^*$.
+  Now use induction to get $Q^*_{k-1} = T^k Q_0^*$.
+
+  Because $V^* = V_{\tau^*}$ we have
+  \[ TQ^* = T_{\tau^*} = r + \gamma \E T_{\tau^*} V_{\tau^*}
+  = r + \gamma \E V^* = Q^* \]
+
+  The contrativeness of $T$ and $T_\pi$ follows from the same argument as for
+  value functions.
+  Banach fixed point theorem now concludes \cref{prop:propQ}.3.
+
+  Since now $Q^*$ and $Q_{\tau^*}$ are fixed points for $T$ they must be
+  equal, concluding the last point, namely \cref{prop:propQ}.4.
 \end{proof}
 
 \begin{cor}
@@ -1213,10 +1338,43 @@ translate to Q-functions.
   \label{cor:QrateSimple}
 \end{cor}
 \begin{proof}
-  This is directly from %todo
+  By \cref{prop:propQ}.3.
 \end{proof}
 
-\subsection{Finite Q-iteration}
+\subsection{Q-iteration}
+
+Similar to the value iteration algorithm (\cref{alg:valueIteration}) we can
+define the corresponding for Q-iteration.
+
+\begin{figure}[H]
+\begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
+\caption{Simple theoretical Q-iteration}
+\KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, number of iterations $K$}
+$r \leftarrow \int x \difd R(x \mid \cdot)$
+
+$\wt{Q}_0 \leftarrow r$
+
+\For{$k = 0,1,2,\dots,K-1$}{
+  $ \wt{Q}_{k+1} \leftarrow r
+  + \gamma \int \sup_{a' \in \Cal{A}} \wt{Q}_k(s', a') \difd P(s' \mid \cdot)$
+}
+\KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$}
+\label{alg:theoSimpleQ}
+\end{algorithm}
+\end{figure}
+
+\begin{prop}(D)
+
+  The output $\wt{Q}_K$ of \cref{alg:theoSimpleQ} converges to the optimal
+  Q-function $Q^*$ with rate $\gamma^K$ concretely
+  $\norm{\wt{Q}_K - Q^*}_\infty \leq \gamma^K \norm{Q^*}_\infty$.
+  \label{prop:theoSimpleQConv}
+\end{prop}
+\begin{proof}
+  This is by \cref{cor:QrateSimple}.
+\end{proof}
+
+\subsubsection{Finite Q-iteration}
 We have shown how if one knows the dynamics
 of a stationary decision process satisfying rather broad criteria, 
 such as continuity and compactness,
@@ -1265,7 +1423,7 @@ and $ \wt{Q}_0 \leftarrow r$.
   $\norm{\wt{Q}_K - Q^*}_\infty \leq \gamma^K \norm{Q^*}_\infty$.
 \end{prop}
 \begin{proof}
-  See \cref{prop:theoSimpleQConv}.
+  See \cref{cor:QrateSimple}.
 \end{proof}
 
 \section{Approximation}
@@ -1434,11 +1592,13 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
 This gives us the first method of how to approximate
 $Q^*$ arbitrarily closely on continuous state spaces, in the case
 where it is infeasible to represent $TQ$ directly.
+To use this method in practice one would need to go through the
+construction in \ncite{CCR90}. We will not go further into this,
+and instead focus on another approximation method using
+\emph{Bernstein polynomials}.
 
 \subsection{Using Bernstein polynomials}
 
-We here discuss another approach using multivariate Bernstein polynomials
-for approximation instead of neural networks.
 In this case the need a slightly stronger form of continuity, namely
 Lipschitz continuity, to establish the bounds.
 
@@ -1511,7 +1671,7 @@ For example if we put $n_j = m$ for all $j$ we get
 
 This gives a very concrete way of constructing an arbitrarily good
 approximation to $Q^*$ using polynomials.
-
+%todo example.
 
 
 

@@ -35,20 +35,20 @@ drawing uncountably many times from a distribution is not easily
 defined in a sensible way.
 Even in the finite case where the functions $\wt{Q}_k$
 are well defined, they cannot converge if $R$ is not deterministic.
-Therefore this approach is not attractive in a continuous or
+Therefore this approach does not work in a continuous or
 stochastic setting.
 
 There are broadly two ways of dealing with these problems.
-In the \emph{direct} approaches one tries to first estimate $P$ and $R$
+In the \emph{indirect} approaches one tries to first estimate $P$ and $R$
 by sampling.
 Then since $P$ and $R$ are now ``known'' we can apply the model-dependent
 methods.
-The \emph{indirect} approaches broadly cover \emph{the rest} of the 
+The \emph{direct} approaches broadly cover \emph{the rest} of the 
 cases, and it is mainly these were are going to look at throughout this
 paper. A popular indirect approach is called
 \emph{temporal difference} (TD) learning 
 
-\subsection{Finite case}
+\section{Finite case}
 
 TD learning is based on the following
 update scheme
@@ -249,7 +249,7 @@ value for the learning rate
 (see e.g. \mcite{DM17}) % todo find more examples
 \end{rem}
 
-\subsubsection{History dependent setting}
+\subsection{History dependent setting}
 
 \begin{sett}[Finite HDP]
   \leavevmode
@@ -383,7 +383,8 @@ relations of the classes of decision processes:
     \draw[dashed] (0, -0.3) circle [x radius=1cm, y radius=2cm];
     \node at (0,1.2) { QDP };
   \end{tikzpicture}
-  \caption{Classes of finite decision processes considered in \ncite{MH18}.}
+  \caption{Classes of finite decision processes considered in \ncite{MH18},
+  under \cref{sett:HDP_MH}.}
   \label{fig:DPMH}
 \end{figure}
 
@@ -401,9 +402,9 @@ A sensible thing to ask would be that
 $Q^*(h, a) = r(h, a) + \gamma \E_{P(\cdot \mid h a)} V^*$.
 However we will not go further into these details.
 
-\subsection{Results for continuous settings}
+\section{Results for continuous settings}
 
-\subsubsection{Linear function approximation}
+\subsection{Linear function approximation}
 
 This section is based on \mcite{MR07}.
 

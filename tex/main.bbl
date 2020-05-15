@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -35,6 +35,11 @@ Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
 \newblock A theoretical analysis of deep q-learning.
 \newblock \emph{CoRR}, abs/1901.00137, 2020?
 \newblock URL \url{http://arxiv.org/abs/1901.00137}.
+
+\bibitem[Feinberg(2012)]{F12}
+Eugene Feinberg.
+\newblock Total expected discounted reward mdps: Existence of optimal policies.
+\newblock 05 2012.
 
 \bibitem[Jaakkola et~al.(1994)Jaakkola, Jordan, and Singh]{J94}
 Tommi Jaakkola, Michael Jordan, and Satinder Singh.

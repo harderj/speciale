@@ -44,11 +44,20 @@
   \; \forall a \in \Cal{A} \right\} \]
 \end{defn}
 
-\begin{asm}\label{asm:A1}
+We here recall the definition of the operators for Q-functions
+(\cref{defn:opQ}). For any stationary policy $\tau \in S\Pi$ we define
+\[ P_\tau Q(s, a) = \int Q(s', a') \difd \tau P(s', a' \mid s, a) \]
+\[ T_\tau Q = r + \gamma P_\tau Q \]
+\[ T Q(s, a) = r(s, a) + \gamma
+\int \max_{a' \in \Cal{A}} Q(s', a') \difd P(s' \mid s, a) \]
+matching the definitions in \ncite{F20}.
+
+\begin{asm}
   $ T \Cal{F}_0 \subseteq \Cal{G}_0$.
   I.e. t is assumed that $T f \in \Cal{G}_0$ for any $f \in \Cal{F}_0$, 
   so when using the Bellman optimality operator on our sparse ReLU networks,
   we should stay in the class of compositions of Holder smooth functions.
+  \label{asm:A1}
 \end{asm}
 
 If also $\Cal{G}_0$ is well approximated by functions in $\Cal{F}_0$
@@ -92,7 +101,7 @@ to be Hölder smooth.
     \left( \partial_s^\alpha p(s'' \Mid s, a)
     - \partial_s^\alpha p(s'' \Mid s', a) \right)
   \end{align*}
-  Thus
+  Thus since $p$ and $r$ are Hölder smooth
   \begin{align*}
     \norm{Tf}_{C_w} \leq & \; \sum_{\abs{\alpha}<\beta} \left(
       \norm{\partial^\alpha r(\cdot, a)}_\infty
@@ -123,6 +132,8 @@ to be Hölder smooth.
   \[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m}
     \left[ \E_{v_2} \left( \frac{\mathrm{d} (P_{\pi_m} \dots P_{\pi_1} \nu_1)}
   {\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
+  where $\frac{\difd \mu_1}{\difd \mu_2}$ are the Radon-Nikodym derivative
+  of the measures $\mu_1, \mu_2$ (see Todo reference).
 \end{defn}
 
 \begin{asm}\label{asm:A2}

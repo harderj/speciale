@@ -86,14 +86,14 @@
 
 %theorems
 \theoremstyle{definition}
-\newtheorem{lem}{Lemma}
-\newtheorem{defn}{Definition}
-\newtheorem{thm}{Theorem}
-\newtheorem{cor}{Corollary}
-\newtheorem{rem}{Remark}
-\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{prop}[thm]{Proposition}
 \newtheorem{asm}{Assumption}
-\newtheorem{example}{Example}
+\newtheorem{example}[thm]{Example}
 %\newtheorem{cond}{Condition}
 \newtheorem{sett}{Setting}
 \newtheorem{innercond}{Condition}

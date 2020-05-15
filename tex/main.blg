@@ -5,49 +5,50 @@ The style file: plainnat.bst
 Database file #1: bib.bib
 Warning--I didn't find a database entry for "lem:holderapprox"
 Warning--empty journal in CCR90
+Warning--empty journal in F12
 Warning--empty booktitle in L62
 Warning--empty publisher in RH14
 Warning--empty booktitle in S97
 Warning--empty journal in W89
-You've used 17 entries,
+You've used 18 entries,
             2773 wiz_defined-function locations,
-            728 strings with 7898 characters,
-and the built_in function-call counts, 8061 in all, are:
-= -- 719
-> -- 469
-< -- 15
-+ -- 161
-- -- 144
-* -- 625
-:= -- 1265
-add.period$ -- 71
-call.type$ -- 17
-change.case$ -- 97
-chr.to.int$ -- 17
-cite$ -- 39
-duplicate$ -- 371
-empty$ -- 640
-format.name$ -- 173
-if$ -- 1695
+            733 strings with 7992 characters,
+and the built_in function-call counts, 8360 in all, are:
+= -- 744
+> -- 479
+< -- 16
++ -- 165
+- -- 147
+* -- 642
+:= -- 1313
+add.period$ -- 74
+call.type$ -- 18
+change.case$ -- 101
+chr.to.int$ -- 18
+cite$ -- 42
+duplicate$ -- 390
+empty$ -- 670
+format.name$ -- 177
+if$ -- 1756
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 20
-newline$ -- 111
-num.names$ -- 68
-pop$ -- 197
+missing$ -- 21
+newline$ -- 116
+num.names$ -- 72
+pop$ -- 208
 preamble$ -- 1
-purify$ -- 82
+purify$ -- 85
 quote$ -- 0
-skip$ -- 289
+skip$ -- 301
 stack$ -- 0
-substring$ -- 231
-swap$ -- 46
+substring$ -- 233
+swap$ -- 47
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 172
-warning$ -- 5
-while$ -- 62
+type$ -- 183
+warning$ -- 6
+while$ -- 65
 width$ -- 0
-write$ -- 255
-(There were 6 warnings)
+write$ -- 266
+(There were 7 warnings)
