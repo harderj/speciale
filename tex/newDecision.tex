@@ -701,11 +701,15 @@ Therefore we will first take a closer look at properties of $T_\tau$.
 \begin{rem}
   Here $\cl{L}_\infty(\cl{S})$ denotes the set of essentially bounded
   measurable functions on $\cl{S}$. Since we interested in integration
-  with respect to the variety of measures arising as the composition
-  $P \circ \tau$ we must assume essential boundedness with respect to
+  with respect to the variety of measures
+  (arising as $(P \circ \tau) \mu$ for some $\mu$)
+  we must assume essential boundedness with respect to
   all such measures. Note that the set of every-bounded measurable functions
   is a subset of $\cl{L}_\infty(\cl{S})$ defined in this way, so it is
   non-empty.
+  In the situation where one can prove that all
+  measures in question are absolutely continuous w.r.t. some measure
+  $\nu$ then it is enough to ensure boundedness $\nu$-almost everywhere.
 \end{rem}
 
 \begin{proof}[Proof of \cref{prop:propTpiV}]
@@ -1128,11 +1132,22 @@ In particular the following is a classic example original to a
 
   Define the stationary policy $\tau_r(\cdot \mid \cdot) = \frac{1}{4}$ which
   chooses actions uniformly at random at every state.
+  Below is shown some value functions of the gridworld environment
+  (correct up to errors due to machine precision).
 
   \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.7]{figs/gridworld1.png}
+    \includegraphics[scale=0.8]{figs/gridworld1.png}
     \caption{Value functions of the gridworld environment.}
+    \label{fig:gw1}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.7]{figs/gridworld2.png}
+    \caption{Convergence of gridworld value functions
+    ($\gamma = 0.9$).}
+    \label{fig:gw2}
   \end{figure}
 
   \label{ex:gridworld}

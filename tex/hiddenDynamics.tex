@@ -291,9 +291,12 @@ value for the learning rate
 Within \cref{sett:HDP_MH} Q-functions are generalized so that
 they are taking values in $\cl{H}^* \times \cl{A}$.
 We likewise generalize the $T$ function by
-\[ TQ(h, a) \defeq r' +
+\begin{equation}
+  TQ(h, a) \defeq r' +
   \gamma \sum_{s\in\cl{S}} \max_{a' \in \cl{A}} Q(hr'as, a') P(s \mid ha),
-\qquad r' = r(h, a)\]
+  \qquad r' = r(h, a)
+  \label{eq:MH_Q_def}
+\end{equation}
 
 The optimal Q-function $Q^*$ is defined in [Majeed, Hutter] as
 the fixed point of the $T$ operator in
@@ -325,9 +328,12 @@ Let $\phi_{hra}(s) = \phi(hras)$. Then we can define a kernel
 or expressed as an image measure
 $p_h(\cdot \mid xa) = \phi_{hr'a}(P(\cdot \mid ha))$.
 and further function $q_h^*$ by the equation
-\[ q_h^*(x, a) = r' + \gamma \sum_{x' \in \cl{X}} 
-\max_{a' \in \cl{A}} q^*_h(x', a')
-p_h(x' \mid xa), \quad r'=r(h,a) \]
+\begin{equation}
+  q_h^*(x, a) = r' + \gamma \sum_{x' \in \cl{X}} 
+  \max_{a' \in \cl{A}} q^*_h(x', a')
+  p_h(x' \mid xa), \quad r'=r(h,a)
+  \label{eq:MH_q_def}
+\end{equation}
 
 \begin{asm}[State-uniformity condition]
   For any $h,h' \in \cl{H}^*$ we have
@@ -392,7 +398,8 @@ Recall that QDP is a partially observable HDP under state-uniformity
 (\cref{asm:stateUniformity}).
 
 One point remains unclear after reading \ncite{MH18}:
-Why is $q^*$ and $Q^*$ well defined by their recursive definition
+Why is $q^*$ and $Q^*$ well defined as the solution to their
+functional equations (\cref{eq:MH_Q_def} and \cref{eq:MH_q_def})
 and how are they related to the optimal value function
 $V^*(s) = \sup_{\pi \in R\Pi} \E_s^\pi
 \sum_{i=1}^\infty \gamma^{i-1} r_i $
