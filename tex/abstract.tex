@@ -3,13 +3,13 @@ This paper is mainly about the part of reinforcement learning that is called
 Q-learning, which is a category of algorithms which can \emph{learn} from
 interaction with a decision process.
 We present the background theory for these algorithms,
-a variety of settings in which Q-learning has been analysed
-and the results of such analyses.
+including basic theory on stochastic (decision) processes,
+existence of optimal polices and
+dynamic programming in the form of value iteration.
+Then Q-learning is analysed in a variety of settings.
+Among results other results we present and prove a convergence bound of the
+FQI algorithm obtained in the preprint \mcite{F20},
+which guarantees convergence of Q-learning with deep neural networks
+for a broad class of continuous state-space Markov decision processes.
 In the course of this we discuss the relations between the various settings
 and their results.
-Finally we will present and prove a result obtained in a preprint
-\mcite{F20}
-which uses the fitted Q-iteration algorithm to prove
-convergence rates of Q-learning in the case of a
-continuous state space Markov decision process.
-

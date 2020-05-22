@@ -3,52 +3,51 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: bib.bib
-Warning--I didn't find a database entry for "lem:holderapprox"
 Warning--empty journal in CCR90
 Warning--empty journal in F12
 Warning--empty booktitle in L62
 Warning--empty publisher in RH14
 Warning--empty booktitle in S97
 Warning--empty journal in W89
-You've used 18 entries,
+You've used 19 entries,
             2773 wiz_defined-function locations,
-            733 strings with 7992 characters,
-and the built_in function-call counts, 8360 in all, are:
-= -- 744
-> -- 479
-< -- 16
-+ -- 165
-- -- 147
-* -- 642
-:= -- 1313
-add.period$ -- 74
-call.type$ -- 18
-change.case$ -- 101
-chr.to.int$ -- 18
-cite$ -- 42
-duplicate$ -- 390
-empty$ -- 670
-format.name$ -- 177
-if$ -- 1756
+            739 strings with 8134 characters,
+and the built_in function-call counts, 8729 in all, are:
+= -- 777
+> -- 500
+< -- 17
++ -- 172
+- -- 153
+* -- 668
+:= -- 1372
+add.period$ -- 77
+call.type$ -- 19
+change.case$ -- 106
+chr.to.int$ -- 19
+cite$ -- 44
+duplicate$ -- 409
+empty$ -- 700
+format.name$ -- 186
+if$ -- 1833
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 21
-newline$ -- 116
-num.names$ -- 72
-pop$ -- 208
+missing$ -- 22
+newline$ -- 121
+num.names$ -- 76
+pop$ -- 216
 preamble$ -- 1
-purify$ -- 85
+purify$ -- 89
 quote$ -- 0
-skip$ -- 301
+skip$ -- 317
 stack$ -- 0
-substring$ -- 233
-swap$ -- 47
+substring$ -- 235
+swap$ -- 49
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 183
+type$ -- 194
 warning$ -- 6
-while$ -- 65
+while$ -- 68
 width$ -- 0
-write$ -- 266
-(There were 7 warnings)
+write$ -- 279
+(There were 6 warnings)

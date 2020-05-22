@@ -1,43 +1,55 @@
+This section is mostly based on the paper \mcite{F20}.
 
+Similar to the linear function approximation
+(see \cref{sec:linearFunctionApprox}), in deep Q-learning
+we use a class of functions parametrized by some set $\Theta \subseteq \R^D$.
+This time the function class is not linear combinations of a set of
+basis functions, but a class of artificial neural networks.
+Also we use the same setting (\cref{sett:MR}) of a
+continuous state space, finite action space discounted MDP.
 
-\subsubsection{Differences in notation}
-% Notational differences between this paper
-% and [YangXieWang]
+Though \ncite{F20} claims to investigate the deep Q-network algorithm
+(see \cref{alg:DQN}),
+instead of analysing DQN directly,
+a related algorithm called \emph{fitted Q-iteration} (FQI) is
+analysed instead and bounds on its convergence is established.
 
-Because $\sigma$ is used ambigously in \cref{thm:main}
-we denote the probability distribution $\sigma$
-from \ncite{F20} p. 20 by $\nu$ instead.
-I avoid the shorthand defined in
-\ncite{F20} p. 26 bottom:
-$\norm{f}_n^2 = 1/n \cdot \sum_{i=1}^n f(X_i)^2$.
-and use $p$-norms instead.
-The conversion to the notation used here becomes
-$\norm{f}_n \leadsto \norm{f}/n$.
-The letter $r$ is used in \ncite{F20} to denote the euclidean dimension of
-the state space, while here we use $w$.
+The algorithm analysed by [Fan et al] is
+\begin{figure}[H]
+\begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
+  \caption{Fitted Q-Iteration Algorithm}
+  \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
+    sampling distribution $\nu$, number of iterations $K$,
+  number of samples $n$, initial estimator $\widetilde{Q}_0$}
+  \For{$k = 0,1,2,\dots,K-1$}{
+    Sample i.i.d. observations $\{(S_i, A_i), i \in [n]\}$ from $\nu$
+    obtain $R_i \sim R(S_i, A_i)$ and $S'_i \sim P(S_i, A_i)$ \\
+    Let $Y_i = R_i + \gamma \cdot \max_{a \in \Cal{A}} \widetilde{Q}_k(S'_i, a)$ \\
+    Update action-value function:
+    \[ \widetilde{Q}_{k+1} \leftarrow
+      \argmin_{f \in \Cal{F}} \frac{1}{n}
+    \sum_{i=1}^n (Y_i - f(S_i, A_i))^2 \]
+  }
+  Define $\pi_K$ as the greedy policy w.r.t. $\widetilde{Q}_K$ \\
+  \KwOut{An estimator $\widetilde{Q}_K$ of the optimal value function $Q^*$
+  and an estimator of the optimal policy $\wt{\tau}_K$}
+  \label{alg:fqi}
+\end{algorithm}
+\end{figure}
 
-\subsubsection{The decision model}
-
-\begin{sett}[Fan et al.]
-  \leavevmode
-  \begin{enumerate}
-    \item We're considereing an MDP (\cref{sett:MDP}).
-      That is a state and action space
-      $(\Cal{S}, \Cal{A})$ and a transition and reward kernel $P, R$
-      which only depends on the previous state-action pair.
-    \item $S \subseteq \R^w$ is a compact subset of a euclidean space.
-    \item $\Cal{A}$ is finite.
-    \item Discounted factor satisfy $0 < \gamma < 1$.
-  \end{enumerate}
-  \label{sett:Fan}
-\end{sett}
-
-%todo establish connection to Bertsekas model, e.g. is this u.s.c?
-
-
+We will now look at the function class used in \ncite{F20}.
 \subsubsection{ReLU Networks}
+\begin{rem}
+For a artificial neural network
+$f \in \cl{DN}\left( (\sigma_i, d_i)_{i=1}^{L+1}) \right)$
+with weights $(\wt{W}_i)_{i=1}^{L+1} = (W_i, v_i)_{i=1}^{L+1}$ we can 
+consider the size of the maximum weight of the $i$th weight pair
+$\norm{\wt{W}_i}_\infty$,
+and its number of non-zero $\norm{\wt{W}_i}_0$.
+\end{rem}
 \begin{defn}[Sparse ReLU Networks]
-  For $s,V \in \R$ a (s,V)-\defemph{Sparse ReLU Network} is an ANN $f$
+  For $s,V \in \R$ a (s,V)-\defemph{Sparse ReLU Network} is an artificial
+  neural network $f$
   with all activation functions being \emph{ReLU}
   i.e. $\sigma_{ij} = \max(\cdot, 0)$
   and with weights $(W_\ell, v_\ell)$ satisfying
@@ -48,10 +60,18 @@ the state space, while here we use $w$.
       \item $\max_{j \in [d_{L+1}]} \norm{f_j}_\infty \leq V$
     \end{itemize}
   \end{multicols}
-  Here $\widetilde{W}_\ell = (W_\ell, v_\ell)$.
   The set of them we denote $\Cal{F}\left(L, \{d_i\}_{i=0}^{L+1},s,V \right)$.
   \label{def:sparseReLU}
 \end{defn}
+
+\begin{rem}
+  Following the graph interpretation of ANNs (see \cref{rem:annGraph})
+  the condition that
+  $\sum_{i=1}^{L+1} \norm{\wt{W}_i}_0 \leq s$
+  corresponds to graph-theoretical sparsity of the graph derived from
+  the ANN.
+\end{rem}
+
 The idea to work with this particular subclass of neural networks come from
 \ncite{SH17} (p. 22), which establishes the following lemma
 
@@ -74,31 +94,312 @@ The idea to work with this particular subclass of neural networks come from
 \vspace*{-\baselineskip}
 
 In the course of establishing the results in \ncite{F20} we will not go
-very much into this result or other properties of ReLU networks in particular,
+more into this result or other properties of ReLU networks in particular,
 instead putting emphasis on how to use this result to obtain the main
 theorem, which we will present shortly.
 
-\subsubsection{Fitted Q-Iteration}
-The algorithm analysed by [Fan et al] is
+\subsection{Assumptions}
+
+\subsubsection{Hölder Smoothness} %todo spell Holder properly
+\begin{defn}[Hölder smoothness]
+  For $f : \Cal{S} \to \R$ we define
+  \begin{equation}
+    \norm{f}_{C_w} \defeq 
+    \sum_{|{\alpha}| < \beta}
+    \norm{\partial^{\alpha}f}_\infty +
+    \sum_{\norm{{\alpha}}_1 = \floor{\beta}}
+    \sup_{x \neq y} \frac{|\partial^\alpha (f(x) - f(y))|}
+  {\norm{x-y}_\infty^{\beta-\floor{\beta}}}
+  \end{equation}
+  Where $\alpha = (\alpha_1, \dots, \alpha_w) \in \N_0^w$.
+  And $\partial^k$ is the partial derivative w.r.t. the $k$th variable.
+  If $\norm{f}_{C_w} < \infty$ then $f$ is \defemph{Hölder smooth}.
+  Given a compact subset $\Cal{D} \subseteq \R^w$
+  the space of Hölder smooth functions on $\Cal{D}$ with norm bounded by
+  $H > 0$ is denoted
+  \[ C_w(\Cal{D}, \beta, H) \defeq
+  \left\{ f : \Cal{D} \to \R \Mid \norm{f}_{C_w} \leq H \right\} \]
+\end{defn}
+
+\begin{defn}
+  Let $t_j, p_j \in \N$, $t_j\leq p_j$ and $H_j, \beta_j > 0$ for $j \in [q]$.
+  We say that $f$ is a \defemph{composition of Hölder smooth functions} when
+  \[ f = g_q \circ \dots \circ g_1 \]
+  for some functions $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
+  that only depend on $t_j$ of their inputs
+  for each of their components $g_{jk}$,
+  and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$, 
+  i.e. they are Holder smooth.
+  We denote the class of these functions
+  \[ \Cal{G}(\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}) \]
+\end{defn}
+
+\begin{defn}
+  Define
+  \[ \Cal{F}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R \Mid
+  f(\cdot, a) \in \Cal{F}(s, V) \; \forall a \in \Cal{A} \right\} \]
+  and
+  \[ \Cal{G}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R
+      \Mid f(\cdot, a) = \Cal{G}(\{p_j, t_j, \beta_t, H_j\}_{j \in [q]})
+  \; \forall a \in \Cal{A} \right\} \]
+\end{defn}
+
+We here recall the definition of the operators for Q-functions
+(\cref{defn:opQ}). For any stationary policy $\tau \in S\Pi$ we define
+\[ P_\tau Q(s, a) = \int Q(s', a') \difd \tau P(s', a' \mid s, a) \]
+\[ T_\tau Q = r + \gamma P_\tau Q \]
+\[ T Q(s, a) = r(s, a) + \gamma
+\int \max_{a' \in \Cal{A}} Q(s', a') \difd P(s' \mid s, a) \]
+matching the definitions in \ncite{F20}.
+
+\begin{asm}
+  $ T \Cal{F}_0 \subseteq \Cal{G}_0$.
+  I.e. t is assumed that $T f \in \Cal{G}_0$ for any $f \in \Cal{F}_0$, 
+  so when using the Bellman optimality operator on our sparse ReLU networks,
+  we should stay in the class of compositions of Holder smooth functions.
+  \label{asm:A1}
+\end{asm}
+
+If also $\Cal{G}_0$ is well approximated by functions in $\Cal{F}_0$
+then this assumption implies that $\Cal{F}_0$ is approximately closed
+under the Bellman operator $T$ and thus that $Q^*$ is close to $\Cal{F}_0$.
+
+We now look at a simple example where \cref{asm:A1} holds:
+Seting $\Cal{D}=[0,1]^r$, $q=1$ 
+and taking both the expected reward function and transition kernel
+to be Hölder smooth.
+
+\begin{example}
+  Assume for all $a \in \Cal{A}$ that
+  $P(\cdot \mid s,a)$ is absolutely continuous w.r.t. $\lambda^k$
+  (the $k$ dimensional Lebesgue measure)
+  with density $p(\cdot \mid s, a)$,
+  that for all $s' \in \Cal{S}$ we have
+  $s \mapsto p\left(s' \Mid s, a \right)$
+  and $s \mapsto r(s, a)$ are both Hölder smooth in the class
+  $C_w([0,1]^r, \beta, H)$.
+  Then
+  \[ T \Cal{F}_0 \subseteq C_w([0,1]^r, \beta, (1 + \gamma V_{\max}) H) \] 
+  To see this let
+  Let $f \in \Cal{F}_0$ and $\alpha \in \N_0^w$.
+  Observe that
+  \begin{align*}
+    \partial^\alpha (Tf)(s, a)
+    = & \; \partial^\alpha_s \left( r(s, a) \right)
+    + \gamma \int_{\Cal{S}}\partial^\alpha_s \left[ \max_{a' \in \Cal{A}}
+    f(s', a') p\left(s' \Mid s, a\right) \right] \difd s' 
+    \\ \leq & \; \partial^\alpha_s \left( r(s, a) \right)
+    + \gamma V_{\max} \sup_{s' \in \Cal{S}} \partial_s^\alpha
+    p\left(s' \Mid s, a\right)
+  \end{align*}
+  similarly
+  \begin{align*}
+    \partial^\alpha (Tf)(s, a) - \partial^\alpha (Tf)(s', a)
+    \leq & \; \partial^\alpha_s \left( r(s, a) \right)
+    - \partial^\alpha_s \left( r(s', a) \right)
+    \\ & \; + \gamma V_{\max} \sup_{s'' \in \Cal{S}}
+    \left( \partial_s^\alpha p(s'' \Mid s, a)
+    - \partial_s^\alpha p(s'' \Mid s', a) \right)
+  \end{align*}
+  Thus since $p$ and $r$ are Hölder smooth
+  \begin{align*}
+    \norm{Tf}_{C_w} \leq & \; \sum_{\abs{\alpha}<\beta} \left(
+      \norm{\partial^\alpha r(\cdot, a)}_\infty
+      + \gamma V_{\max} \sup_{s \in \Cal{S}} \norm{\partial^\alpha
+    p(s \mid \cdot, a)}_\infty \right)
+    \\ + & \; \sum_{\norm{\alpha}_1 = \floor{\beta}} \sup_{x \neq y}
+    \left(
+      \frac{\abs{\partial^\alpha (r(x, a) - r(y, a))}}
+      {\norm{x - y}_{\infty}^{\beta - \floor{\beta}}}
+      + \gamma V_{\max} \sup_{s \in \Cal{S}} \frac{
+      \abs{\partial^\alpha (p(s \mid x, a) - p(s \mid y, a))}}
+      {\norm{x - y}_{\infty}^{\beta - \floor{\beta}}}
+    \right)
+    \\ \leq & \; H + \gamma V_{\max} H = (1 + \gamma V_{\max}) H
+  \end{align*}
+  
+\end{example}
+
+\subsubsection{Concentration coefficients}
+
+\begin{defn}[Concentration coefficients] \label{defn:ccoefs}
+  Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
+  absolutely continuous w.r.t. $\lambda^w \otimes \mu_\Cal{A}$
+  (the product of the $w$-dimensional Lebesgue measure and the counting measure
+  on $\Cal{A}$).
+  Define
+  \[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m}
+    \left[ \E_{v_2} \left( \frac{\mathrm{d} (P_{\pi_m} \dots P_{\pi_1} \nu_1)}
+  {\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
+  where $\frac{\difd \mu_1}{\difd \mu_2}$ are the Radon-Nikodym derivative
+  of the measures $\mu_1, \mu_2$ (see Todo reference).
+\end{defn}
+
+\begin{asm}\label{asm:A2}
+  Let $\nu$ be the sampling distribution from the algorithm, and $\mu$ the distribution
+  over which we measure the error in the main theorem, then we assume
+  \[ (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
+  = \phi_{\mu, \nu} < \infty \]
+\end{asm}
+
+\subsection{The main theorem}
+
+\begin{thm}[Fan, Yang, Xie, Wang] \label{thm:main}
+  Under \cref{sett:Fan}
+  let $\mu$ be any distribution over $\Cal{S} \times \Cal{A}$.
+  Make \cref{asm:A1} and \cref{asm:A2} with the
+  constants $\phi_{\mu, \nu} > 0$, $q \in \N$ and
+  $\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}$. Furthermore assume
+  that there exists a constant $\xi > 0$ such that
+  \[ \max \left\{ \sum_{j=1}^q (t_j + \beta_j + 1)^{3 + t_k},
+      \sum_{j=1}^q \log (t_j + \beta_j),
+      \max_{j \in [q]} p_j
+  \right\} \leq (\log n)^\xi \] 
+  Set $\beta^*_j = \beta_j \prod_{\ell = j+1}^q \min(\beta_\ell, 1)$
+  for $j\in [q-1]$, $\beta^*_q = 1$,
+  $\alpha^* = \max_{j \in [q]} t_j/(2\beta^*_j + t_j)$, 
+  $\xi^* = 1 + 2\xi$ and $\kappa^* = \min_{j\in [q]} \beta^*_j/t_j$.
+  Then there exists a class of ReLU networks
+  \[ \Cal{F}_0 = \{f : \Cal{S} \times \Cal{A} \to \R : f(\cdot, a) \in 
+  \Cal{F}(\wt{L}, \{\wt{d}_j\}_{j=0}^{\wt{L}+1},\wt{s}) \mid a \in \Cal{A} \} \]
+  with structure satisfying
+  \[ \wt{L} \lesssim (\log n)^{\xi^*},
+    \wt{d}_0 = r, \wt{d}_j \leq 6 n^{\alpha^*} (\log n)^{\xi^*},
+  d_{L+1} = 1, \wt{s} \lesssim n^{\alpha^*} \cdot (\log n)^{\xi^*} \]
+  such that when running \cref{alg:fqi} with $\Cal{F}_0$
+  and $n$ is sufficiently large
+  \[ \norm{Q^* - Q^{\pi_K}}_{1, \mu} \leq \;
+    C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
+    n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
+    + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K
+  \]
+  where $C_{\varepsilon}>0$ is a constant not depending on $n$ or $K$.
+  Thus
+  \[ \norm{Q^* - Q^{\pi_K}}_{1, \mu} =
+  \cl{O}\left( n^{-\ve^*} \log(n)^{c^*} + \gamma^K \right) \]
+  for some $\ve^*, c^* > 0$.
+\end{thm}
+
+This bound on the convergence of the FQI algorithm
+is quite remarkable in terms of the broad class
+of environments (problems) that it shows can be solved approximatively by using
+sampling from the environment to update a ANN-represented Q-function.
+In particular it is the most general result on convergence rates for
+model-free and continuous state space algorithms,
+among the sources we survey in this thesis.
+
+\subsection{Relation to DQN}
+
+The following is famous \emph{DQN}-algorithm proposed by \mcite{M15}.
 \begin{figure}[H]
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
-  \caption{Fitted Q-Iteration Algorithm}
-  \KwIn{MDP $(\Cal{S}, \Cal{A}, P, R, \gamma)$, function class $\Cal{F}$,
-    sampling distribution $\nu$, number of iterations $K$,
-  number of samples $n$, initial estimator $\widetilde{Q}_0$}
+  \caption{Deep Q-Network}
+  \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$,
+  batch size $n$, exploration factor $\epsilon$, function class $\cl{F}$
+  of deep neural networks
+  parametrized by some $\Theta \subseteq \R^D$, $D \in \N$,
+  target update frequency $T_{\mathrm{target}}$,
+  learning rates $\{\alpha_t\}_{t \geq 0}$}
+
+  Initialize replay memory $\cl{M} \leftarrow \emptyset$ as empty.
+
+  Pick a initial Q-network $\wt{Q}_0 = Q(\theta_0)$ by sampling
+  $\theta_0 \in \Theta$ from some distribution.
+
+  Initialize target network $Q_{\mathrm{target}, 0} = \wt{Q}_0$ by picking
+  the target parameters $\theta^*_0 = \theta_0$ and setting
+  $Q_{\mathrm{target}, 0} = Q(\theta^*_0)$.
+
   \For{$k = 0,1,2,\dots,K-1$}{
-    Sample i.i.d. observations $\{(S_i, A_i), i \in [n]\}$ from $\nu$
-    obtain $R_i \sim R(S_i, A_i)$ and $S'_i \sim P(S_i, A_i)$ \\
-    Let $Y_i = R_i + \gamma \cdot \max_{a \in \Cal{A}} \widetilde{Q}_k(S'_i, a)$ \\
-    Update action-value function:
-    \[ \widetilde{Q}_{k+1} \leftarrow
-      \argmin_{f \in \Cal{F}} \frac{1}{n}
-    \sum_{i=1}^n (Y_i - f(S_i, A_i))^2 \]
+    With probability $\epsilon$ sample $A_k$ uniformly from $\cl{A}$,
+    and with probability $1-\epsilon$ choose $A_k$ greedily with respect
+    to $\wt{Q}_k$, that is
+    $A_k$ is picked from $\argmax_{a \in \cl{A}} \wt{Q}_k(S_k, a)$.
+
+    Sample (observe) $S_{k+1}$ and $R_k$ (from $P(\cdot \mid S_k, A_k)$
+    and $R(\cdot \mid S_k, A_k)$).
+
+    Store the transition $(S_k, A_k, R_k, S_{k+1})$ in the replay
+    memory $\cl{M}$, potentially replacing an old (random) transition
+    if the memory is \emph{full}.
+
+    Experience replay: Sample batch of transitions
+    $(s_i, a_i, r_i, s'_i)_{i \in [n]}$ from the replay memory $\cl{M}$.
+
+    For each $i \in [n]$ let $Y_i = r_i + \gamma \max_{a \in \cl{A}}
+    Q_{\mathrm{target}, \ell(k)}(s_i', a)$.
+
+    Update the Q-network by performing a gradient descent step
+    \[ \theta_{k+1} \leftarrow \alpha_k \frac{1}{n} \sum_{i = 1}^n
+	(Y_i - Q(\theta_k)(s_i, a_i)) \cdot \nabla_{\theta}
+    Q(\theta)(s_i, a_i) \]
+
+    For every $T_{\mathrm{target}}$ steps update the target network by
+    setting $Q(\theta^*_{\ell(k+1)}) \leftarrow Q(\theta^*_{\ell(k)})$
+    where $\ell(k)$ is the number of updates of the target network
+    at step $k$.
   }
-  Define $\pi_K$ as the greedy policy w.r.t. $\widetilde{Q}_K$ \\
-  \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
-  \label{alg:fqi}
+  Put $\wt{Q}_K = Q(\theta_K)$ and pick a greedy policy $\wt{\tau}$
+  with respect to $\wt{Q}_K$.
+
+  \KwOut{An estimator $\wt{Q}_K$ of the optimal value function $Q^*$
+  and $\wt{\tau}_K$ an estimator of the optimal policy $\tau^*$.}
+  \label{alg:DQN}
 \end{algorithm}
 \end{figure}
 
+\Cref{alg:DQN} is an off-policy algorithm because it updates the
+parameter $\theta_k$ based on picking the greedy action of the
+target network $Q_{\hrm{target}, \ell(k)}$, while the policy being
+followed is an $\epsilon$-greedy policy where the greedy part is
+with respect to $\wt{Q}_k$.
+
+\ncite{F20} stresses two \emph{tricks} that drives the succes of DQN,
+which is the use of
+\begin{enumerate}
+  \item \emph{experience replay}
+  \item \emph{target network}
+\end{enumerate}
+Experience replay is the basic method of keeping a replay memory
+set (or \emph{buffer}) from which samples (or \emph{mini-batches}) are
+drawn which then are used in each gradient descent update of the
+Q-network.
+
+The target network is a past version of the Q-network that is used
+in the gradient step update as the goal after using the Bellman operator,
+It is then updated every $T_{\hrm{target}}$ steps.
+
+In practice the size of the replay memory buffer is very large, for example
+in \ncite{M15} it holds $\sim 10^6$ transitions.
+Because of this it is argued in \ncite{F20} that
+\begin{displayquote}
+``experience replay is close to sampling independent transitions
+from a given distribution $\sigma \in \cl{P}(\cl{S} \times \cl{A})$''
+\end{displayquote}
+For the target network it is argued that when having a large enough batch
+($n$) and using $\wt{Q}_{k-1}$ to update $\wt{Q}_k$, the role of
+$\wt{Q}_{k-1}$ becomes similar to the target network
+$Q_{\hrm{target}, \ell(k-1)}$ of DQN.
+
+\subsubsection{Critique of this relation}
+
+While the arguments for the similarity between FQI and DQN are intuitively
+reasonable, the rigiorous proofs are missing and it is unclear if
+a convergence result about FQI has implications for DQN.
+
+\subsection{Differences in notation}
+% Notational differences between this paper
+% and [YangXieWang]
+
+Because $\sigma$ is used ambigously in \cref{thm:main}
+we denote the probability distribution $\sigma$
+from \ncite{F20} p. 20 by $\nu$ instead.
+I avoid the shorthand defined in
+\ncite{F20} p. 26 bottom:
+$\norm{f}_n^2 = 1/n \cdot \sum_{i=1}^n f(X_i)^2$.
+and use $p$-norms instead.
+The conversion to the notation used here becomes
+$\norm{f}_n \leadsto \norm{f}/n$.
+The letter $r$ is used in \ncite{F20} to denote the euclidean dimension of
+the state space, while here we use $w$.
 

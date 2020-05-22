@@ -24,8 +24,13 @@
 %\pagestyle{fancy}
 \usepackage{mathabx}
 \usepackage{csquotes}
-\usepackage{tikz}
 \usepackage{outline} %for subitems in lists
+\usepackage{enumitem}
+
+\usepackage{tikz}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols}
 
 %front page
 \usepackage{wallpaper}
@@ -41,10 +46,11 @@
 \linespread{1.3}
 
 %commands
-\newcommand{\Cal}{\mathcal}
+\newcommand{\Cal}{\mathcal} % to be deleted
 \newcommand{\cl}{\mathcal}
 \newcommand{\fk}{\mathfrak}
 \newcommand{\bb}{\mathbb}
+\newcommand{\hrm}{\mathrm}
 \newcommand{\Q}{\bb{Q}}
 \newcommand{\Z}{\bb{Z}}
 \newcommand{\N}{\bb{N}}

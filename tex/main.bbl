@@ -1,4 +1,4 @@
-\begin{thebibliography}{18}
+\begin{thebibliography}{19}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -30,10 +30,10 @@ Adithya~M. Devraj and Sean~P. Meyn.
 \newblock \emph{CoRR}, abs/1707.03770, 2017.
 \newblock URL \url{http://arxiv.org/abs/1707.03770}.
 
-\bibitem[Fan et~al.(2020?)Fan, Yang, Xie, and Wang]{F20}
+\bibitem[Fan et~al.(2020+)Fan, Yang, Xie, and Wang]{F20}
 Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
 \newblock A theoretical analysis of deep q-learning.
-\newblock \emph{CoRR}, abs/1901.00137, 2020?
+\newblock \emph{CoRR}, abs/1901.00137, 2020+.
 \newblock URL \url{http://arxiv.org/abs/1901.00137}.
 
 \bibitem[Feinberg(2012)]{F12}
@@ -56,6 +56,12 @@ Olav Kallenberg.
 \newblock ISBN 0-387-95313-2.
 \newblock \doi{10.1007/978-1-4757-4015-8}.
 \newblock URL \url{http://dx.doi.org/10.1007/978-1-4757-4015-8}.
+
+\bibitem[Kearns and Singh(1999)]{K99}
+Michael Kearns and Satinder Singh.
+\newblock Finite-sample convergence rates for q-learning and indirect
+  algorithms.
+\newblock \emph{Advances in Neural Information Processing}, 11, 04 1999.
 
 \bibitem[Lawvere(1962)]{L62}
 F.~William Lawvere.

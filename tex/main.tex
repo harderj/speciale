@@ -22,8 +22,6 @@
 \newpage
 \chapter{Introduction}
 \input{introduction}
-\section{Reinforcement learning in general}
-\input{generalNotes}
 %\subsection{Measure theory}
 %\input{measureTheory}
 \chapter{Decision models and value functions}
@@ -32,33 +30,26 @@
 \chapter{Model-free algorithms}
 \input{hiddenDynamics}
 
-\section{Deep fitted Q-iteration}
+\section{Deep Q-learning}
 \subsection{Introduction}
 \input{introFan}
-\subsection{Assumptions}
-\input{assumptions}
-\subsection{Main theorem}
-\input{mainTheorem}
 \subsection{Proofs}
 \input{fanProofs}
-\subsection{Critique}
-\input{fanCrit}
 
-\chapter{Conclusion}
+\chapter{Comparison and conclusion}
 \input{conclusion}
-
-\newpage
+%appendices
+\setcounter{chapter}{0}% Enumerate by Appendices with 'A'
+\renewcommand{\thechapter}{\Alph{chapter}}%
 \chapter{Appendices}
-\subsection{Lemmas for Fan et al.}
+\section{Lemmas for Fan et al.}
 \input{variousLemmas}
-\subsection{Other notes}
+\section{Other notes}
 \input{otherNotes}
-
 \newpage
-\subsection{Disambiguation}
+\section{Disambiguation}
 \input{disambiguation}
-\newpage
 %bibliography
+\newpage
 \bibliography{bib}{}
-
 \end{document}

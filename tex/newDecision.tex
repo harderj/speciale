@@ -428,7 +428,7 @@ value functions
 \begin{rem}
   As this bound will occur again and again we denote it
   \begin{equation}
-    V_{\max} \defeq R_{\max}(1-\gamma)
+    V_{\max} \defeq R_{\max}/(1-\gamma)
     \label{eq:VmaxDef}
   \end{equation}
 \end{rem}
@@ -878,7 +878,7 @@ $fg$ is upper (lower) semicontinuous.
   \label{prop:measSel}
 \end{prop}
 
-\begin{sett}
+\begin{sett}[Greedy MDP]
   \leavevmode
   \begin{enumerate}
     \item $\cl{S}$ and $\cl{A}$ are standard Borel.
@@ -1029,6 +1029,28 @@ policy $\tau_{T^k V^*_0}$ which we will denote $\tau^*_k$.
   of \cref{prop:greedyExi} and \cref{prop:optPol}.
 \end{proof}
 
+\subsubsection{Comparison to results of \mcite{BS07}}
+In \ncite{BS07} (prop. 8.6 and cor. 9.7.2) results very similar to
+\cref{prop:kOpt} and \cref{prop:optPol} are also established
+with in a slightly different setup.
+Besides having a state and action space, \ncite{BS07} also considers a
+non-empty Borel space called the
+\emph{disturbance space} $W$, a \emph{disturbance kernel}
+$p: \Cal{S} \times \Cal{A} \to W$,
+instead of a transition kernel which on the other hand is a deterministic
+\emph{system function} $f : \Cal{S} \times \Cal{A} \times W \to \Cal{S}$
+which should be Borel measurable.
+Also the rewards are interpreted as negative costs, and thus
+$g$ is required to be semi \emph{lower}continuous.
+In \ncite{BS07} are also found much theory assuming semi\emph{analytic}
+functions instead of semicontinuous ones.
+
+It is possible to recover \cref{sett:BS0} from the semicontinuous setting
+in \ncite{BS07} by the following procedure.
+Set $P(\cdot \mid s, a) = f(s, a, p(\cdot \mid s, a))$
+and maximize rewards of upper semicontinuous instead of
+minimizing lower semicontinuous ones.
+
 \subsection{Value iteration}
 
 \emph{Value iteration} is a broad notion that can refer to many algorithms
@@ -1070,13 +1092,13 @@ and action spaces, but as we have shown, exponential convergence to the optimal
 infinite horizon value function is guaranteed in far more general case
 (\cref{sett:BS0} and (D)), and therefore \cref{alg:valueIteration} could be
 applied in other cases if one has a practical way of representing the iterations
-$TV_0, T^2V_0, \dots$. First however we will look at a finite example
-for simplicity.
+$TV_0, T^2V_0, \dots$. 
 
 Value iteration is a widely used as an example of simple
 reinforcement learning.
-In particular the following is a classic example original to a
-2015 course in RL by David Silver.
+We will now look at a classic example from a
+2015 course in RL by David Silver where the environment is a
+finite MDP.
 \begin{example}[Gridworld]
   \begin{figure}[h]
     \centering
@@ -1138,14 +1160,23 @@ In particular the following is a classic example original to a
   \begin{figure}[h]
     \centering
     \includegraphics[scale=0.8]{figs/gridworld1.png}
-    \caption{Value functions of the gridworld environment.}
+    \caption{Value functions of the gridworld environment.
+      Note that $V_{\max} \cdot \gamma^{400} = 100 \cdot (0.9)^{400}
+      \approx 4.97 \cdot 10^{-17}$ so $V^*_{400}$ and $V_{\tau_r, 400}$
+      are very close to the true infinite horizon value functions
+    $V^*$ and $V_{\tau_r}$ (providing numerical errors are insignificant).}
     \label{fig:gw1}
   \end{figure}
 
   \begin{figure}[h]
     \centering
     \includegraphics[scale=0.7]{figs/gridworld2.png}
-    \caption{Convergence of gridworld value functions
+    \caption{Convergence of gridworld value functions compared with
+      the theoretical bounds. The black dashed line is the general theoretical
+      bound for both $T$ and $T_{\tau}$ by Banachs fixed point theorem and
+      the maximum value $V_{\max} = R_{\max} / (1-\gamma)$.
+      The dotted blue and orange uses $\abs{V_k^*}$ and $\abs{V_{\tau, k}}$ 
+      respectively, which might not be available.
     ($\gamma = 0.9$).}
     \label{fig:gw2}
   \end{figure}
@@ -1441,13 +1472,17 @@ and $ \wt{Q}_0 \leftarrow r$.
   See \cref{cor:QrateSimple}.
 \end{proof}
 
-\section{Approximation}
+\section{Model-based Q-learning}
 In this section we will look at what happens if we
 instead use approximations of the Q-functions and $T$ operator.
 This means that we are in a setting where we can somehow
 calculate $r$ and $TQ$ for any $(s,a) \in \cl{S} \times \cl{A}$,
 but it is hard or infeasible to represent them (or at least one of them)
 directly.
+The purpose of this is to show how results about the convergence of Q-learning
+is rather easily obtained if one has direct access
+to the transition and reward kernels $P$ and $R$.
+
 This setting is not very well-studied in the case of a
 continuous state space (at least in the sources known to this writer).
 This is perhaps because it is considered solved
@@ -1458,8 +1493,12 @@ Therefore we find it relevant to consider this setting in more detail.
 What \emph{is} very well-studied is a further generalized setting
 where $T$ and $r$ are assumed to be unknown,
 that is, one has only access to their distributions via sampling from them.
-We will deal with this setting in the next section.
-In following we present some rather simple bounding techniques
+Solutions for that setting are called \emph{model-free}.
+We will deal with that setting in the next section.
+
+\subsection{Algorithmic and approximation errors}
+
+In the following we present some rather simple bounding techniques
 which is inspired by arguments found in e.g. \ncite{F20},
 together with some standard results from approximation theory
 on artificial neural networks and Bernstein polynomials.
@@ -1467,12 +1506,11 @@ Throughout this section we assume (D)
 i.e. that we are discounting with some $\gamma \in [0,1)$.
 
 Let us consider any norm $\norm{\cdot}$ on
-$(\cl{F}, \norm{\cdot})$ where $\cl{F} \subseteq \cl{Q}$ is
-a subset of the space of bounded
-Q-functions $\cl{Q} = \cl{L}_\infty(\cl{S}\times\cl{A})$.
-Let $\wt{Q}_0$ be any Q-function which is bounded in $\norm{\cdot}$.
-Suppose we approximate $T\wt{Q}_0$ by a Q-function $\wt{Q}_1$
-to $\ve_1 > 0$ precision and then approximate $T\wt{Q}_1$ by $\wt{Q}_2$
+the set of Q-functions $\cl{Q} = \{ f: \cl{S} \times \cl{A} \to \Rext\}$.
+Let $\cl{F} \subseteq \cl{Q}$ be some subclass of Q-functions
+Let $\wt{Q}_0 \in \cl{F}$ be bounded in $\norm{\cdot}$.
+Suppose we can approximate $T\wt{Q}_0$ by some $\wt{Q}_1 \in \cl{F}$
+to $\ve_1 > 0$ precision and then approximate $T\wt{Q}_1$ by $\wt{Q}_2 \in \cl{F}$
 and so on. This way we get a sequence of Q-functions satisfying
 \[ \norm{T\wt{Q}_{k-1} - \wt{Q}_k} \leq \ve_k, \forall k \in \N \]
 
@@ -1485,19 +1523,32 @@ First observe that
 \end{align*}
 
 Using this iteratively we get
-\[ \norm{T^k \wt{Q}_0 - \wt{Q}_k} \leq \sum_{i=1}^k \gamma^{k-i} \ve_i
-\defeq \ve_{\mathrm{approx}}(k) \]
+\[ \norm{T^k \wt{Q}_0 - \wt{Q}_k} \leq \sum_{i=1}^k \gamma^{k-i} \ve_i \]
 
-Then we can bound
-\begin{align*}
-  \norm{Q^* - \wt{Q}_k}
-  &\leq \norm{Q^* - T^k \wt{Q}_0} + \norm{T^k \wt{Q}_0 - \wt{Q}_k}
-  \\ &\leq \gamma^k \norm{Q^* - \wt{Q}_0}
-  + \ve_{\mathrm{approx}}(k)
-\end{align*}
-
-These terms are called respectively the \emph{algorithmic} error
-and the \emph{approximation} error.
+Thus we get
+\begin{thm}
+  Let $\norm{\cdot}$ be a norm on the space of functions
+  $\cl{S} \times \cl{A} \to \Rext$.
+  Let $\wt{Q}_k$ be obtained from a function class $\cl{F}$
+  such that $\norm{\wt{Q}_{k} - T\wt{Q}_{k-1}} \leq \ve_k$
+  for any $k \in \N$. Then
+  \[ \norm{Q^* - \wt{Q}_k} \leq \gamma^k \norm{Q^* - \wt{Q}_0}
+  + \sum_{i=1}^k \gamma^{k-i} \ve_i \]
+  \label{thm:genApprox}
+\end{thm}
+\begin{proof}
+  By the discussion above and
+  \begin{align*}
+    \norm{Q^* - \wt{Q}_k}
+    &\leq \norm{Q^* - T^k \wt{Q}_0} + \norm{T^k \wt{Q}_0 - \wt{Q}_k}
+    \\ &\leq \gamma^k \norm{Q^* - \wt{Q}_0}
+    + \ve_{\mathrm{approx}}(k)
+  \end{align*}
+\end{proof}
+The first term in \cref{thm:genApprox} is sometimes called the
+\emph{algorithmic} error\footnote{For example in \ncite{F20}.} while
+\[ \ve_{\mathrm{approx}} \defeq \sum_{i=1}^k \gamma^{k-i} \ve_i \]
+is called the \emph{approximation} error.
 
 The algorithmic error converges exponentially, so one is often happy with this
 part not spending time trying to bound this tighter.
@@ -1526,19 +1577,21 @@ Generally if one can show that $\ve_i \to 0$ we have
     \leq \ve/2 + \ve/2 \leq \ve
   \end{align*}
 \end{proof}
+We will now explore two different ways of obtaining bounds on the approximation 
+error.
 
 \subsection{Using artifical neural networks}
 
-\begin{sett}
+\begin{sett}[Continuous MDP]
   An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ with
   $\cl{S} = [0,1]^w$ and $\cl{A}$ finite.
-  Assume that $r$ is continuous and
-  $P$ is setwise-continuous.
+  Assume that $r$ is continuous.
   \label{sett:annApprox}
 \end{sett}
 
 \begin{defn}\label{def_ANN}
-  An \textbf{ANN} (Artificial Neural Network) with structure
+  An \defemph{artificial neural network} (ANN) with $L \in \N_0$
+  hidden layers, structure
   $(d_i)_{i=0}^{L+1} \subseteq \N$,
   activation functions $\sigma_i = (\sigma_{ij})_{j=1}^{d_i}$, where
   $\sigma_{ij} : \R \to \R$ are real-valued functions on $\R$,
@@ -1547,18 +1600,87 @@ Generally if one can show that $\ve_i \to 0$ we have
   is the function $F:\R^{d_0} \to \R^{d_{L+1}}$ 
   \[ F = w_{L+1} \circ \sigma_L \circ w_L
   \circ \sigma_{L-1} \circ \dots \circ w_1 \]
-  where $w_i$ is the affine function $x \mapsto W_i x + v_i$ for all $i$.
+  where $w_i$ is the affine function $x \mapsto W_i x + v_i$,
+  and $\sigma_i : \R^{d_i} \to \R^{d_i}$ is coordinate-wise
+  application of the components $\sigma_{ij}$ for $i \in [L+1]$.
+
+  We denote the class of these networks (or functions)
+  \[ \cl{DN} \left( (\sigma_i, d_i )_{i=0}^{L+1} \right) \]
 \end{defn}
 
-To clarify we have $\sigma_i(x_1, \dots, x_{d_i})
-= (\sigma_{i1}(x_1), \dots, \sigma_{id_{i}}(x_{d_{i}}))$.
-$L \in \N_0$ is interpreted as the number of \emph{hidden layers} and
-$d_i$ is the number of neurons or nodes in layer $i$.
+\begin{rem}
+  Artificial neural networks are often illustrated as
+  $L + 1$-partite graphs with $d_i$ nodes in the $i$th partition.
+  A node $n_{i,j}$ in partition $i$ is then connected to a node
+  $n_{i+1,k}$ if $W_{i+1}(k, j) \neq 0$.
+  \begin{figure}
+    \centering
+    \tikzset{%
+      every neuron/.style={
+	circle,
+	draw,
+	minimum size=1cm
+      },
+      neuron missing/.style={
+	draw=none, 
+	scale=4,
+	text height=0.333cm,
+	execute at begin node=\color{black}$\vdots$
+      },
+    }
+    \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
 
-We denote the class of these networks (or functions)
-\[ \cl{DN} \left(\sigma_{ij}, ( d_i )_{i=0}^{L+1} \right) \]
+      \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+      \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+
+      \foreach \m [count=\y] in {1,missing,2}
+      \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
+
+      \foreach \m [count=\y] in {1,missing,2}
+      \node [every neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
+
+      \foreach \l [count=\i] in {1,2,3,d_0}
+      \draw [<-] (input-\i) -- ++(-1,0)
+      node [above, midway] {$x_{\l}$};
+
+      \foreach \l [count=\i] in {1,d_1}
+      \node [above] at (hidden-\i.north) {$n_{1, \l}$};
+
+      \foreach \l [count=\i] in {1,d_2}
+      \draw [->] (output-\i) -- ++(1,0)
+      node [above, midway] {$f(x)_{\l}$};
+
+      \foreach \i in {1,2,4} % 3 is looked at individually
+      \foreach \j in {1,2}
+      \draw [->] (input-\i) -- (hidden-\j);
+      % 3
+      \draw [->] (input-3) -- (hidden-2);
+
+      \foreach \i in {1,...,2}
+      \foreach \j in {1,...,2}
+      \draw [->] (hidden-\i) -- (output-\j);
+
+      \foreach \l [count=\x from 0] in {Input, Hidden, Ouput}
+      \node [align=center, above] at (\x*2,2)
+      {\l \\ layer with \\ $d_{\x}$ nodes};
+    \end{tikzpicture}
+    \caption{An ANN with one hidden layer. Notice that there is no edge
+      from $n_{0,3}$ to $n_{1,1}$ which means that
+    $W_1(1,3) = 0$.}
+  \end{figure}
+  Artifical neural networks were inspired by the structure of \emph{neurons}
+  in nerve tissue (e.g. the brain) of living organisms,
+  with the graph nodes corresponding to neurons and edges to \emph{axons}.
+
+  From the graph view-point it easy to see that one may join neural nets
+  to form larger ones, by either function composition or side-by-side
+  alignment. That this if $f \in \cl{DN}\left( (\sigma_i,d_i)_{i=1}^{L_f + 1} \right)$
+  and \dots %todo)
+  \label{rem:annGraph}
+\end{rem}
 
 An ANN is called \emph{deep} if there are two or more hidden layers.
+
 
 %Todo note that ANNs imbed nicely in each other
 
@@ -1592,17 +1714,49 @@ An ANN is called \emph{deep} if there are two or more hidden layers.
 \end{proof}
 
 \begin{prop}
-  Consider \cref{sett:annApprox} let
-  and $\sigma : \R \to \R$ be a non-constant, bounded, continuous
+  Under \cref{sett:annApprox} let
+  $\sigma : \R \to \R$ be a non-constant, bounded, continuous
   activation function. Let $\varepsilon > 0$.
+  Assume that either
+  \begin{enumerate}
+    \item $P$ is deterministic with $P(\cdot \mid s, a) = \delta_{p(s, a)}$.
+      For some continuous $p: \cl{S} \times \cl{A} \to \cl{S}$.
+    \item $P(\cdot \mid s, a)$ is absolutely continuous
+      with respect to the same measure $\nu$ on $\cl{S}$ for all
+      $(s, a) \in \cl{S} \times \cl{A}$ with density
+      $p(\cdot \mid s, a)$ which is continuous in $s$.
+  \end{enumerate}
   Then for every $k \in \N$ there exists a $N\in \N$ and a sequence of
   Q-networks $(\wt{Q}_i)_{i=1}^k \subseteq \cl{DN}(\sigma,
   \{w \abs{\cl{A}}, N, 1\})$ such that
-  \[ \norm{T\wt{Q}_{i-1} - \wt{Q}_i}_\infty < \ve \]
+  \[ \ve_{\mathrm{approx}}(i) = \norm{T\wt{Q}_{i-1} - \wt{Q}_i}_\infty < \ve \]
   for all $i \in [k]$.
   In particular
-  \[ \norm{Q^* - \wt{Q}_k}_\infty < \varepsilon/(1 - \gamma) \]
+  \[ \abs{Q^* - \wt{Q}_k} < \varepsilon/(1 - \gamma) \]
 \end{prop}
+\begin{proof}
+  The key points are that
+  \begin{enumerate}[label=\alph*.]
+    \item Any ANN with continuous activation functions is continuous.
+    \item Under assumptions 1. or 2. the Bellman operator $T$ preserves
+      continuity.
+  \end{enumerate}
+  Using these facts we can use the universal approximation theorem
+  (\cref{thm:uniApprox}) to get a series of networks
+  \[ f_{a, k} : \cl{S} \to \R \]
+  for each $a \in \cl{A}$ and $k \in \N$ satisfying
+  \begin{equation}
+    \abs{f_{a, k} - T \wt{Q}_{k-1}(\cdot, a)} < \ve
+    \label{eq:ann_approx_1}
+  \end{equation}
+  Here $\wt{Q}_0 = 0$ and $\wt{Q}_k$ is obtained recursively by
+  combining $f_{a, k}$ into a single network
+  $\wt{Q}_k : \cl{S} \times \cl{A} \to \R$ which by
+  \cref{eq:ann_approx_1} on each of its components
+  approximates $T \wt{Q}_{k-1}$ to $\ve$ precision.
+  $\wt{Q}_0$ is obviously continuous and because of a. and b.
+  $T \wt{Q}_k$ is as well.
+\end{proof}
 
 This gives us the first method of how to approximate
 $Q^*$ arbitrarily closely on continuous state spaces, in the case
@@ -1614,10 +1768,10 @@ and instead focus on another approximation method using
 
 \subsection{Using Bernstein polynomials}
 
-In this case the need a slightly stronger form of continuity, namely
+In this case the need a stronger form of continuity, namely
 Lipschitz continuity, to establish the bounds.
 
-\begin{sett}
+\begin{sett}[Bernstein approximable MDP]
   An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ with
   $\cl{S} = [0,1]^w$ and $\cl{A}$ finite.
   Assume that there exists a probability measure $\mu \in \cl{S}$, such that
@@ -1660,6 +1814,7 @@ Notice that this a polynomial of (multivariate) degree $n_1 + \dots + n_w$.
 \end{thm}
 
 \begin{lem}
+  Under \cref{sett:polyApprox} 
   $TQ(\cdot, a)$ is Lipschitz in $\norm{\cdot}_2$ with constant
   $ L_T = (L_r + \gamma V_{\max} L_p) $
   for all $a \in \cl{A}$ and $Q : \cl{S} \times \cl{A} \to [-V_{\max},V_{\max}]$.
@@ -1675,7 +1830,7 @@ Now we can bound
 For example if we put $n_j = m$ for all $j$ we get
 
 \begin{prop}
-  \[ \norm{Q^* - \wt{Q}_k} \leq \norm{Q^* - \wt{Q}_0}
+  \[ \norm{Q^* - \wt{Q}_k} \leq \gamma^{-k} \norm{Q^* - \wt{Q}_0}
     + \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)} \sqrt{w}
   m^{-1/2} \]
   In particular $\norm{Q^* - \wt{Q}_k}_\infty
