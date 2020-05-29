@@ -1,9 +1,16 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Barto} et~al.(1983){Barto}, {Sutton}, and {Anderson}]{BSA83}
+A.~G. {Barto}, R.~S. {Sutton}, and C.~W. {Anderson}.
+\newblock Neuronlike adaptive elements that can solve difficult learning
+  control problems.
+\newblock \emph{IEEE Transactions on Systems, Man, and Cybernetics},
+  SMC-13\penalty0 (5):\penalty0 834--846, 1983.
 
 \bibitem[Bertsekas and Shreve(2007)]{BS07}
 Dimitri~P. Bertsekas and Steven~E. Shreve.
@@ -40,6 +47,13 @@ Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
 Eugene Feinberg.
 \newblock Total expected discounted reward mdps: Existence of optimal policies.
 \newblock 05 2012.
+
+\bibitem[Heitzinger(2002)]{H02}
+C.~Heitzinger.
+\newblock \emph{Simulation and Inverse Modeling of Semiconductor Manufacturing
+  Processes}.
+\newblock 2002.
+\newblock URL \url{https://books.google.dk/books?id=LpmxcQAACAAJ}.
 
 \bibitem[Jaakkola et~al.(1994)Jaakkola, Jordan, and Singh]{J94}
 Tommi Jaakkola, Michael Jordan, and Satinder Singh.

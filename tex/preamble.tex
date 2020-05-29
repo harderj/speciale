@@ -25,7 +25,8 @@
 \usepackage{mathabx}
 \usepackage{csquotes}
 \usepackage{outline} %for subitems in lists
-\usepackage{enumitem}
+\usepackage[inline]{enumitem} % for e.g. horizontal enumerate
+\usepackage{wrapfig}
 
 \usepackage{tikz}
 \usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
@@ -57,7 +58,7 @@
 \newcommand{\R}{\bb{R}}
 \newcommand{\C}{\bb{C}}
 \newcommand{\E}{\bb{E}}
-\newcommand{\Rext}{\ol{\ul{\R}}}
+\newcommand{\Rext}{\ol{\R}}
 \newcommand{\Var}{\mathrm{Var}}
 \newcommand{\Prob}{\mathds{P}} %fundamental probability measure
 \newcommand{\idc}{\mathds{1}}
@@ -106,10 +107,12 @@
 \newenvironment{cond}[1]
   {\renewcommand\theinnercond{#1}\innercond}
   {\endinnercond}
-
 %cref
 \crefname{algocf}{alg.}{algs.}
 \Crefname{algocf}{Algorithm}{Algorithms}
 \crefname{innercond}{}{}
 \Crefname{innercond}{}{}
+
+%allow page breaks in align
+\allowdisplaybreaks
 

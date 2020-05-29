@@ -1,7 +1,104 @@
 
 \section{Comparison}
-
-%todo
+\begin{figure}[H]
+\usetikzlibrary{positioning, shapes}
+%\tikzstyle{data}
+\tikzset{
+  splittwo/.style={
+    rectangle split,
+    rectangle split parts=2,
+    rounded corners, 
+    align=center,
+    draw=black, very thick,
+  },
+  nosplit/.style={
+    rectangle, 
+    rounded corners, 
+    align=center,
+    draw=black, very thick,
+  },
+  line/.style={draw, thick, <-},
+  decoration={brace},
+  tuborg/.style={decorate},
+  tubnode/.style={midway, right=2pt},
+}
+\begin{tikzpicture}[
+    node distance=0.8cm,
+  ]
+  \node[nosplit] (HDP) {
+    \defemph{History dependent decision processes}
+    \\ (HDPs)
+  };
+  \node[splittwo] (Schal) [below=0.5cm of HDP] {
+    \defemph{HDPs under Schäls conditions}:
+    \nodepart{second}
+    Existence of optimal policy $\pi^* \in R\Pi$ \\
+    and convergence of optimal
+    \\ value functions $V^*_n \to V^*$
+  };
+  \node[splittwo] (QDP) [right=1.4cm of Schal] {
+    \defemph{Finite HDPs}:
+    \\ Under Q-value uniform assumption (QDP)
+    \nodepart{second}
+    Convergence of $\wt{Q}_k \to Q^*$.
+  };
+  \node[nosplit] (MDP) [below=0.5cm of Schal] {
+    \defemph{Markov decision processes}
+  \\ (MDPs)
+  };
+  \node[splittwo] (Disc) [below=0.5cm of MDP] {
+    \defemph{Discounted action-finite MDPs}:
+    \\ under weak continuity assumptions
+    \nodepart{second}
+    Introduction of Q-functions
+    \\ Existence of greedy optimal $\tau^* \in S\Pi$
+    \\ $T^k Q \to Q^*$ exponentially in $\gamma$
+  };
+  \node[splittwo] (Appr) [below=0.5cm of Disc] {
+    \defemph{Universal approximation by ANNs}:
+    \\ $\cl{S} = [0,1]^w$
+    + strong continuity assumptions
+    \nodepart{second} Bound on ANN-approximated Q-functions:
+    \\ $\abs{Q^* - \wt{Q}_k} < \ve/(1-\gamma)$
+    for every $\ve > 0$,
+    \\ when $k$ and the network is large enough.
+  };
+  \node[splittwo] (FQI) [right=1.3cm of Disc] {
+    \defemph{Bound with the fitted Q-iteration algorithm}:
+    \\ \ncite{F20}:
+    $\cl{S} = [0,1]^w$ + various assumptions
+    \nodepart{second}
+    $\cl{O}(\gamma^{-k} + n^{-\alpha} \log(n)^\beta)$
+    asymptotic convergence \\ (for some $\alpha, \beta > 0$)
+    of $Q_{\wt{\tau}_k} \to Q^*$ in $\norm{\cdot}_{1, \mu}$ with FQI
+    \\ for some class of ReLU network approximators
+  };
+  \node[splittwo] (Async) [right=0.8cm of Appr, yshift=-1cm] {
+    \defemph{Bound on finite model-free MDPs}:
+    \\ \ncite{S97} and \ncite{MH18}:
+    Finite MDP + various assumptions
+    \nodepart{second}
+    $\cl{O}\left( \min\left\{ k^{-\beta/(1-\gamma)},
+    \sqrt{k^{-1} \log\log k} \right\} \right)$-asymptotic
+    \\ convergence of $\wt{Q}_{k} \to Q^*$
+    with asynchronos TD
+    \\ And PAC-learnability of synchronos TD
+  };
+  \draw [->, shorten >=4pt] (HDP) -- (Schal);
+  \draw [->, shorten >=4pt] (Schal) -- (MDP);
+  \draw [->, shorten >=4pt] (MDP) -- (Disc);
+  \draw [->, shorten >=4pt] (Disc) -- (Appr);
+  \draw [->, shorten >=4pt] (Schal) -- (QDP);
+  \draw [->, shorten >=4pt] (Disc) -- (FQI);
+  \draw [->, shorten >=4pt] (FQI) -- (Async);
+  \node (Ctop) [above right=0.2cm of HDP] {};
+  \node (Cbot) [below right=0.2cm of Appr] {};
+  \draw [dashed] (Ctop) -- (Cbot);
+  \node (Based) [above=0.4cm of HDP] {Model-based};
+  \node (Free) [right=5cm of Based] {Model-free};
+\end{tikzpicture}
+\caption{Some of the results presented in this thesis ordered by generality.}
+\end{figure}
 
 \section{Conclusion}
 

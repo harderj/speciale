@@ -1,0 +1,63 @@
+
+\begin{proof}[Proof of \cref{prop:compKer}]
+  Let $x \in \cl{X}$, $B \in \Sigma_\cl{Y}$ and $C \in \Sigma_\cl{Z}$.
+  First of all $g_{x, B \times C} = y \mapsto 1_B(y) \phi(C \mid x, y)$ is
+  measurable since it is the product (multiplication is measurable)
+  of the measurable functions $1_B$ and $\phi(C \mid x, y)$
+  (measurability of $\phi$ comes from \cref{defn:probKer}.2 since
+  $\phi$ is a probability kernel).
+  Further $g_{x, B \times C} \in [0,1]$ so it is
+  $\kappa(\cdot \mid x)$-integrable.
+  We also have $g_{x, \cl{Y} \times \cl{Z}} = 1$ and $g_{x, \emptyset} = 0$.
+  Since
+  $\left\{ B \times C \mid B \in \Sigma_\cl{Y}, C \in \Sigma_\cl{Z} \right\}$
+  is a semi-ring generating $\Sigma_\cl{Y} \otimes \Sigma_\cl{Z}$
+  by \cref{thm:caratheo}
+  we have that $\phi \kappa( \cdot \mid x)$ extends uniquely to a
+  probability measure on $\cl{Y} \times \cl{Z}$.
+  Since $(x, y) \mapsto 1_B(y) \phi(C \mid x, y)$ is measurable
+  by \cref{prop:intKerMeas} we have that
+  $\phi \kappa(B \times C \mid x)$ is measurable in $x$.
+  We have now shown that $\phi \kappa$ is a probability kernel.
+  
+  We now show associativity of composition with measures, i.e. that
+  $(\phi \kappa) \mu = \phi (\kappa \mu)$ when $\mu \in \cl{P}(\cl{X})$.
+  Let $A \in \Sigma_\cl{X}$ then
+  \begin{align*}
+    (\phi \kappa) \mu(A \times (B \times C))
+    &\stackrel{\ref{thm:intKer}}{=}
+    \int_A \phi\kappa(B \times C \mid x) \difd \mu (x)
+    \\ &= \int_A \int 1_B(y) \phi(C \mid x, y)
+    \difd \kappa(y \mid x) \difd \mu (x)
+    \\ &= \int \int 1_{A \times B}(x, y) \phi(C \mid x, y)
+    \difd \kappa(y \mid x) \difd \mu (x)
+    \\ &\stackrel{\ref{thm:extTonFub}}{=}
+    \int \int 1_{A \times B}(x, y) \phi(C \mid x, y)
+    \difd \kappa\mu (x, y)
+    \\ &= \phi(\kappa \mu)((A \times B) \times C)
+  \end{align*} 
+  The associativity of the product of three kernels is left as an
+  exercise.
+
+  As a preliminary lemma to the last statement notice that by 
+  \cref{thm:extTonFub} (Fubini)
+  \[ \int f(x', y) \kappa \delta_x (x', y)
+    = \int \int f(x', y) \difd \kappa(y \mid x') \difd \delta_x(x')
+  = \int f(x, y) \kappa(y \mid x) \]
+
+  Therefore again by Fubini and the property of integration over the
+  Dirac measure
+  \begin{align*}
+    \int f(x, y, z) \difd \phi \kappa(y, z \mid x)
+    &= \int f(x', y, z) \difd \phi (\kappa \delta_x) (x', y, z)
+    \\ & \stackrel{\ref{thm:extTonFub}}{=}
+    \int f(x', y, z) \difd \phi (z \mid x', y)
+    \difd \kappa \delta_x (x', y)
+    \\ & \stackrel{\ref{thm:extTonFub}}{=}
+    \int \int f(x', y, z) \difd \phi (z \mid x', y)
+    \difd \kappa(y \mid x') \difd \delta_x (x')
+    \\ &= \int f(x, y, z) \difd \phi (z \mid x, y)
+    \difd \kappa(y \mid x)
+  \end{align*}
+  \label{proof:compKer}
+\end{proof}

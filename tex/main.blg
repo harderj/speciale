@@ -5,49 +5,50 @@ The style file: plainnat.bst
 Database file #1: bib.bib
 Warning--empty journal in CCR90
 Warning--empty journal in F12
+Warning--empty publisher in H02
 Warning--empty booktitle in L62
 Warning--empty publisher in RH14
 Warning--empty booktitle in S97
 Warning--empty journal in W89
-You've used 19 entries,
+You've used 21 entries,
             2773 wiz_defined-function locations,
-            739 strings with 8134 characters,
-and the built_in function-call counts, 8729 in all, are:
-= -- 777
-> -- 500
-< -- 17
-+ -- 172
-- -- 153
-* -- 668
-:= -- 1372
-add.period$ -- 77
-call.type$ -- 19
-change.case$ -- 106
-chr.to.int$ -- 19
-cite$ -- 44
-duplicate$ -- 409
-empty$ -- 700
-format.name$ -- 186
-if$ -- 1833
+            753 strings with 8481 characters,
+and the built_in function-call counts, 9532 in all, are:
+= -- 844
+> -- 540
+< -- 18
++ -- 186
+- -- 165
+* -- 734
+:= -- 1498
+add.period$ -- 84
+call.type$ -- 21
+change.case$ -- 115
+chr.to.int$ -- 21
+cite$ -- 49
+duplicate$ -- 450
+empty$ -- 773
+format.name$ -- 200
+if$ -- 2000
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 22
-newline$ -- 121
-num.names$ -- 76
-pop$ -- 216
+missing$ -- 25
+newline$ -- 132
+num.names$ -- 84
+pop$ -- 238
 preamble$ -- 1
-purify$ -- 89
+purify$ -- 97
 quote$ -- 0
-skip$ -- 317
+skip$ -- 344
 stack$ -- 0
-substring$ -- 235
-swap$ -- 49
+substring$ -- 260
+swap$ -- 51
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 194
-warning$ -- 6
-while$ -- 68
+type$ -- 211
+warning$ -- 7
+while$ -- 75
 width$ -- 0
-write$ -- 279
-(There were 6 warnings)
+write$ -- 305
+(There were 7 warnings)

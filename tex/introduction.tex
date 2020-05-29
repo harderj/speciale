@@ -2,7 +2,7 @@ In this thesis we give an introduction to Q-learning and discuss
 convergence results of \emph{Q-learning} algorithms from its beginning in
 1989 \ncite{W89} to a result obtained in the preprint \mcite{F20}.
 The introduction includes fundamental theory of the underlying field of
-\emph{dynamic programming} and \emph{reinforcement learning}
+\emph{dynamic programming} and \emph{reinforcement learning} (RL)
 and related topics such as \emph{value iteration}.
 
 \section{Motivation}
@@ -15,15 +15,16 @@ interactions with the environment.
 The algorithm used in \ncite{M15} is based on a Q-learning
 algorithm called the \emph{deep Q-network} (DQN) algorithm.
 
-The purpose of this thesis was initially 
+The purpose of this thesis is
 to investigate what has been proven
 about the convergence of the DQN algorithm
 and what mathematical theory is relevant to establish such proofs.
+This is however not an easy task, as we will only cover a small fraction
+of the topic.
 
 The work began by considering the preprint
 \mcite{F20} which claims to establish theoretical justification for
 the convergence of DQN to \emph{the optimal Q-function}.
-
 In the course of reading \ncite{F20} it became clear that the background
 context of dynamic programming, reinforcement learning and value iteration
 was essential to understand the results of \ncite{F20} and similar papers
@@ -32,25 +33,33 @@ Also questions as to in which settings optimal policies exists turned out
 to be a non-trivial question.
 Therefore in the end this thesis is partly about presenting the results of
 \ncite{F20} and similar papers.
-And partly to build the background theory and compare these results.
+And partly to build the background theory necessary to understand and
+compare these results.
+
+This provides an introduction to the field and sheds light 
+on the original question of what can be said about convergence of
+RL algorithms. Finally we will discuss some of the many questions that
+still remain.
 
 \section{What is Reinforcement Learning?}
 
-Reinforcement learning (RL) is a broad topic and a main branch of
+RL is a broad topic and a main branch of
 \emph{machine learning} alongside \emph{supervised} and \emph{unsupervised
 learning}. Because of its broadness it overlaps with other disciplines
 such as \emph{control theory} and dynamic programming.
+To understand RL, we will now briefly describe its roots in dynamic programming.
 
-In Reinforcement Learning
+In Reinforcement Learning, as in dynamic programming,
 we are concerned with finding an optimal policy
 for an agent in some environment.
 This environment is described by
 a sequence of state and action spaces
 $\Cal{S}_1, \Cal{A}_1, \Cal{S}_2, \dots$
-and rules $P_1, R_1, P_2, \dots$ specifying which states and rewards
+and rules (or dynamics) formalized as probability kernels
+$P_1, R_1, P_2, \dots$ specifying which states and rewards
 and likely to follow after some action is chosen.
 One can then specify rules $\pi$, called a \emph{policy},
-for how the agent should act in every situation is the environment.
+for how the agent should choose actions in every situation is the environment.
 Given an environment and a policy one obtains stochastic process,
 that is, a distribution on sequences of states, actions and
 rewards.
@@ -73,14 +82,14 @@ i.e. it should be optimal uniformly across all starting states $\cl{S}_1$.
 The existence of optimal policies defined in this way is a non-trivial
 question and we will devote some time on this.
 
-A particular kind class of environments which are called Markov decision processes
-(MDPs),
-and work with the same state space $\cl{S}$, action space $\cl{A}$ and rules
-$P, R$ throughout the process.
+A particular class of environments which are called Markov decision processes
+(MDPs).
+In an MDP the same state space $\cl{S}$, action space $\cl{A}$ and rules
+$P, R$ are used throughout the process.
 They are by far the most well-studied environments.
 With an MDP and a value function $V_1$ satisfying certain assumptions 
 one can obtain a policy $\pi_1$ by choosing actions
-leading to states with high values (according to $V_1$).
+leading to the maximum average values (according to $V_1$).
 Such policies are called \emph{greedy policies}.
 We can then evaluate value of $\pi_1$ yielding a new value function $V_2$.
 This leads to an operator on the space of value functions called the
@@ -91,13 +100,23 @@ functions and policies.
 Variations of this idea are called \emph{value iteration} and
 \emph{policy iteration},
 and is derived from dynamic programming.
-The relations 
 We show that value iteration converges to the optimal value functions
 given mild assumptions on the MDP.
 Furthermore we show that the optimal value functions is a fixed point
-of the Bellman operator: $TV^* = V^*$.
-This is called the \emph{Bellman equation} and is the fundamental property
-that describes the concept of dynamic programming.
+of the Bellman optimality operator: $TV^* = V^*$
+This is called the \emph{Bellman optimality equation} and
+is central to all problems in dynamic programming.
+
+We have now described RL as dynamic programming.
+To go beyond this, RL commonly refers to algorithms that
+are not merely value iterations, but instead work without
+directly using the transition and reward dynamics,
+and instead estimate value functions based only on sampling from the
+environment.
+Such algorithms are called \emph{model-free} as opposed to
+\emph{model-based} algorithms, that employ knowledge about the
+environment such as its transition distributions directly
+(such as pure dynamic programming).
 
 A further categorization of RL-algorithms can be made into
 \emph{off-policy} and \emph{on-policy} classes.
@@ -111,21 +130,18 @@ or simply state-action-reward pairs drawn from some distribution.
 In this thesis we will put emphasis on off-policy algorithms,
 to which both FQI and DQN belong.
 
-
 \section{What is Q-learning?}
 
 A problem with value functions defined on the set of states $\cl{S}$ is that
 picking optimal actions require knowledge of the transition dynamics $P$.
-Often we want to design algorithms that do not require such knowledge of $P$,
-so called \emph{model-free} algorithms.
-To meet this requirement \emph{Q-functions} are introduced, which evaluates
+This is especially a problem for model-free algorithms.
+To get around this problem \emph{Q-functions} were introduced, which evaluates
 the value of a state-action pair, instead of only a state.
 
 Given a Q-function $Q$, picking best actions according to $Q$ now
 merely require maximization over $Q$ itself.
-This is obviously an advantage if we are in situations where $P$ is
-unknown. %todo find good example
-However it turns out also to be more convenient to work with computationally.
+Also it turns out that Q-functions is
+more convenient to work with computationally.
 In this thesis we show that value and policy iteration can be done
 for Q-functions in a virtually identical manner, when the process dynamics
 are known.
@@ -138,108 +154,59 @@ methods for the known-dynamics are applied.
 The \emph{direct} approaches basically covers \emph{the rest}.
 In the direct category we find the popular \emph{temporal difference}
 algorithms on which \emph{fitted Q-iteration} (FQI)
-and \emph{deep Q-network} (DQN) as used in \ncite{M15} is based.
+and the \emph{deep Q-network} (DQN) algorithm of \ncite{M15} is based.
 Many direct approaching such as FQI and DQN can be seen as
-stochastic approximations of the Bellman equation.
+stochastic approximations of the Bellman optimality equation.
 
 \emph{Q-learning} is the category of algorithms that iteratively updates
 Q-functions in the attempt to improve the derived policy.
-The \emph{deep network} in DQN comes from the concept of (\emph{deep})
-\emph{artificial neural networks} (ANNs)
-which is a class of function approximators.
-The central idea of DQN is then simply to use deep neural networks
-to as approximators for the Q-functions.
+\emph{Deep} Q-learning is then the subcategory of algorithms which
+uses deep neural networks as approximators for the Q-functions.
+
+\section{Basic concepts and notation}
+
+The real numbers $\R$ is endowed with
+the standard ordering with
+giving rise to the
+standard order topolog
+(\cref{defn:orderTop}).
+This in turn give rise to the standard Borel $\sigma$-algebra
+(\cref{defn:BorelAlg}) $\bb{B} = \sigma(\cl{O})$
+generated by the open sets $\cl{O}$ of the standard topology on $\R$.
+
+When considering a measurable space $\cl{X}$ 
+we always denote its $\sigma$-algebra
+$\Sigma_\cl{X}$ when not ambiguous.
+We always
+consider the cartesian product of measurable spaces
+with the product $\sigma$-algebra (\cref{defn:prodSigmaAlg})
+unless otherwise specified.
+We denote the set of measurable functions (\cref{defn:measFunc})
+$\cl{X} \to \cl{Y}$ between two measurable spaces by 
+$\cl{M}(\Sigma_\cl{X}, \Sigma_\cl{Y})$ or $\cl{M}(\cl{X}, \cl{Y})$
+when the $\sigma$-algebras are not ambiguous
+or simply $\cl{M}(\cl{X})$ when $\cl{Y} = \R$.
+
+The set of probability measures on $\cl{X}$ is denoted
+$\cl{P}(\Sigma_\cl{X})$ or $\cl{P}(\cl{X})$ when $\Sigma_\cl{X}$ is implicit
+(not to be confused with the powerset of $\cl{X}$
+which we denote $2^{\cl{X}}$).
+
+An $\cl{X}$-valued random variable $X : \Omega \to \cl{X}$ is a
+measurable function from \emph{the background probability space}
+measure space $(\Omega, \Sigma_\Omega, \Prob)$ into some measurable
+space $\cl{X}$.
+By abstract change of variable the distribution of the random variable $X$
+is the image probability measure $\mu = X(\Prob)$ and we write
+$X \sim \mu$.
+
+When talking about functions $f_1, f_2, \dots : \cl{X} \to \R$
+limits are always understood pointwise, unless otherwise stated,
+meaning that $f_n \to f$ is to be read as
+$\forall x \in \cl{X} : f_n(x) \to f(x)$.
+The same goes for logical operators, e.g. $f > 0$ is to be understood
+as $f(x) > 0$ for all $x \in \cl{X}$.
 
 
 
-\section{Overview}
-
-
-\usetikzlibrary{positioning, shapes}
-%\tikzstyle{data}
-\tikzset{
-  splittwo/.style={
-    rectangle split,
-    rectangle split parts=2,
-    rounded corners, 
-    align=center,
-    draw=black, very thick,
-  },
-  nosplit/.style={
-    rectangle, 
-    rounded corners, 
-    align=center,
-    draw=black, very thick,
-  },
-  line/.style={draw, thick, <-},
-  decoration={brace},
-  tuborg/.style={decorate},
-  tubnode/.style={midway, right=2pt},
-}
-\begin{tikzpicture}[
-    node distance=0.8cm,
-  ]
-  \node[nosplit] (HDP) {
-    History dependent decision process (HDP)
-  };
-  \node[splittwo] (Schal) [below=0.5cm of HDP] {
-    HDP under Schäls conditions
-    \nodepart{second}
-    Existence of optimal policy $\pi^* \in R\Pi$ \\
-    and $V^*_n \to V^*$
-  };
-  \node[splittwo] (QDP) [right=1.4cm of Schal] {
-    Finite Q-value uniform HDP (QDP)
-    \nodepart{second}
-    Convergence of $\wt{Q}_k \to Q^*$.
-  };
-  \node[nosplit] (MDP) [below=0.5cm of Schal] {
-    Markov decision process (MDP)
-  };
-  \node[splittwo] (Disc) [below=0.5cm of MDP] {
-    Discounted action-finite MDP
-    \\ under weak continuity assumptions
-    \nodepart{second}
-    Introduction of Q-functions
-    \\ Existence of greedy optimal $\tau^* \in S\Pi$
-    \\ $T^k Q \to Q^*$ exponentially in $\gamma$
-  };
-  \node[splittwo] (Appr) [below=0.5cm of Disc] {
-    $\cl{S} = [0,1]^w$
-    + strong continuity assumptions
-    \nodepart{second} Bound on ANN-approximated Q-functions:
-    \\ $\abs{Q^* - \wt{Q}_k} < \ve/(1-\gamma)$
-    for every $\ve > 0$
-  };
-  \node[splittwo] (FQI) [right=1.3cm of Disc] {
-    \ncite{F20}:
-    $\cl{S} = [0,1]^w$ + various assumptions
-    \nodepart{second}
-    $\cl{O}(\gamma^{-k} + n^{-\alpha} \log(n)^\beta)$
-    asymptotic convergence of
-    \\ $Q_{\wt{\tau}_k} \to Q^*$ in $\norm{\cdot}_{1, \mu}$ with FQI
-  };
-  \node[splittwo] (Async) [right=1.3cm of Appr] {
-    \ncite{S97} and \ncite{MH18}:
-    Finite MDP + various assumptions
-    \nodepart{second}
-    $\cl{O}\left( \min\left\{ k^{-\beta/(1-\gamma)},
-    \sqrt{k^{-1} \log\log k} \right\} \right)$-asymptotic
-    \\ convergence of $\wt{Q}_{k} \to Q^*$
-    with asynchronos TD
-    \\ And PAC-learnability of synchronos TD
-  };
-  \draw [->, shorten >=4pt] (HDP) -- (Schal);
-  \draw [->, shorten >=4pt] (Schal) -- (MDP);
-  \draw [->, shorten >=4pt] (MDP) -- (Disc);
-  \draw [->, shorten >=4pt] (Disc) -- (Appr);
-  \draw [->, shorten >=4pt] (Schal) -- (QDP);
-  \draw [->, shorten >=4pt] (Disc) -- (FQI);
-  \draw [->, shorten >=4pt] (Disc) -- (Async);
-  \node (Ctop) [above right=0.2cm of HDP] {};
-  \node (Cbot) [below right=0.2cm of Appr] {};
-  \draw [dashed] (Ctop) -- (Cbot);
-  \node (Based) [above=0.4cm of HDP] {Model-based};
-  \node (Free) [right=5cm of Based] {Model-free};
-\end{tikzpicture}
 
