@@ -3,10 +3,9 @@ In this section we will look at what can be done when the process dynamics
 are unknown.
 In this case we cannot calculate directly neither $r$, $T_\pi Q$ nor
 $TQ$ because the transition and reward kernels $P,R$ are unknown.
-
 It is clear that \cref{alg:theoSimpleQ} will not work without
-modification in this case. Simply because $R$ and $P$ are not
-available.
+modification in this case, because we have not access to the distributions
+of $R$ and $P$, except through sampling.
 To make the scheme work anyway we could simply avoid taking expectations
 and use the random outcomes of the kernels.
 Leading to

@@ -2259,10 +2259,11 @@ $\norm{n}_1 = n_1 + \dots + n_w$.
   Let $f : [0,1]^w \to \R$ be Lipschitz
   w.r.t. the standard euclidean 2-norm induced metrics on $[0,1]^w$ and $\R$
   with constant $L$. 
-  Then for any $n = (n_1, \dots, n_w) \in \N^w$ there exists a polynomial
-  $B_{f,n} : [0,1]^w \to \R$ of degree $\leq \norm{n}_1$ such that
+  Let $n = (n_1, \dots, n_w) \in \N^w$.
+  The Bernstein polynomial
+  $B_{f,n} : [0,1]^w \to \R$ satisfies
   \begin{enumerate}
-    \item $\norm{f - B_{f,n}}_2
+    \item $\norm{f - B_{f,n}}_\infty
       \leq \frac{L}{2} \sqrt{\sum_{j=1}^w \frac{1}{n_j}}$
     \item $\norm{B_{f,n}}_\infty \leq \norm{f}_\infty$
   \end{enumerate}
@@ -2274,7 +2275,7 @@ $\norm{n}_1 = n_1 + \dots + n_w$.
 
 \begin{lem}
   Under \cref{sett:polyApprox} 
-  $TQ(\cdot, a)$ is Lipschitz with constant
+  $TQ(\cdot, a)$ is Lipschitz in $\norm{\cdot}_2$ with constant
   $ L_T = L_r + \gamma V_{\max} L_p $
   for all $a \in \cl{A}$ and measurable
   $Q : \cl{S} \times \cl{A} \to [-V_{\max},V_{\max}]$.
@@ -2306,7 +2307,7 @@ $\norm{n}_1 = n_1 + \dots + n_w$.
 Now we can bound
 
 \begin{prop}
-  Given an MDP satisfying \cref{sett:polyApprox} and using the 2-norm as metric
+  Given an MDP satisfying \cref{sett:polyApprox} and using $\norm{\cdot}_\infty$
   we can bound
   \[ \ve_{\mathrm{approx}} \leq \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)}
   \sqrt{\sum_{j=1}^w \frac{1}{n_j}} \]
@@ -2324,7 +2325,7 @@ Now we can bound
   Now by choosing the euclidean norm $\norm{\cdot} = \norm{\cdot}_2$
   we have by \cref{thm:bernsteinApprox}.1 that
   \begin{equation}
-    \ve_i = \norm{\wt{Q}_k - T\wt{Q}_{k-1}}_2
+    \ve_i = \norm{\wt{Q}_k - T\wt{Q}_{k-1}}_\infty
     \leq \frac{L_T}{2} \sqrt{\sum_{j=1}^w \frac{1}{n_j}} = \ve
     \label{eq:veapproxlib1}
   \end{equation}
@@ -2343,13 +2344,14 @@ To make more clear what are the implications of \cref{prop:veapproxlibbound}
 we give a corollary where we put $n_j = m$ for all $j \in [w]$:
 
 \begin{cor}
-  \[ \norm{Q^* - \wt{Q}_k} \leq \gamma^{-k} \norm{Q^* - \wt{Q}_0}
+  Under \cref{sett:polyApprox} and using Bernstein polynomials of degree
+  $n = (m, \dots, m) \in \N^w$ for $m \in \N$ we have the following bound
+  \[ \norm{Q^* - \wt{Q}_k}_\infty \leq \gamma^{-k} V_{\max}
     + \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)} \sqrt{w}
   \frac{1}{\sqrt{m}} \]
   In particular $\norm{Q^* - \wt{Q}_k}_\infty
   = \cl{O}(\gamma^{-k} + \frac{1}{\sqrt{m}})$
-  when using $k$ iterations and approximating
-  with multivariate polynomials of maximum degree $w \cdot m$.
+  when using $k$ iterations.
   \label{cor:libbound}
 \end{cor}
 \begin{proof}
