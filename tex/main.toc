@@ -23,28 +23,28 @@
 \contentsline {section}{\numberline {3.1}Finite case}{36}
 \contentsline {subsection}{\numberline {3.1.1}History dependent setting}{39}
 \contentsline {section}{\numberline {3.2}Linear function approximation}{41}
-\contentsline {section}{\numberline {3.3}Deep Q-learning}{43}
+\contentsline {section}{\numberline {3.3}Deep fitted Q-iteration}{43}
 \contentsline {subsection}{\numberline {3.3.1}Introduction}{43}
 \contentsline {subsubsection}{ReLU Networks}{44}
-\contentsline {subsection}{\numberline {3.3.2}Assumptions}{45}
+\contentsline {subsection}{\numberline {3.3.2}Assumptions}{44}
 \contentsline {subsubsection}{H\IeC {\"o}lder Smoothness}{45}
 \contentsline {subsubsection}{Concentration coefficients}{46}
-\contentsline {subsection}{\numberline {3.3.3}The main theorem}{46}
-\contentsline {subsection}{\numberline {3.3.4}Relation to DQN}{47}
+\contentsline {subsection}{\numberline {3.3.3}The main theorem}{47}
+\contentsline {subsection}{\numberline {3.3.4}Relation to DQN}{48}
 \contentsline {subsubsection}{Critique of this relation}{49}
 \contentsline {subsection}{\numberline {3.3.5}Differences in notation}{49}
 \contentsline {subsection}{\numberline {3.3.6}Proofs}{49}
-\contentsline {chapter}{\numberline {4}Comparison and conclusion}{63}
-\contentsline {section}{\numberline {4.1}Comparison}{63}
-\contentsline {section}{\numberline {4.2}Conclusion}{64}
-\contentsline {section}{\numberline {4.3}Further directions}{64}
-\contentsline {subsubsection}{Relation between FQI and DQN}{64}
-\contentsline {subsubsection}{Suboptimality of policies}{64}
-\contentsline {subsubsection}{Bernstein polynomials vs. orthogonal projection}{65}
-\contentsline {section}{\numberline {4.4}Notes on references}{65}
-\contentsline {section}{\numberline {4.5}Credits}{65}
-\contentsline {chapter}{\numberline {A}Appendices}{66}
-\contentsline {section}{\numberline {A.1}Basic definitions}{66}
-\contentsline {section}{\numberline {A.2}Proofs of auxiliary results}{68}
-\contentsline {section}{\numberline {A.3}Lemmas for [\citenum {F20}, \citeauthor {F20} (\citeyear {F20})]}{69}
-\contentsline {section}{\numberline {A.4}Disambiguation}{70}
+\contentsline {chapter}{\numberline {4}Comparison and conclusion}{64}
+\contentsline {section}{\numberline {4.1}Comparison}{64}
+\contentsline {section}{\numberline {4.2}Conclusion}{65}
+\contentsline {section}{\numberline {4.3}Further directions}{65}
+\contentsline {subsubsection}{Relation between FQI and DQN}{65}
+\contentsline {subsubsection}{Suboptimality of policies}{65}
+\contentsline {subsubsection}{Bernstein polynomials vs. orthogonal projection}{66}
+\contentsline {section}{\numberline {4.4}Notes on references}{66}
+\contentsline {section}{\numberline {4.5}Credits}{66}
+\contentsline {chapter}{\numberline {A}Appendices}{67}
+\contentsline {section}{\numberline {A.1}Basic definitions and results}{67}
+\contentsline {section}{\numberline {A.2}Proofs of auxiliary results}{70}
+\contentsline {section}{\numberline {A.3}Lemmas for [\citenum {F20}, \citeauthor {F20} (\citeyear {F20})]}{71}
+\contentsline {section}{\numberline {A.4}Disambiguation}{72}

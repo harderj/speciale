@@ -1920,7 +1920,7 @@ error.
   \label{sett:annApprox}
 \end{sett}
 
-\begin{defn}\label{def_ANN}
+\begin{defn}
   An \defemph{artificial neural network} (ANN) with $L \in \N_0$
   hidden layers, structure
   $(d_i)_{i=0}^{L+1} \subseteq \N$,
@@ -1936,6 +1936,7 @@ error.
   We denote the class of these networks (or functions)
   \[ \cl{DN} \left( (\sigma_i)_{i=1}^L,\; (d_i)_{i=0}^{L+1} \right) \]
   An ANN is called \emph{deep} if there are two or more hidden layers.
+  \label{defn:ann}
 \end{defn}
 
 We shall often consider networks with only one type of activation functions,
@@ -2078,10 +2079,14 @@ value function to arbitrary precision,
 and look at a particular class of ANNs called \emph{ReLU networks},
 which are defined by their use of the \emph{ReLU activation function}
 $\sigma_r(x) = \max(0, x)$.
-We define the class of ReLU networks as the ANNs
-with all ReLU activation functions, and write
-$\cl{RN}\left( (d_i)_{i=0}^{L+1} \right)
-\defeq \cl{DN}\left( \sigma_r, (d_i)_{i=0}^{L+1} \right)$.
+
+\begin{defn}
+  We define the class of ReLU networks as the ANNs (see \cref{defn:ann})
+  with all ReLU activation functions, and write
+  $\cl{RN}\left( (d_i)_{i=0}^{L+1} \right)
+  \defeq \cl{DN}\left( \sigma_r, (d_i)_{i=0}^{L+1} \right)$. 
+  \label{defn:relu}
+\end{defn}
 
 \begin{prop}
   Under \cref{sett:annApprox} let $\varepsilon > 0$.

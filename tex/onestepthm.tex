@@ -2,8 +2,11 @@
 \begin{thm}[One-step Approximation Error]\label{thm:oneStep}
   Let
   \begin{itemize}
-    \item $\Cal{F} \subseteq \Cal{B}(\Cal{S}\times\Cal{A}, V_{\max})$
-      be a class of bounded measurable functions
+    \item $\Cal{F} \subseteq 
+      \left\{ f : \cl{S} \times \cl{A} \to [-V_{\max}, V_{\max}]
+      \mid f \in \cl{M} \right\}$
+      be any set of measurable functions on $\cl{S} \times \cl{A}$
+      bound above and below by $V_{\max}$.
     \item $\Cal{G} = T(\Cal{F})$ the class of functions obtainable by
       applying $T$ to some function in $\Cal{F}$.
     \item $\nu \in \Cal{P}(\Cal{S},\Cal{A})$ be a probability measure
