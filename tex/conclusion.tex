@@ -174,33 +174,22 @@ and that the results we have covered from \ncite{F20} does explain
 part of its success.
 
 \section{Further directions}
-When reading this section it should be clear that many of the questions
-raised is this authors missing research. It might very well be
-that some of the questions have been answered long ago, while others
-are still open questions.
-We point out that
-litterature on Q-learning algorithms and relating topics such as 
-function approximation, dynamic programming and artificial neural networks
-is vast, and only very little made it into this thesis. 
-An obvious direction to go is to review more of the most recent results
-in order to give a more complete picture of the field.
-
 \subsubsection{Examples}
 In this thesis we talk little about concrete decision processes, only
 applying our theory on the rather trivial gridworld environment in
 \cref{ex:gridworld}.
-Generally it examples that drives much of both theoretical and more empirical
+Examples are important drivers much of both theoretical and more empirical
 research in RL.
 Applying the theory in this thesis on concrete cases would be a interesting
 next step.
 
 \subsubsection{Relation between FQI and DQN}
 Find a way to prove or disprove the conjecture in \ncite{F20} that
-results about the convergence of FQI can have implications for the 
+convergence bounds on the FQI algorithm can have implications for the 
 DQN algorithm.
 Answering this question probably requires research beyond what can be
 found in litterature already, as otherwise \ncite{F20} would have
-drawn on sourch sources.
+drawn on such sources.
 
 \subsubsection{Application of the results of \mcite{MR07}}
 Though \ncite{MR07} does not make explicit bounds for the distance of an approximating
@@ -226,7 +215,7 @@ $Q_{\wt{\pi}}$ from $Q^*$ which from a theorical point of view should be
 a better measure of the sub-optimality of $\wt{\pi}$ compared to $\pi^*$.
 Some sources like \ncite{F20} succeed in bounding
 $\norm{Q^* - Q_{\wt{\pi}}}_\infty$,
-while many others make do with a bound on $\norm{Q^* - \wt{Q}}_\infty$.
+while most others is satisfied with a bound on $\norm{Q^* - \wt{Q}}_\infty$.
 To this end it could be interesting to establish relations
 between $\norm{Q^* - Q_{\wt{\pi}}}_\infty$ and $\norm{Q^* - \wt{Q}}_\infty$.
 
@@ -261,5 +250,5 @@ my cousin Rune Harder Bak for reading the mess I've made,
 my dormmates at the P.C.Petersens dorm for good company and very necessary
 recreational breaks from writing,
 my aunt Susanne for letting me stay at her house during the covid-19 and
-my the rest of my family for love and support.
+my family for love and support.
 

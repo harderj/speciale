@@ -2,60 +2,60 @@
 \contentsline {section}{\numberline {1.1}Motivation}{3}
 \contentsline {section}{\numberline {1.2}How to read this thesis}{4}
 \contentsline {section}{\numberline {1.3}What is Reinforcement Learning?}{4}
-\contentsline {section}{\numberline {1.4}What is Q-learning?}{6}
+\contentsline {section}{\numberline {1.4}What is Q-learning?}{5}
 \contentsline {section}{\numberline {1.5}Basic concepts and notation}{6}
-\contentsline {chapter}{\numberline {2}Decision models and value functions}{8}
-\contentsline {subsubsection}{From kernels to processes}{11}
-\contentsline {section}{\numberline {2.1}Policy evaluation and value functions}{12}
-\contentsline {subsection}{\numberline {2.1.1}The optimal value function}{14}
-\contentsline {section}{\numberline {2.2}Markov decision processes}{17}
-\contentsline {subsection}{\numberline {2.2.1}Greedy policies}{20}
-\contentsline {subsection}{\numberline {2.2.2}Existence of optimal policies}{23}
-\contentsline {subsubsection}{Comparison to results of [\citenum {BS07}, \citeauthor {BS07} (\citeyear {BS07})]}{24}
-\contentsline {subsection}{\numberline {2.2.3}Value iteration}{24}
-\contentsline {subsection}{\numberline {2.2.4}Q-functions}{27}
-\contentsline {subsubsection}{Q-iteration}{30}
-\contentsline {subsection}{\numberline {2.2.5}Why are we not done?}{30}
-\contentsline {section}{\numberline {2.3}Model-based Q-learning}{30}
-\contentsline {subsection}{\numberline {2.3.1}Algorithmic and approximation errors}{31}
-\contentsline {subsection}{\numberline {2.3.2}Using artifical neural networks}{32}
-\contentsline {subsection}{\numberline {2.3.3}Using Bernstein polynomials}{35}
-\contentsline {chapter}{\numberline {3}Model-free algorithms}{38}
-\contentsline {subsubsection}{Motivation}{38}
-\contentsline {subsubsection}{Problems with applying model dependent solutions}{38}
-\contentsline {subsubsection}{Generally about this section}{39}
-\contentsline {section}{\numberline {3.1}Finite case}{39}
-\contentsline {subsubsection}{Algorithm}{40}
-\contentsline {subsubsection}{Results}{41}
-\contentsline {subsection}{\numberline {3.1.1}History dependent setting}{42}
-\contentsline {subsubsection}{History based Q-functions}{42}
-\contentsline {subsubsection}{Partial observability}{42}
-\contentsline {section}{\numberline {3.2}Linear function approximation}{44}
-\contentsline {section}{\numberline {3.3}Deep fitted Q-iteration}{46}
-\contentsline {subsection}{\numberline {3.3.1}Introduction}{46}
-\contentsline {subsubsection}{ReLU Networks}{47}
-\contentsline {subsection}{\numberline {3.3.2}Assumptions}{47}
-\contentsline {subsubsection}{H\IeC {\"o}lder Smoothness}{48}
-\contentsline {subsubsection}{Concentration coefficients}{49}
-\contentsline {subsection}{\numberline {3.3.3}The main theorem}{50}
-\contentsline {subsection}{\numberline {3.3.4}Relation to DQN}{51}
-\contentsline {subsection}{\numberline {3.3.5}Critique of this relation}{52}
-\contentsline {subsubsection}{Differences in notation}{52}
-\contentsline {subsection}{\numberline {3.3.6}Proofs}{52}
-\contentsline {chapter}{\numberline {4}Comparison and conclusion}{68}
-\contentsline {section}{\numberline {4.1}Comparison}{68}
-\contentsline {section}{\numberline {4.2}Conclusion}{69}
-\contentsline {section}{\numberline {4.3}Further directions}{70}
-\contentsline {subsubsection}{Examples}{70}
-\contentsline {subsubsection}{Relation between FQI and DQN}{70}
-\contentsline {subsubsection}{Application of the results of [\citenum {MR07}, \citeauthor {MR07} (\citeyear {MR07})]}{70}
-\contentsline {subsubsection}{Suboptimality of policies}{70}
-\contentsline {subsubsection}{Bernstein polynomials vs. orthogonal projection}{70}
-\contentsline {section}{\numberline {4.4}Notes on references}{71}
-\contentsline {section}{\numberline {4.5}Credits}{71}
-\contentsline {chapter}{\numberline {A}Appendices}{72}
-\contentsline {section}{\numberline {A.1}Basic definitions and results}{72}
-\contentsline {subsection}{\numberline {A.1.1}Geometric ergodicity}{75}
-\contentsline {section}{\numberline {A.2}Proofs of auxiliary results}{76}
-\contentsline {section}{\numberline {A.3}Lemmas for [\citenum {F20}, \citeauthor {F20} (\citeyear {F20})]}{77}
-\contentsline {section}{\numberline {A.4}Disambiguation}{78}
+\contentsline {chapter}{\numberline {2}Decision models and value functions}{7}
+\contentsline {subsubsection}{From kernels to processes}{10}
+\contentsline {section}{\numberline {2.1}Policy evaluation and value functions}{11}
+\contentsline {subsection}{\numberline {2.1.1}The optimal value function}{13}
+\contentsline {section}{\numberline {2.2}Markov decision processes}{16}
+\contentsline {subsection}{\numberline {2.2.1}Greedy policies}{19}
+\contentsline {subsection}{\numberline {2.2.2}Existence of optimal policies}{22}
+\contentsline {subsubsection}{Comparison to results of [\citenum {BS07}, \citeauthor {BS07} (\citeyear {BS07})]}{23}
+\contentsline {subsection}{\numberline {2.2.3}Value iteration}{23}
+\contentsline {subsection}{\numberline {2.2.4}Q-functions}{26}
+\contentsline {subsubsection}{Q-iteration}{29}
+\contentsline {subsection}{\numberline {2.2.5}Why are we not done?}{29}
+\contentsline {section}{\numberline {2.3}Model-based Q-learning}{29}
+\contentsline {subsection}{\numberline {2.3.1}Algorithmic and approximation errors}{30}
+\contentsline {subsection}{\numberline {2.3.2}Using artifical neural networks}{31}
+\contentsline {subsection}{\numberline {2.3.3}Using Bernstein polynomials}{34}
+\contentsline {chapter}{\numberline {3}Model-free algorithms}{37}
+\contentsline {subsubsection}{Motivation}{37}
+\contentsline {subsubsection}{Problems with applying model dependent solutions}{37}
+\contentsline {subsubsection}{Generally about this section}{38}
+\contentsline {section}{\numberline {3.1}Finite case}{38}
+\contentsline {subsubsection}{Algorithm}{39}
+\contentsline {subsubsection}{Results}{40}
+\contentsline {subsection}{\numberline {3.1.1}History dependent setting}{41}
+\contentsline {subsubsection}{History based Q-functions}{41}
+\contentsline {subsubsection}{Partial observability}{41}
+\contentsline {section}{\numberline {3.2}Linear function approximation}{43}
+\contentsline {section}{\numberline {3.3}Deep fitted Q-iteration}{45}
+\contentsline {subsection}{\numberline {3.3.1}Introduction}{45}
+\contentsline {subsubsection}{ReLU Networks}{46}
+\contentsline {subsection}{\numberline {3.3.2}Assumptions}{46}
+\contentsline {subsubsection}{H\IeC {\"o}lder Smoothness}{47}
+\contentsline {subsubsection}{Concentration coefficients}{48}
+\contentsline {subsection}{\numberline {3.3.3}The main theorem}{49}
+\contentsline {subsection}{\numberline {3.3.4}Relation to DQN}{50}
+\contentsline {subsection}{\numberline {3.3.5}Critique of this relation}{51}
+\contentsline {subsubsection}{Differences in notation}{51}
+\contentsline {subsection}{\numberline {3.3.6}Proofs}{51}
+\contentsline {chapter}{\numberline {4}Comparison and conclusion}{67}
+\contentsline {section}{\numberline {4.1}Comparison}{67}
+\contentsline {section}{\numberline {4.2}Conclusion}{68}
+\contentsline {section}{\numberline {4.3}Further directions}{69}
+\contentsline {subsubsection}{Examples}{69}
+\contentsline {subsubsection}{Relation between FQI and DQN}{69}
+\contentsline {subsubsection}{Application of the results of [\citenum {MR07}, \citeauthor {MR07} (\citeyear {MR07})]}{69}
+\contentsline {subsubsection}{Suboptimality of policies}{69}
+\contentsline {subsubsection}{Bernstein polynomials vs. orthogonal projection}{69}
+\contentsline {section}{\numberline {4.4}Notes on references}{70}
+\contentsline {section}{\numberline {4.5}Credits}{70}
+\contentsline {chapter}{\numberline {A}Appendices}{71}
+\contentsline {section}{\numberline {A.1}Basic definitions and results}{71}
+\contentsline {subsection}{\numberline {A.1.1}Geometric ergodicity}{74}
+\contentsline {section}{\numberline {A.2}Proofs of auxiliary results}{75}
+\contentsline {section}{\numberline {A.3}Lemmas for [\citenum {F20}, \citeauthor {F20} (\citeyear {F20})]}{76}
+\contentsline {section}{\numberline {A.4}Disambiguation}{77}

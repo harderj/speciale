@@ -1,13 +1,19 @@
 
-This paper is mainly about the part of reinforcement learning that is called
+This thesis mainly focuses on the part of reinforcement learning that is called
 Q-learning, which is a category of algorithms which can \emph{learn} from
 interaction with a decision process.
+Decision processes are formalized as a kind of stochastic processes and
+can model diverse problems, from playing games like 
+chess or poker to control problems such
+as balancing a pole and more.
 We present the background theory for these algorithms,
-including basic theory on stochastic (decision) processes,
+including basic theory on stochastic processes,
 existence of optimal polices and
 dynamic programming in the form of value iteration.
-Then Q-learning is analysed in a variety of settings.
-Among other results we present and prove a convergence bound of the
+Then Q-learning is analysed in a variety of settings,
+establishing existence of optimal Q-functions and policies
+and proving convergence bounds of various Q-learning algorithms.
+Finally we present and prove a convergence bound of the
 deep fitted Q-iteration algorithm considered in the preprint \mcite{F20},
 which guarantees convergence of Q-learning with deep neural networks
 for a broad class of continuous state-space Markov decision processes.
