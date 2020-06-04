@@ -106,7 +106,7 @@ of a \emph{policy}.
   A (randomized) \defemph{policy} $\pi = (\pi_n)_{n \in \N}$ for a
   HDP is a sequence of probability kernels 
   $\pi_n : \Cal{H}_n \leadsto \Cal{A}_n$,
-  such that $\pi_n(A(h_i) \mid h_i) = 1$ for alle $h_i \in \cl{H}_i$,
+  such that $\pi_n(\frak{A}(h_i) \mid h_i) = 1$ for alle $h_i \in \cl{H}_i$,
   i.e. the policy chooses only admissable actions (with probability 1).
   The set of all policies we denote $R\Pi$.
 \end{defn}
@@ -133,7 +133,7 @@ probability kernels.
   Let $\mu \in \Cal{P}(\Cal{X})$ and $\kappa : \Cal{X} \leadsto \Cal{Y}$.
   Then there exists a uniquely determined probability measure
   $\lambda \in \Cal{P}(\Cal{X} \times \Cal{Y})$
-  such that
+  such that for all $A \in \Sigma_\cl{X}, \; B \in \Sigma_\cl{Y}$
   \[ \lambda(A \times B) = \int_A \kappa(B \mid x) \difd \mu(x) \]
   \label{thm:intKer}
   We denote this measure $\lambda = \kappa \mu$.
@@ -211,7 +211,7 @@ we here include
   \leadsto \cl{W}$
   is another probability kernel, then
   $(\psi \phi) \kappa = \psi (\phi \kappa)$.
-  Associativity extends to measures, that is if
+  Associativity extends to kernel-measure compositions, that is if
   $\mu \in \cl{P}(\cl{X})$ is a probability measure then
   $\phi (\kappa \mu) = (\phi \kappa) \mu$.
   Furthermore if $f : \cl{X} \times \cl{Y} \times \cl{Z} \to \R$ is
@@ -250,14 +250,31 @@ we here include
   \label{rem:altComp}
 \end{rem}
 
+\begin{example}
+  To get feel for how kernels combine, let $\kappa: \cl{X} \leadsto \cl{Y}$,
+  $\phi : \cl{X} \times \cl{Y} \leadsto \cl{Z}$ and
+  $\psi : \cl{X} \times \cl{Y} \times \cl{Z} \leadsto \cl{W}$
+  be probability kernels.
+  Then $\psi \phi(\cdot , \cdot \mid \cdot, \cdot)$
+  is a $\cl{X} \times \cl{Y}$-kernel on $\cl{Z} \times \cl{W}$
+  and so can be combined with $\kappa$ to get
+  $(\psi \phi) \kappa : \cl{X} \leadsto \cl{Y} \times (\cl{Z} \times \cl{W})$.
+  On the other hand $\phi \kappa : \cl{X} \leadsto \cl{Y} \times \cl{Z}$
+  can be combined with $\psi$ to get
+  $\psi (\phi \kappa) : \cl{X} \leadsto (\cl{Y} \times \cl{Z}) \times \cl{W}$.
+  By the associativity result in \cref{prop:compKer}
+  (and of the cartesian product) these kernels are the same.
+\end{example}
+
 \subsubsection{From kernels to processes}
 
 Throughout this section let $(\Cal{X}_n)_{n \in \N}$ be a sequence
 of measurable spaces. For each $n \in \N$ let
+$\cl{X}^{\ul{n}} \defeq \cl{X}_1 \times \dots \times \cl{X}_n$ and
 $\kappa_n : \Cal{X}^{\ul{n}} \leadsto \Cal{X}_{n+1}$ be a probability kernel.
 
 \begin{prop} For all $n \in \N$ the composition
-  $\kappa_n \dots \kappa_1$ yields a $\cl{X}_1$-probability
+  $\kappa^{\ul{n}} \defeq \kappa_n \dots \kappa_1$ yields a $\cl{X}_1$-probability
   kernel on $\cl{X}_2 \times \dots \times \cl{X}_{n+1}$.
   \label{prop:kappaN}
 \end{prop}
@@ -295,7 +312,7 @@ Later we would like to consider function defined
 
 \begin{prop}[Ionescu-Tulcea kernel]
   Let $\mu_x$ denote the Ionescu-Tulcea measure of a
-  sequence of probability kernels
+  sequence of probability kernels $(\kappa_i)_{i \in \N}$ where
   $\kappa_i : \Cal{X}^{\ul{i}} \to \Cal{X}_{i+1}$
   with starting measure $\delta_x$ on $\Cal{X}_1$ for any $x \in \Cal{X}_1$.
   Then $\kappa(A \mid x) = \mu_x(\cl{X}_1 \times A)$ defines a probability kernel
@@ -373,12 +390,13 @@ By \cref{thm:ionescuTulcea} a HDP and a policy
 $\pi = (\pi_1, \pi_2, \dots) \in R\Pi$ gives rise to
 a kernel $\kappa_\pi : \cl{P}(\cl{S}_1) \to \cl{P}(\cl{H}_\infty)$, namely
 \begin{equation}
-  \kappa_\pi = \dots P_2 \pi_2 P_1 \pi_1 \mu
+  \kappa_\pi \mu = \dots P_2 \pi_2 P_1 \pi_1 \mu \in \cl{P}(\cl{H}_\infty)
   \label{eq:kappaPi}
 \end{equation}
-In particular $\kappa_\pi \mu$ can be interpreted as the stochastic process
+The measure $\kappa_\pi \mu$ can be interpreted as the stochastic process
 arising from sampling the first state from $\mu$ and then follow $\pi$
 for a countable number of steps.
+\begin{rem}
 We will denote expectation with respect to $\kappa_\pi \mu$ by
 $\E_{\mu}^\pi$. 
 In the case where $\mu = \delta_{s}$ for some $s \in \cl{S}_1$
@@ -386,10 +404,24 @@ integration with respect to the measure $\kappa_\pi \delta_s$
 and $\kappa_\pi(\cdot \mid s)$ is equivalent in the sense that
 \[ \int f(s, a_1, s_2, \dots) \difd \kappa_\pi(a_1, s_2, \dots \mid s)
 = \int f(s_1, a_1, s_2, \dots) \difd \kappa_\pi \delta_s(s_1, a_1, \dots) \]
+for some integrable $f : \cl{H}_\infty \to \R$.
 Both of these measures can be interpreted as the stochastic process
 arising from starting in state $s$ and following policy $\pi$.
 We will sometimes abuse notation slightly, writing
 $\kappa_\pi \delta_s = \kappa_\pi s$ and $\E_{\delta_s}^\pi = \E_s^\pi$.
+If a measurable function $f$ depends on only parts of the history,
+say $f: \cl{S}_3 \times \cl{A}_3 \to \R$ we will also assume that
+it is applied with \emph{right} inputs when taking expectations, that is
+we will write
+\[ \E^\pi_\mu f = \E^\pi_\mu f \circ \rho_{\cl{S}_3 \times \cl{A}_3} =
+\int f \difd \kappa_\pi \mu = \int f \circ \rho_{\cl{S}_3 \times \cl{A}_3}
+\difd \kappa_\pi \mu =
+\int f(s_3, a_3) \difd \kappa_\pi \mu (s_1, a_1, s_2, a_2, \dots) \]
+where $\rho_{\cl{S}_3 \times \cl{A}_3} :
+\cl{H}_\infty \to \cl{S}_3 \times \cl{A}_3$ denotes projection 
+onto $\cl{S}_3 \times \cl{A}_3$.
+\label{rem:kerIntNot}
+\end{rem}
 
 \section{Policy evaluation and value functions}
 The next step is to evaluate how \emph{good} a policy is.
@@ -397,39 +429,46 @@ This is where the reward kernels $R_1, R_2, \dots$ come into play.
 However their stochastic properties will not be
 relevant for this section. For now we will
 only care about their expected values. Therefore we will need
-\begin{asm}[Finite reward bound]
+\begin{asm}[Finite reward bound] \label{asm:finRewBound}
   For each $n \in \N$ there exists a bound $R_{\max, n} > 0$
   such that for all $h_n \in \cl{H}_n$ it holds that
-  \[ R_n([-R_{\max, n}, R_{\max, n}] \mid h_n) = 1 \]
-  \label{asm:finRewBound}
+  \[ R_n([-R_{\max, n}, R_{\max, n}] \mid h_n) = 1 \] 
 \end{asm}
 This is assumed in the rest of this section and all following sections.
-\begin{rem}
+\begin{rem} \label{rem:expRewMom}
   \Cref{asm:finRewBound} implies that all $R_n(\cdot \mid h_n)$ has moments of
   all orders for any $h_n \in \cl{H}_n$.
-  \label{rem:expRewMeas}
 \end{rem}
-\begin{defn}
+\begin{defn} \label{defn:expRewFunc}
   We define for each $n \in \N$
-  \[ r_n : \cl{H}_n \to \R, \quad r(h_n) = \int x \difd R_n(x \mid h_n) \]
+  \[ r_n : \cl{H}_{n+1} \to \R, \quad r(h_{n+1})
+  = \int x \difd R_n(x \mid h_{n+1}) \]
   called the $n$th \defemph{expected reward function}.
-  \label{defn:expRewFunc}
 \end{defn}
-\begin{rem}
+\begin{rem} \label{rem:expRewMeas}
   The expected reward function $r_n$ is measurable due to
   \cref{prop:intKerMeas}.
+  If $X$ is a random variable with distribution
+  $X \sim R_n(\cdot \mid h_{n+1})$ (or stated differently
+  $X(\Prob) = R_n(\cdot \mid h_{n+1})$)
+  then we have $\E X = \E_{\Prob} X = r_n(h_{n+1})$. 
 \end{rem}
 
 We are now ready to talk about \emph{value functions}.
 A value function is any function $V: \cl{S}_1 \to \R$
 which assigns a real number to a starting state (a state in $\cl{S}_1$).
-An important class of value functions are the
-policy evaluations:
+Usually the purpose of a value function is to give an estimate $V(s_1)$ for each
+state $s_1 \in \cl{S}_1$ of the accumulated
+rewards of a decision process starting at $s_1$.
+We will now define an important class of value functions.
+In these definitions,
+recall the notation of integration with respect to kernel-derived processes
+discussed in \cref{rem:kerIntNot}.
 
 \begin{defn}[Finite policy evaluation]
   We define the function $V_{n, \pi} : \cl{S}_1 \to \R$ by
   \[ V_{n,\pi}(s_1) = \E_{s_1}^\pi \sum_{i=1}^n r_i
-    = \int \sum_{i=1}^n r_i(s_1, a_1, \dots, a_{i-1}, s_i)
+    = \int \sum_{i=1}^n r_i
   \difd \kappa_\pi s_1 \]
   called the $k$th \defemph{finite policy evaluation}.
   When $n=0$ we say $V_{0,\pi} = V_0 \defeq 0$ for any $\pi$.
@@ -456,20 +495,15 @@ This assumption allows the following definition of the following value function
     \label{eq:defInfPolEval}
   \end{equation}
 \end{defn}
-\begin{rem}
-  In \cref{eq:defInfPolEval}
-  it is implicit that for each $i \in \N$ the reward
-  $r_i$ in the sum is applied 
-  the $h_{i+1}$th history as a integration variable
-  from the measure $\kappa_\pi s$.
-\end{rem}
+
 The infinite policy evaluation $V_\pi$ measures the expected total
 reward after following the policy $\pi$ an infinite number of steps.
 Whenever we work with the infinite policy evaluation we will
 always make \cref{asm:D}.
 We now mention some immediate properties of the finite and infinite
 policy evaluations
-\begin{prop} Let \cref{asm:D} hold. Then
+\begin{prop} Let $\pi \in R\Pi$ be a policy.
+  Under \cref{asm:D} (discounting) the following holds
   \leavevmode
   \begin{enumerate}
     \item $V_{n,\pi}, V_\pi$ are integrable with respect to
@@ -478,20 +512,22 @@ policy evaluations
     \item $\lim_{n\to\infty} V_{n, \pi} = V_\pi$
       for all $\pi \in R\Pi$.
     \item For any $\pi \in R\Pi$
-      \[\abs{V_{n,\pi}}, \abs{V_\pi} \leq R_{\max} (1 - \gamma) < \infty\]
+      \[\abs{V_{n,\pi}}, \abs{V_\pi} \leq R_{\max} / (1 - \gamma) < \infty\]
       \label{item:firstV3}
   \end{enumerate}
   \label{prop:VpiMeas}
 \end{prop}
+\vspace{-1cm}
 \begin{proof}  
   \leavevmode
   \begin{enumerate}
     \item By \cref{rem:expRewMeas} the expected reward functions
-      are measurable. Therefore sums and limits of them are aswell
-      se \cref{prop:intKerMeas}.
+      are measurable (see \cref{prop:intKerMeas}).
+      Therefore sums and limits of them are aswell.
       Integrability follows once we show \cref{item:firstV3}.
-    \item By monotone or dominated convergence.
-    \item For any $\pi \in R\Pi$
+    \item Follows by dominated convergence once we show \cref{item:firstV3}.
+    \item Let $\pi \in R\Pi$ be any policy.
+      Because of \cref{asm:D} we have
       \[ \abs{V_\pi(s)} \leq \E_s^\pi \sum_{i \in \N} \abs{r_i}
 	\leq \sum_{i \in \N} \gamma^{i-1} R_{\max}
       = R_{\max} / (1-\gamma) \]
@@ -534,7 +570,8 @@ policy evaluations
 It is known that the optimal value function
 might not be Borel measurable (see ex. 2 p. 233 \ncite{BS07}).
 Perhaps this is not suprising since we are taking a supremum over
-sets of policies which might have cardinality of at least the continuum.
+sets of policies and these sets have cardinality is at least the continuum,
+even if both all states and actions spaces are finite.
 \end{rem}
 
 At this point some relevant questions can be asked.
@@ -564,9 +601,9 @@ Here some additional structure on our process is imposed.
   \leavevmode
   \begin{enumerate}
     \item $(\Cal{S}_n, \Sigma_{\Cal{S}_n})$ is standard Borel
-      for each $n \in N$.
+      for each $n \in \N$.
     \item $(\Cal{A}_n, \Sigma_{\Cal{A}_n})$ is standard Borel.
-      for each $n \in N$.
+      for each $n \in \N$.
     \item The set of admissible actions
       $\frak{A}_n(h_n)$ is compact for any $h_n \in \cl{H}_n, \; n \in \N$.
     \item $\abs{V_\pi} < \infty$ for all policies $\pi \in R\Pi$.
@@ -581,7 +618,7 @@ Here some additional structure on our process is imposed.
   The last two points in \cref{sett:Schal} is readily implied by
   \cref{asm:D} because of \cref{prop:VpiMeas} and the fact that under
   \cref{asm:D} we have
-  $\sum_{t=n+1}^N r_t \leq \gamma^n R_{\max}$.
+  $\abs{\sum_{t=n+1}^N r_t} \leq \gamma^n V_{\max}$.
 \end{rem}
 
 To understand the results of \ncite{S75} which we will present shortly,
@@ -606,7 +643,7 @@ semicontinuity.
 To get a feel for the properties of the weak topology we state the following
 proposition:
 
-\begin{prop}[Properties of the weak topology]
+\begin{prop}[Properties of the weak topology] \label{prop:weakTop}
   Let $\cl{X}$ be a seperable metric space with metric $d$.
   Denote by $C(\cl{X})$ the set of continuous real-valued functions on $\cl{X}$
   and by $U_d(\cl{X})$ the set of uniformly continuous real-valued functions
@@ -688,7 +725,7 @@ of an optimal policy:
       \]
       is set-wise continuous (hence the name \defemph{S})
       for all $s_i \in \Cal{S}_i$, $i \in [n]$.
-    \item $r_n$ is upper semi-continuous.
+    \item The expected reward function $r_n$ is upper semicontinuous.
   \end{enumerate}
   \label{cond:S}
 \end{cond}
@@ -699,10 +736,23 @@ of an optimal policy:
     \item The function
       \[(h_n, a_n) \mapsto P_n(\cdot \mid h_n, a_n)\]
 	is weakly continuous (hence the name \defemph{W}).
-    \item $r_n$ is continuous.
+    \item The expected reward function $r_n$ is continuous.
   \end{enumerate}
   \label{cond:W}
 \end{cond}
+
+\begin{rem}
+  In (S) set-wise continuity is to be understood as the requirement that
+  $\psi_{S, (s_i)} : \cl{A}^{\ul{n}} \to \R = (a_1, a_2, \dots, a_n) \mapsto
+  P_n(S \mid s_1, a_1, \dots, s_n, a_n)$
+  is continuous for any $S \in \Sigma_{\cl{S}_{n+1}}$ and 
+  $s_i \in \cl{S}_i, \; i \in [n]$.
+  In (W) weak continuity means that the function
+  $\phi: \cl{H}_n \times \cl{A}_n \to \cl{P}(\cl{S}_{n+1}) = (h_n, a_n)
+  \mapsto P_n(\cdot \mid h_n, a_n)$
+  is continuous when $P_n(\cdot \mid h_n, a_n)$ is endowed with the 
+  weak topology.
+\end{rem}
 
 \begin{thm}[Schäl]
   Under \cref{sett:Schal} when either (\cref{cond:S}) or (\cref{cond:W}) hold
@@ -717,7 +767,7 @@ of an optimal policy:
   We refer to \ncite{S75}. %todo: or do we?
 \end{proof}
 
-\begin{cor}
+\begin{cor}\label{cor:SchalCor}
   Under \cref{sett:Schal} when either (\cref{cond:S}) or (\cref{cond:W}) hold then
   $V^*$ is (Borel) measurable.
 \end{cor}
@@ -728,12 +778,13 @@ of an optimal policy:
 
 Schäls theorem tells us that optimal policies exist and that the $n$-stage optimal value functions converge to the infinite optimal value function in a wide class
 of decision processes.
+
 In many cases we are looking at processes
-in which the next state in independent of the history,
+in which the next state is independent of the history,
 that is \emph{Markov}.
-In such cases it makes sense to ask if optimal policies can be chosen
-to also be Markov.
-Such questions will be addressed in the next section.
+In such cases it seems natural to ask if optimal policies can be chosen
+to be Markov aswell.
+This is the topic of the next section which we will turn to now.
 
 \section{Markov decision processes}
 
@@ -1066,6 +1117,38 @@ the weak topology (see \cref{defn:weakTop} and
   \end{enumerate}
   \label{sett:BS0}
 \end{sett}
+
+By the results of the history dependent section we can already establish
+import facts about MDPs under \cref{sett:BS0}.
+
+\begin{prop}
+  Let $(\cl{S}, \cl{A}, P, R, \gamma)$ be an MDP under \cref{sett:BS0}.
+  Then there exists an optimal policy $\pi^* \in R\Pi$,
+  we have convergence of $n$-optimal value functions $V_n^* \to V^*$ and
+  $V^*_n, V^*$ are measurable.
+\end{prop}
+\begin{proof}
+  As we have noted an MDP is just a special case of a HDP.
+  Moreover \cref{sett:Schal} and (S).2 is directly implied by \cref{sett:BS0}.
+  Lastly the set-wise continuity ((S).1) follows since pr. \cref{sett:BS0}.4,
+  $P$ is continuous, which by \cref{prop:weakTop} implies that
+  $P(S \mid s_1, \cdot, \dots, s_n, \cdot)$ is continuous for all
+  $S \in \Sigma_{\cl{S}_{n+1}}$ and $(s_1, \dots, s_n) \in \cl{S}^{\ul{n}}$.
+  Therefore we can apply \cref{thm:SchalExi} and \cref{cor:SchalCor}
+  and we are done.
+\end{proof}
+
+\begin{rem}[Almost optimal policies]
+  For MDPs which do not fulfill the requirement of
+  \cref{sett:BS0} policies which are \emph{close to optimal} some sense
+  may still exist. Let $\ve > 0$, then a policy $\pi \in R\Pi$ is called
+  $\ve$-optimal if $V_\pi > V^* - \ve$.
+  One can then show that under 1. of \cref{sett:BS0}
+  and the additional assumption that $\frak{A}(s)$ is countable for all
+  $s \in \cl{S}$, we have that deterministic $\ve$-optimal policies always exist
+  (see theorem 18 \mcite{F12}).
+  For a detailed discussion of this topic see \ncite{F12}.
+\end{rem}
 
 \begin{prop}
   Let $\cl{X}$ and $\cl{Y}$ be separable metrizable and
@@ -1780,7 +1863,7 @@ We name a few examples:
   \item \emph{Pole balancing} in a 2D physical simulation environment
     (see e.g. the famous \emph{cartpole} example from \mcite{BSA83}).
     One may even add random effects (such as \emph{wind} effects)
-    to full use of our stochastic setup.
+    to make full use of our stochastic setup.
 \end{enumerate}
 The problem is of course that the value functions and operators
 which are used in \cref{alg:theoSimpleQ} are not computable in practice.
@@ -2319,7 +2402,7 @@ $\norm{n}_1 = n_1 + \dots + n_w$.
   \end{align*}
 \end{proof}
 
-Now we can bound
+Using this we can make a bound on the approximation error:
 
 \begin{prop}
   Given an MDP satisfying \cref{sett:polyApprox} and using $\norm{\cdot}_\infty$

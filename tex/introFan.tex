@@ -194,18 +194,16 @@ using
   We have for example $\cl{G}(w, w, \beta, H) = C_w([a_1, b_1]^w, \beta, H)$.
 \end{example}
 
-\begin{defn}
+\begin{defn}\label{defn:F0G0}
   Define
   \[ \Cal{F}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R \Mid
-  \forall a \in \Cal{A} : f(\cdot, a) \in \Cal{SRN}(s, V) \right\} \]
+  \forall a \in \Cal{A} : f(\cdot, a) \in \Cal{SRN}\left( s, V_{\max},
+  (d_i)_{i=0}^{L+1} \right) \right\} \]
   and
   \[ \Cal{G}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R
       \Mid \forall a \in \Cal{A} :
-      f(\cdot, a) = \Cal{G}(\{p_j, t_j, \beta_t, H_j\}_{j \in [q]})
+      f(\cdot, a) = \Cal{G}\left(\{p_j, t_j, \beta_t, H_j\}_{j \in [q]} \right)
   \right\} \]
-  Here $\cl{SRN}(s, V)$ denotes the set of $(s, V)$-sparse ReLU networks
-  with any possible network structure.
-  \label{defn:F0G0}
 \end{defn}
 
 The class $\cl{F}_0$ is the function class we are going to use in the version
@@ -354,20 +352,16 @@ The main result of this section and one of the main results of \ncite{F20} is
   $\nu, \mu \in \cl{P}(\cl{S} \times \cl{A})$ be probability
   measures on $\cl{S} \times \cl{A}$ such that
   \cref{asm:A2} hold with constant $\phi_{\mu, \nu} > 0$.
-  We will use the FQI with the following inputs:
-  \begin{enumerate}
-    \item $\nu$ as the batch sampling distribution.
-    \item $n \in \N$ a sufficiently
-      large\footnote{We will elaborate on this in the proof.}
-      number serving as the batch size.
-    \item approximating function class $\cl{F}_0$ (see \cref{defn:F0G0}).
-  \end{enumerate}
-  We assume that there exists constants
-  $q \in \N$ and
-  $\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}$
-  such that \cref{asm:A1} hold and that furthermore
-  there exists constant $\xi > 0$
-  such that
+  Let $n \in \N$ be a sufficiently
+  large\footnote{We will elaborate on this in the proof.}
+  number serving as the batch size.
+  
+  Assume that there exists constants
+  $q \in \N$ and $\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}$
+  such that \cref{asm:A1} hold for $\cl{F}_0$ with
+  any sparsity constant $s$ and structure $L, (d_i)_{i=0}^{L+1}$.
+  
+  Let $\xi > 0$ be such that
   \[ \max \left\{ \sum_{j=1}^q (t_j + \beta_j + 1)^{3 + t_k},
       \sum_{j=1}^q \log (t_j + \beta_j),
       \max_{j \in [q]} p_j
@@ -378,27 +372,37 @@ The main result of this section and one of the main results of \ncite{F20} is
   $\alpha^* = \max_{j \in [q]} t_j/(2\beta^*_j + t_j)$, 
   $\xi^* = 1 + 2\xi$ and $\kappa^* = \min_{j\in [q]} \beta^*_j/t_j$.
 
-  Then there exists a class of ReLU networks
-  \[ \Cal{F}_0 = \{f : \Cal{S} \times \Cal{A} \to \R : f(\cdot, a) \in 
-  \Cal{SRN}(\wt{s}, V_{\max}, (\wt{d}_j)_{j=0}^{\wt{L}+1}, \wt{L})
-  \mid a \in \Cal{A} \} \]
-  with structure satisfying
+  Then there exists structure and sparsity constants (for $\cl{F}_0$)
+  satisfying
   \[ \wt{L} \leq C_{\wt{L}} \cdot (\log n)^{\xi^*},\;
     \wt{d}_0 = r,\; \wt{d}_j \leq 6 n^{\alpha^*} (\log n)^{\xi^*},\;
     d_{L+1} = 1,\;
   \wt{s} \leq C_{\wt{s}} \cdot n^{\alpha^*} \cdot (\log n)^{\xi^*} \]
-  such that when running the FQI algorithm, its output satisfy
+  such that when running the FQI algorithm with
+  %\begin{lefalign}
+  \begin{enumerate*}[label=(\roman*.),itemjoin = \hspace{0.2cm}]
+    \item sample distribution $\nu$,
+    \item batch size $n$,
+    \item function class
+      $\Cal{F}_0$ with structure and sparsity constants 
+      $\wt{s}, (\wt{d}_j)_{j=0}^{\wt{L}+1}, \wt{L}$,
+    \item $K$ iterations,
+    \item any initial estimator $\wt{Q}_0$ which is bounded by $V_{\max}$,
+  \end{enumerate*}
+  %\end{leftalign}
+  then the output policy satisfies
   \[ \norm{Q^* - Q_{\pi_K}}_{1, \mu} \leq \;
-    C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
+    C_7 \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
     n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
     + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K
   \]
-  here $C_{\varepsilon}, C_{\wt{L}}, C_{\wt{s}}>0$ are constants
+  here $C_7, C_{\wt{L}}, C_{\wt{s}}>0$ are constants
   not depending on $n$ or $K$.
   In other words
   \[ \norm{Q^* - Q_{\pi_K}}_{1, \mu} =
   \cl{O}\left( n^{-\ve^*} \log(n)^{c^*} + \gamma^K \right) \]
-  for some $\ve^*, c^* > 0$.
+  defining $\ve^* = \max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}$
+  and $c^* = (\alpha^* - 1)/2$.
 \end{thm}
 
 This bound on the convergence of the FQI algorithm

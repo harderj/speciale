@@ -2,7 +2,8 @@
 \begin{thm}[One-step Approximation Error]\label{thm:oneStep}
   Let
   \begin{enumerate}
-    \item $(\cl{S}, \cl{A}, P, R, \gamma)$ be an MDP.
+    \item $(\cl{S}, \cl{A}, P, R, \gamma)$ be an MDP,
+      and $n \in \N$ be a batch-size.
     \item $\Cal{F} \subseteq 
       \left\{ f : \cl{S} \times \cl{A} \to [-V_{\max}, V_{\max}]
       \mid f \in \cl{M} \right\}$
@@ -10,21 +11,20 @@
       bound above and below by $V_{\max}$.
     \item $\Cal{G} = T(\Cal{F})$ the class of functions obtainable by
       applying $T$ to some function in $\Cal{F}$.
-    \item $\nu \in \Cal{P}(\Cal{S} \times \Cal{A})$ be a probability measure.
-    \item $(S_i, A_i)_{i\in[n]}$ be $n$ i.i.d. samples with distribution
-      $(S_i, A_i)(\Prob) = \nu$.
-    \item $(R_i, S'_i)_{i\in[n]}$ be the rewards and next states sampled
+    \item $\nu \in \Cal{P}(\Cal{S} \times \Cal{A})$ be a probability measure,
+      $(S_i, A_i)_{i\in[n]}$ be $n$ i.i.d. samples with distribution
+      $\nu$ and $(R_i, S'_i)_{i\in[n]}$ be the rewards and next states sampled
       corresponding to the samples.
       That is $(S_i, A_i, R_i)(\Prob) = R \nu$
       and $(S_i, A_i, S'_i)(\Prob) = P \nu$. 
-    \item $Q \in \Cal{F}$ be a fixed Q-function approximator.
-    \item $Y_i = R_i + \gamma \max_{a \in \Cal{A}} Q(S'_i, a)$.
-    \item $\wh{Q} = \argmin_{f \in \Cal{F}} \frac{1}{n}
+    \item $Q \in \Cal{F}$ be a fixed Q-function,
+      $Y_i = R_i + \gamma \max_{a \in \Cal{A}} Q(S'_i, a)$ be
+      T-values and
+      \\$\wh{Q} = \argmin_{f \in \Cal{F}} \frac{1}{n}
       \sum_{i=1}^n (f(S_i, A_i) - Y_i)^2$.
-    \item $\kappa \in (0,1],\; \delta > 0$ be fixed.
-    \item $\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)$
-      be a minimal $\delta$-covering of $\Cal{F}$ w.r.t. $\norm{\cdot}_\infty$.
-    \item $N_\delta = \abs{\Cal{N}(\delta, \Cal{F}, \norm{\cdot}_\infty)}$
+    \item $\Cal{N}(1/n, \Cal{F}, \norm{\cdot}_\infty)$
+      be a minimal $1/n$-covering of $\Cal{F}$ w.r.t. $\norm{\cdot}_\infty$.
+      and $N_\delta = \abs{\Cal{N}(1/n, \Cal{F}, \norm{\cdot}_\infty)}$
       be the number of elements in this covering.
   \end{enumerate}
   Then
