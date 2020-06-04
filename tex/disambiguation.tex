@@ -1,29 +1,30 @@
 
 \begin{itemize}
-  \item $\ul{\R} = \R \cup \{-\infty\}$, $\ol{\R} = \R \cup \{\infty\}$,
-    $\ol{\ul{\R}} = \R \cup \{\pm \infty\}$.
+  \item $\ol{\R} = \R \cup \{\pm \infty\}$ set of extended real numbers.
   \item $\id_X \defeq x \mapsto x$ the identity function on $X$.
   \item $ [\phi] \defeq \begin{cases}
     1 & \phi \\ 0 & \neg \phi \end{cases}$: 0-1 indicator for logical formulas.
   \item $[q] \defeq \{1,\dots,q\}$ for $q\in \N$.
   \item $1_A(a) \defeq [a \in A]$: the indicator function.
-  \item $C_{\bb{K}}(X) \defeq \{ f : X \to \bb{K} \mid f \; \text{continuous} \}$,
-    for $\bb{K} \in \{ \R, \C \}$. $C(X) = C_\R(X)$
-  \item $C_b(X) \defeq \{ f \in C(X) \mid \exists K : \norm{f}_\infty < K \}$.
-    I.e. the space of bounded continuous functions.
-  \item ANN: abbreviation for artificial neural network see \cref{def_ANN}.
+  \item $C(\cl{X}) \defeq \{ f : \cl{X} \to \bb{K} \mid f \; \text{continuous} \}$
+    set of continuous real-valued functions on $\cl{X}$.
+  \item ANN: abbreviation for artificial neural network see \cref{defn:ann}.
   \item $\delta_a$: Dirac-measure of point $a$,
     i.e. $\delta_a(A) = [a \in A] = 1_A(a)$.
-  \item $(\Omega, \Cal{F}, \bb{P})$: background probability space,
+  \item $(\Omega, \Sigma_\Omega, \bb{P})$: background probability space,
     that is source space for random variables.
   \item $\bb{B}_n$: the $n$-dimensional Borel $\sigma$-algebra.
   \item $\lambda^n$: the $n$-dimension Lebesgue measure.
-  \item $\cl{P}(A)$: the set of all probability measures on a
-    measurable space $(A, \Sigma_A)$.
-  \item $2^A$: the powerset of $A$.
-  \item $\cl{M}(A, B)$: set of $\Sigma_A$-$\Sigma_B$ measurable functions.
-  \item $\cl{L}_p$: set of functions $f$ with $\norm{f}_p < \infty$
-    $p \in [1,\infty]$.
+  \item $\cl{P}(\cl{X})$: the set of all probability measures on a
+    measurable space $(\cl{X}, \Sigma_\cl{X})$.
+  \item $2^\cl{X}$: the powerset of the set $\cl{X}$.
+  \item $\cl{M}(\cl{X}, \cl{Y})$:
+    set of $\Sigma_\cl{X}$-$\Sigma_\cl{Y}$ measurable functions.
+  \item $\cl{L}_p(\cl{X}) = \left\{ f : \cl{X} \to \R \Mid
+    \int \abs{f}^p \difd \mu < \infty, \; \forall \mu \in A \right\}$
+    the set of functions which are
+    $(p, \mu)$-integrable for all measures $\mu$ in a certain
+    set of measures $A$, see \cref{defn:essBound}.
   \item $\E, \E_\mu$: expectation, that is integration
     w.r.t. the measure $\Prob$ or $\mu$ respectively.
   \item $\Var$: variance operator.

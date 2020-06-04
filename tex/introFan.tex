@@ -7,8 +7,7 @@ This time the function class is not linear combinations of a set of
 basis functions, but a class of artificial neural networks.
 Also we use the same setting (\cref{sett:MR}) of a
 continuous state space, finite action space discounted MDP.
-Though \ncite{F20} claims to investigate the deep Q-network algorithm
-(see \cref{alg:DQN}),
+Though \ncite{F20} claims to investigate the deep Q-network algorithm,
 instead of analysing DQN,
 another called \emph{deep fitted Q-iteration} (DQI) algorithm is
 analysed instead and bounds on its convergence is established.
@@ -46,7 +45,8 @@ on which DQI is based:
 \end{algorithm}
 \end{figure}
 \begin{rem}
-  The fitted Q-iteration algorithm is not very concrete, because
+  Rather than a single algorithm we may view
+  FQI as a class of concrete, because
   \begin{enumerate*}[label=(\arabic*.)]
     \item The function class is not specified.
     \item It is not specified how to solve the optimization problem
@@ -54,8 +54,6 @@ on which DQI is based:
   \end{enumerate*}
   These two points are linked in these that the optimization problem
   is probably better handled separately for each function class.
-  Therefore we might rather view FQI
-  as a class of algorithms, one for each function class $\cl{F}$.
 \end{rem}
 
 The deep fitted Q-iteration algorithm is an FQI-algorithm where the
@@ -67,11 +65,15 @@ Let $f \in \cl{RN}\left((d_i)_{i=1}^{L+1} \right)$ be a
 ReLU network (see \cref{defn:relu})
 with weights $(W_i, v_i)_{i=1}^{L+1}$
 and define $\wt{W}_i = (W_i, v_i)$, 
-as the vector containing all weight and bias parameters.
+as the vector containing all weight and bias parameters of the $i$th layer
+of $f$,
+that is, all entries in the matrix $W_i$ and vector $v_i$.
 We can then consider the magnitude of the maximum parameter
 $\norm{\wt{W}_i}_\infty$,
 and the number of non-zero parameter $\norm{\wt{W}_i}_0$
 in the $i$th layer of the network.
+Also denote by $(f_j)_{j \in d_{L+1}} = f$ the components (coordinates)
+of the network $f$.
 
 \begin{defn}[Sparse ReLU networks]
   For $s,V \in \R$ the ReLU network $f$
@@ -83,7 +85,11 @@ in the $i$th layer of the network.
       \item $\max_{j \in [d_{L+1}]} \norm{f_j}_\infty \leq V$
     \end{enumerate*}
   \end{center}
-  The set of them we denote $\Cal{SRN}\left(s, V, (d_i)_{i=0}^{L+1}\right)$.
+  The set of them we denote $\Cal{SRN}\left(s, V, (d_i)_{i=0}^{L+1}, L \right)$
+  and by $\cl{SRN}(s, V)$ we mean the set of $(s, V)$-sparse ReLU networks
+  with any (finite) structure.
+  We may leave out $L$ when clear from the structure writing
+  $\cl{SRN}\left(s, V, (d_i)_{i=0}^{L+1} \right)$.
   \label{defn:sparseReLU}
 \end{defn}
 
@@ -98,7 +104,7 @@ in the $i$th layer of the network.
 \begin{defn}[Deep fitted Q-iteration]
   A \defemph{deep fitted Q-iteration} (DQI) algorithm,
   is the fitted Q-iteration algorithm when applied with a function class
-  of sparse ReLU networks $\cl{SRN}$ (see \cref{defn:sparseReLU}).
+  of sparse ReLU networks $\cl{SRN}$.
 \end{defn}
 
 The reason for working with this particular subclass of neural networks
@@ -107,7 +113,8 @@ is due to the following lemma found in
 For this see \cref{defn:holdersmooth}).
 
 \begin{lem}[Approximation of Hölder Smooth Functions by ReLU networks]
-  Let $m,M \in \Z_+$ with $N \geq \max\{(\beta + 1)^r, (H + 1) e^r\}$,
+  Let $m,M \in \Z_+, \beta > 0$ and $H>0$
+  with $N \geq \max\{(\beta + 1)^r, (H + 1) e^r\}$,
   $L = 8 + (m + 5) (1 + \ceil{\log_2(r + \beta)})$, 
   $d_0 = r, d_j = 6(r + \ceil{\beta}) N, d_{L+1} = 1$.
   Then for any $g \in \Cal{C}_r \left( [0,1]^r, \beta, H \right)$
@@ -176,7 +183,7 @@ using
   for some functions $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
   (where $p_{q+1} = 1$)
   that only depend on $t_j$ of their inputs
-  for each of their components $g_{jk}$,
+  for each of their components $g_{jk}:[a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]$,
   and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$, 
   i.e. they are Holder smooth.
   We denote the class of these functions
@@ -204,7 +211,8 @@ using
 The class $\cl{F}_0$ is the function class we are going to use in the version
 of the DQI algorithm, for which we will soon establish convergence bounds.
 
-In order to make sense of the first assumption
+In order to make sense of the first assumption (\cref{asm:A1}) which we
+are going to present shortly
 we recall here the definition of the operators for Q-functions:
 (\cref{defn:opQ}). For any stationary policy $\tau \in S\Pi$ we define
 \[ P_\tau Q(s, a) = \int Q(s', a') \difd \tau P(s', a' \mid s, a) \]
@@ -214,7 +222,7 @@ we recall here the definition of the operators for Q-functions:
 matching the definitions in \ncite{F20}.
 
 \begin{asm}
-  $ T \Cal{F}_0 \subseteq \Cal{G}_0$.
+  It is assumed $ T \Cal{F}_0 \subseteq \Cal{G}_0$.
   I.e. t is assumed that $T f \in \Cal{G}_0$ for any $f \in \Cal{F}_0$, 
   so when using the Bellman optimality operator on our sparse ReLU networks,
   we should stay in the class of compositions of Holder smooth functions.
@@ -293,6 +301,21 @@ The other $\mu$ is used to measure the distance to the optimal Q-function $Q^*$
 from the algorithm output $\wt{Q}_K$.
 The next assumption has to do with the difference between these two measures.
 
+Since we are in the setting of an MDP $(\cl{S}, \cl{A}, P, R, \gamma)$
+recall from chapter 2
+that for a sequence of stationary policies $\pi_1, \pi_2, \dots \in S \Pi$ and a
+measure $\mu \in \cl{P}(\cl{S} \times \cl{A})$ we can get a probability measure
+$\dots \pi_2 P \pi_1 P \in \cl{P}(\cl{H}_\infty)$ where
+$\cl{H}_\infty = (\cl{S} \times \cl{A})^\infty$.
+Let $\rho_m:\cl{H}_\infty \to \cl{S}$
+denote projection onto the $m$th state-action pair in
+$\cl{H}_\infty$.
+Then using the alternative kernel composition (see \cref{rem:altComp})
+we can write the distribution of the $m$th state action pair as
+\[\rho_{m}(\dots \pi_2 P \pi_1 P \mu)
+= (\pi_{m-1} P) \circ \dots \circ (\pi_1 P) \in \cl{P}(\cl{S}) \]
+
+
 \begin{defn}[Concentration coefficients] \label{defn:ccoefs}
   Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
   absolutely continuous w.r.t. $\lambda^w \otimes \mu_\Cal{A}$
@@ -300,19 +323,27 @@ The next assumption has to do with the difference between these two measures.
   on $\Cal{A}$).
   Define
   \[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m \in M\Pi}
-    \left[ \E_{v_2} \left( \frac{\mathrm{d} (P \pi_m \dots P \pi_1 \nu_1)}
+    \left[ \E_{v_2} \left( \frac{\mathrm{d}
+	((P \pi_m) \circ \dots \circ (P \pi_1) \nu_1)}
   {\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
   where $\frac{\difd \mu_1}{\difd \mu_2}$ are the Radon-Nikodym derivative
   of the measures $\mu_1, \mu_2$ (see \cref{thm:radonNiko}).
 \end{defn}
 
 \begin{asm}\label{asm:A2}
-  Let $\nu$ be the batch sampling distribution,
-  and $\mu$ the distribution
-  over which we measure the error in \cref{thm:main}, then we assume
-  \[ (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
-  = \phi_{\mu, \nu} < \infty \]
+  For two probability measure $\nu, \mu \in \cl{P}(\cl{S} \times \cl{A})$ 
+  on $\cl{S} \times \cl{A}$
+  it is assumed that there exists a finite constant $\phi_{\mu, \nu} > 0$
+  such that
+  \[ \phi_{\mu, \nu} \defeq 
+    (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
+  < \infty \]
 \end{asm}
+
+We are not going further into examples of when this assumption holds
+or the size of the constant $\phi_{\mu, \nu}$.
+Below assumption 4.3 in \ncite{F20} are found references to detailed discussions
+of \cref{asm:A2}.
 
 \subsection{The main theorem}
 
@@ -327,7 +358,7 @@ The main result of this section and one of the main results of \ncite{F20} is
   \begin{enumerate}
     \item $\nu$ as the batch sampling distribution.
     \item $n \in \N$ a sufficiently
-      large\footnote{we will elaborate on this in the proof.}
+      large\footnote{We will elaborate on this in the proof.}
       number serving as the batch size.
     \item approximating function class $\cl{F}_0$ (see \cref{defn:F0G0}).
   \end{enumerate}
@@ -349,20 +380,23 @@ The main result of this section and one of the main results of \ncite{F20} is
 
   Then there exists a class of ReLU networks
   \[ \Cal{F}_0 = \{f : \Cal{S} \times \Cal{A} \to \R : f(\cdot, a) \in 
-  \Cal{F}(\wt{L}, \{\wt{d}_j\}_{j=0}^{\wt{L}+1},\wt{s}) \mid a \in \Cal{A} \} \]
+  \Cal{SRN}(\wt{s}, V_{\max}, (\wt{d}_j)_{j=0}^{\wt{L}+1}, \wt{L})
+  \mid a \in \Cal{A} \} \]
   with structure satisfying
-  \[ \wt{L} \lesssim (\log n)^{\xi^*},
-    \wt{d}_0 = r, \wt{d}_j \leq 6 n^{\alpha^*} (\log n)^{\xi^*},
-  d_{L+1} = 1, \wt{s} \lesssim n^{\alpha^*} \cdot (\log n)^{\xi^*} \]
+  \[ \wt{L} \leq C_{\wt{L}} \cdot (\log n)^{\xi^*},\;
+    \wt{d}_0 = r,\; \wt{d}_j \leq 6 n^{\alpha^*} (\log n)^{\xi^*},\;
+    d_{L+1} = 1,\;
+  \wt{s} \leq C_{\wt{s}} \cdot n^{\alpha^*} \cdot (\log n)^{\xi^*} \]
   such that when running the FQI algorithm, its output satisfy
-  \[ \norm{Q^* - Q^{\pi_K}}_{1, \mu} \leq \;
+  \[ \norm{Q^* - Q_{\pi_K}}_{1, \mu} \leq \;
     C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
     n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
     + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K
   \]
-  where $C_{\varepsilon}>0$ is a constant not depending on $n$ or $K$.
+  here $C_{\varepsilon}, C_{\wt{L}}, C_{\wt{s}}>0$ are constants
+  not depending on $n$ or $K$.
   In other words
-  \[ \norm{Q^* - Q^{\pi_K}}_{1, \mu} =
+  \[ \norm{Q^* - Q_{\pi_K}}_{1, \mu} =
   \cl{O}\left( n^{-\ve^*} \log(n)^{c^*} + \gamma^K \right) \]
   for some $\ve^*, c^* > 0$.
 \end{thm}
@@ -378,6 +412,8 @@ among the sources we survey in this thesis.
 \subsection{Relation to DQN}
 
 The following is famous \emph{DQN}-algorithm proposed by \mcite{M15}.
+Note that we denote by $Q(\theta)$ the network with parameters $\theta$,
+i.e. $Q(\theta)$ is a function.
 \begin{figure}[H]
 \begin{algorithm}[H] %\label{algocf:fq} % this labels line, could not fix
   \caption{Deep Q-Network}
@@ -417,12 +453,12 @@ The following is famous \emph{DQN}-algorithm proposed by \mcite{M15}.
     Q_{\mathrm{target}, \ell(k)}(s_i', a)$.
 
     Update the Q-network by performing a gradient descent step
-    \[ \theta_{k+1} \leftarrow \alpha_k \frac{1}{n} \sum_{i = 1}^n
+    \[ \theta_{k+1} \leftarrow \theta_k - \alpha_k \frac{1}{n} \sum_{i = 1}^n
 	(Y_i - Q(\theta_k)(s_i, a_i)) \cdot \nabla_{\theta}
     Q(\theta)(s_i, a_i) \]
 
     For every $T_{\mathrm{target}}$ steps update the target network by
-    setting $Q(\theta^*_{\ell(k+1)}) \leftarrow Q(\theta^*_{\ell(k)})$
+    setting $\theta^*_{\ell(k+1)} \leftarrow \theta_{k+1}$
     where $\ell(k)$ is the number of updates of the target network
     at step $k$.
   }
@@ -435,7 +471,7 @@ The following is famous \emph{DQN}-algorithm proposed by \mcite{M15}.
 \end{algorithm}
 \end{figure}
 
-\Cref{alg:DQN} is an off-policy algorithm because it updates the
+DQN is an off-policy algorithm because it updates the
 parameter $\theta_k$ based on picking the greedy action of the
 target network $Q_{\hrm{target}, \ell(k)}$, while the policy being
 followed is an $\epsilon$-greedy policy where the greedy part is
@@ -468,13 +504,13 @@ For the target network it is argued that when having a large enough batch
 $\wt{Q}_{k-1}$ becomes similar to the target network
 $Q_{\hrm{target}, \ell(k-1)}$ of DQN.
 
-\subsubsection{Critique of this relation}
+\subsection{Critique of this relation}
 
 While the arguments for the similarity between FQI and DQN are intuitively
 reasonable, the rigiorous proofs are missing and it is unclear if
 a convergence result about FQI has implications for DQN.
 
-\subsection{Differences in notation}
+\subsubsection{Differences in notation}
 % Notational differences between this paper
 % and [YangXieWang]
 
@@ -489,7 +525,6 @@ The conversion to the notation used here becomes
 $\norm{f}_n \leadsto \norm{f}/n$.
 The letter $r$ is used in \ncite{F20} to denote the euclidean dimension of
 the state space, while here we use $w$.
-We use $\cl{SRN}$ to denote the class of sparse ReLU networks while
-\ncite{F20} use $\cl{F}$.
-
-
+We use $\cl{SRN}(s, V, (d_j)_{j=0}^{L+1}, L)$
+  to denote the class of sparse ReLU networks while
+\ncite{F20} use $\cl{F}(L, \{d_j\}_{j=0}^{L+1}, s, V)$.

@@ -1,8 +1,8 @@
 
-\begin{proof}[Proof of main theorem] %todo write intro
+\begin{proof}[Proof of main theorem (\ref{thm:main})] %todo write intro
   Using \cref{thm:errorprop} we get
   \begin{equation}
-    \norm{Q^* - Q^{\pi_K}}_{1,\mu} \leq
+    \norm{Q^* - Q_{\pi_K}}_{1,\mu} \leq
     \frac{2 \phi_{\mu, \nu} \gamma}{(1-\gamma)^2}\varepsilon_{\max} +
     \frac{4 \gamma^{K+1}}{(1-\gamma)^2} R_{\max}
     \label{eq:mp1}
@@ -23,16 +23,17 @@
   The remains only to wound $\omega(\Cal{F}_0)$ and $N_0$,
   starting with $\omega(\Cal{F}_0)$.
 
-  \textbf{Step 1}. %todo: proper ref below
+  \textbf{Step 1}.
   We want to employ the lemma by \ncite{SH17}
   (\cref{lem:holderapprox})
   to each Hölder smooth part of $g = Tf$ where $f$ is an arbitrary network
   in $\cl{F}_0$
   and then piece it together somehow,
   using that ReLU networks are easily stitched together into bigger
-  ReLU networks.
+  ReLU networks (see \cref{rem:annGraph}).
   Therefore the first step is to refit our
-  Hölder Smooth compositions in $\Cal{G}_0$ to be defined on a hyper-cube instead.
+  Hölder Smooth compositions in $\Cal{G}_0$ to be defined on the unit cube in
+  the respective dimensions instead.
   This is a relatively simple procedure:
 
   Let $f \in \Cal{G}_0$ then $f(\cdot, a) \in
@@ -64,9 +65,9 @@
   This concludes our construction of the refit of the components of $g$
   to unit intervals.
 
-  \textbf{Step 1.1}
+  \textbf{Step $\frac{3}{2}$}
 
-  Define %todo: define N
+  Define 
   $N \defeq \max_{j \in [q]} n^{t_j/(2 \beta^*_j + t_j)}$
   $\eta \defeq \log \left((2W + 1) 6^{t_j} N
   / (W 3^{\beta_j} N^{-\beta_j/t_j}) \right)$,
@@ -75,13 +76,15 @@
   $N \geq \max \left\{ (\beta_j + 1)^{t_j},
   (H_j+1)e^{t_j} \mid j \in [q] \right\}$.
   \begin{equation}
-    W \defeq \max \left( \left\{ (2 H_{j-1})^{\beta_j} \mid 1\leq j\leq q-1 \right\}
+    W \defeq \max \left( \left\{ (2 H_{j-1})^{\beta_j}
+      \mid 1\leq j\leq q-1 \right\}
     \cup \left\{ H_q(2H_{q-1})^{\beta_q}, 1\right\} \right)
   \end{equation}
   By \cref{lem:holderapprox} there exists a ReLU network
   \begin{equation}
-    \wh{h}_{jk} \in \Cal{F} \left( L_j + 2, \left\{ t_j, \wt{d}_j p_{j+1}, \dots,
-    \wt{d}_j p_{j+1}, p_{j+1} \right\}, (\wt{s}_j + 4) \cdot p_{j+1} \right)
+    \wh{h}_{jk} \in \Cal{SRN} \left( (\wt{s}_j + 4) \cdot p_{j+1}, V_{\max}, \;
+    ( t_j, \wt{d}_j p_{j+1}, \dots,
+  \wt{d}_j p_{j+1}, p_{j+1}), L_j + 2 \right)
   \end{equation}
   where $\wt{d}_j = 6(t_j + \ceil{\beta_j})N$ and
   $\wt{s}_j \leq 141 (t_j + \beta_j + 1)^{3 + t_j} N (m + 6)$
@@ -99,25 +102,28 @@
     with 4 non-zero weights.
   \end{lem}
   \begin{proof}
-    Namely $\tau(u) = 1 - (1 - u)_+ = \min \left\{
-    \max \left\{ u, 0 \right\}, 1 \right\}$. %todo elaborate
+    This is the simple network
+    $\min(0,\max(1, u)) = \sigma_r(1 - \sigma_r(1 - u))$
+    where $\sigma_r(x) = \max(0,x)$ is the ReLU activation function.
+    The weights are $w_1 = w_2 = -1$ and $v_1 = v_2 - 1$.
   \end{proof}
   Now define
   $\wt{h}_{jk} = \tau \circ \wh{h}_{jk}$
   (and $\wt{h}_{j} = (\wt{h}_{jk})_{k \in [p_{j + 1}]}$).
   Then
   \begin{equation}
-    \wt{h}_{jk} \in \Cal{F}\left( L_j + 2, \left\{ t_j,
-  \wt{d}_j, \dots, \wt{d}_j, 1 \right\}, (\wt{s}_j + 4) p_{j+1} \right)
+    \wt{h}_{jk} \in \Cal{SRN}\left( (\wt{s}_j + 4) p_{j+1},
+    V_{\max}, (t_j, \wt{d}_j, \dots, \wt{d}_j, 1), L_j + 2 \right)
   \end{equation}
-  and since $h_{jk}([0, 1]^{t_j}) \in [0, 1]$ by \cref{eq:hhatbound}
+  and since $h_{jk}([0, 1]^{t_j}) \in [0, 1]$ by \cref{eq:hhatbound} we have
   \begin{align}
     \norm{\wt{h}_{jk} - h_{jk}}_\infty
-    = &\; \norm{\tau \circ \wh{h}_{jk} - \tau \circ h_{jk}}_\infty
-    \\ \leq &\; \norm{\wh{h}_{jk} - h_{jk}}_\infty
-    \\ \leq &\; 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
+    = \; \norm{\tau \circ \wh{h}_{jk} - \tau \circ h_{jk}}_\infty
+     \leq \; \norm{\wh{h}_{jk} - h_{jk}}_\infty
+     \leq \; 2 W 3^{-\beta_j} N^{-\beta_j/t_j}
   \end{align}
-  Having employed \cref{lem:holderapprox} we now need to stitch it
+  Having employed \cref{lem:holderapprox}
+  we now need to stitch it
   back together:
 
   \textbf{Step 2}.
@@ -127,8 +133,8 @@
   $\wt{L} \defeq \sum_{j=1}^q (L_j + 2)$,
   $\wt{d} \defeq \max_{j \in [q]} \wt{d}_j p_{j+1}$
   and $\wt{s} \defeq \sum_{j=1}^q (\wt{s}_j + 4) p_{j+1}$.
-  Then $\wt{f} \in \Cal{F}\left( \wt{L}, \left\{ 
-  r, \wt{d}, \dots, \wt{d}, 1\right\}, \wt{s} \right)$.
+  Then $\wt{f} \in \Cal{SRN} \left( \wt{s}, V_{\max},
+  (w, \wt{d}, \dots, \wt{d}, 1), {\wt{L}} \right)$.
   We now take a moment to verify the size 
   of the constants involved in the network.
   Starting with $\wt{L}$.
@@ -197,8 +203,8 @@
   and therefore
   \begin{align*}
     \omega(\Cal{F}_0) = & \; \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}} 
-    \\ \leq & \; C_N n^{-2 \alpha^* \min_{j \in [q]} \beta^*_j / t_j}
-    \\ \leq & \; C_N n^{-2 \alpha^* \kappa^*}
+     \leq \; C_N n^{-2 \alpha^* \min_{j \in [q]} \beta^*_j / t_j}
+     \leq \; C_N n^{-2 \alpha^* \kappa^*}
     \numberthis \label{eq:boundOmega}
   \end{align*}
   where we define $\kappa^* = \min_{j \in [q]} \beta^*_j/t_j$.
@@ -206,9 +212,11 @@
   \textbf{Step 3}.
   Finally what is left is to bound the covering number of $\Cal{F}_0$.
   Denote by $\Cal{N}_\delta$ the $\delta$-covering of
-  $\Cal{F}\left( \wt{L}, \{ \wt{d}_j \}_{j=1}^{\wt{L} + 1}, \wt{s}\right)$ by
+  $\cl{SRN}\left( \wt{s}, V_{\max},
+  (\wt{d}_j)_{j=1}^{\wt{L} + 1}, \wt{L} \right)$ by
   \[ \Cal{N}_\delta \defeq \Cal{N} \left( \delta,
-      \Cal{F}\left(\wt{L}, \{ \wt{d}_j \}_{j=1}^{\wt{L} + 1}, \wt{s} \right),
+      \cl{SRN}\left( \wt{s}, V_{\max},
+  (\wt{d}_j)_{j=1}^{\wt{L} + 1}, \wt{L} \right),
   \norm{\cdot}_\infty \right) \]
   Since $\Cal{N}_\delta$ is a covering, for any $f \in \Cal{F}_0$
   and $a \in \Cal{A}$ you can find a $g_a \in \Cal{N}_\delta$ such that
@@ -216,21 +224,21 @@
   $g:\Cal{S} \times \Cal{A} \to \R = (s, a) \mapsto g_a(s)$.
   Then $\norm{f - g}_\infty < \delta$, so we can bound the covering number
   of $\Cal{F}_0$ by
-  \[ \abs{\Cal{N}(\delta, \Cal{F_0},  \norm{\cdot}_\infty)}
+  \[ \abs{\Cal{N}(\delta, \Cal{F}_0,  \norm{\cdot}_\infty)}
   \leq \abs{\Cal{N}_\delta}^{\abs{\Cal{A}}} \]
-  We now utilize a lemma found in [todo: ref to Anthony Bartlett 2009]
-  \begin{lem}[Covering Number of ReLU Networks]
+  We now utilize a lemma found in \mcite{AB02}
+  \begin{lem}[Covering number of ReLU networks]
     Consider the family of ReLU networks
-    \[ \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max}\right) \]
-    where $\Cal{F}$ is defined in \cref{def:sparseReLU}.
+    \[ \Cal{SRN}\left( s, V_{\max}, (d_j)_{j=0}^{L+1}, L \right) \]
+    where $\Cal{SRN}$ is defined in \cref{defn:sparseReLU}.
   Let $D \defeq \prod_{\ell=1}^{L+1} (d_\ell + 1))$. Then for any $\delta > 0$
   \[ \Cal{N} \left(\delta,
-      \Cal{F}\left(L, \{d_j\}_{j=0}^{L+1}, s, V_{\max}\right),
+      \Cal{SRN}\left( s, V_{\max}, (d_j)_{j=0}^{L+1}, L \right),
   \norm{\cdot}_\infty \right) \leq (2 (L+1) D^2 / \delta)^{s + 1} \]
   \label{lem:ABcovering}
   \end{lem}
   \begin{proof}
-    We refer to theorem $14.5$ in [todo: ref to Anthony Bartlett, thm. 14.5].
+    We refer to theorem $14.5$ in \ncite{AB02}.
   \end{proof}
   With \cref{lem:ABcovering} and $n$ sufficiently large we can bound
   \begin{align*}
@@ -256,7 +264,7 @@
   \cref{eq:mp1}, \cref{eq:mp2}, \cref{eq:boundOmega}, \cref{eq:boundN0}
   and fiddling around with constants one obtains
   \begin{align*}
-    \norm{Q^* - Q^{\pi_K}}_{1, \mu} \leq & \;
+    \norm{Q^* - Q_{\pi_K}}_{1, \mu} \leq & \;
     C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
     n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
     + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K

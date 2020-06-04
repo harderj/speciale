@@ -1,9 +1,16 @@
-\begin{thebibliography}{21}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Anthony and Bartlett(2002)]{AB02}
+Martin Anthony and Peter Bartlett.
+\newblock \emph{Neural Network Learning: Theoretical Foundations}.
+\newblock 01 2002.
+\newblock ISBN 978-0-521-57353-5.
+\newblock \doi{10.1017/CBO9780511624216}.
 
 \bibitem[{Barto} et~al.(1983){Barto}, {Sutton}, and {Anderson}]{BSA83}
 A.~G. {Barto}, R.~S. {Sutton}, and C.~W. {Anderson}.
@@ -31,11 +38,11 @@ George Cybenko.
 \newblock \emph{Mathematics of Control, Signals and Systems}, 2:\penalty0
   303--314, 1989.
 
-\bibitem[Devraj and Meyn(2017)]{DM17}
-Adithya~M. Devraj and Sean~P. Meyn.
-\newblock Fastest convergence for q-learning.
-\newblock \emph{CoRR}, abs/1707.03770, 2017.
-\newblock URL \url{http://arxiv.org/abs/1707.03770}.
+\bibitem[Even-dar and Mansour(2001)]{M03}
+Eyal Even-dar and Yishay Mansour.
+\newblock Learning rates for q-learning.
+\newblock volume~5, 04 2001.
+\newblock \doi{10.1007,3-540-44581-1-39}.
 
 \bibitem[Fan et~al.(2020+)Fan, Yang, Xie, and Wang]{F20}
 Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
@@ -138,6 +145,12 @@ Manfred Schäl.
 Csaba Szepesvári.
 \newblock The asymptotic convergence-rate of q-learning.
 \newblock 01 1997.
+
+\bibitem[Vershynin(2010)]{V10}
+Roman Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock \emph{Compressed Sensing: Theory and Applications}, 11 2010.
+\newblock \doi{10.1017/CBO9780511794308.006}.
 
 \bibitem[Watkins(1989)]{W89}
 Christopher Watkins.

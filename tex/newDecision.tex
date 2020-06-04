@@ -239,9 +239,15 @@ we here include
   yet another probability kernel.
   We denote this $\varphi \circ \kappa = \rho_\cl{Z}(\varphi' \kappa)$
   and this is also called \emph{composition of kernels} by some authors.
+  We can extend this to the kernel-measure composition (of \cref{thm:intKer}):
+  If $\mu \in \cl{P}(\cl{X})$ is a probability measure on $\cl{X}$ then
+  $\rho_\cl{Y}(\kappa \mu) \in \cl{P}(\cl{Y})$ and we denote this
+  $\kappa \circ \mu = \rho_\cl{Y}(\kappa \mu)$.
   In fact $\circ$ makes the class of measurable spaces
-  into a category \mcite{L62},
-  with identity $\id_{\Cal{X}}(\cdot \mid x) = \delta_x$.
+  into a category (see \mcite{L62}),
+  with identity $\id_{\Cal{X}}(\cdot \mid x) = \delta_x$
+  (for a proof of this last statement see \cref{prop:identityKernel}).
+  \label{rem:altComp}
 \end{rem}
 
 \subsubsection{From kernels to processes}
@@ -853,6 +859,9 @@ necessary to talk about integrability.
   distribution $\mu \in \cl{P}(\cl{S})$ and some policy $\pi \in R\Pi$.
   Here $\rho_{\cl{S}_i} : \cl{H}_\infty \to \cl{S}_i$ is projection
   onto the $i$th state space.
+  Similarly $\cl{L}_p$ for $p \in [1,\infty)$ is defined with respect to
+  all such probability measures.
+  \label{defn:essBound}
 \end{defn}
 \begin{rem}
   Note that $\cl{L}_\infty(\cl{S})$ contains all (everywhere) bounded
@@ -872,14 +881,14 @@ necessary to talk about integrability.
     + \gamma V(s') \difd (P \tau)(a, s'\mid s)
     \\ \text{The Bellman optimality operator: }
     T V & \defeq s \mapsto 
-    \sup_{a \in A(s)} \left(r(s, a) + \gamma \int V(s')
+    \sup_{a \in \frak{A}(s)} \left(r(s, a) + \gamma \int V(s')
     \difd P(s' \mid s, a) \right)
   \end{align*}
 \end{defn}
 \begin{rem}
-  We will sometimes write $T_a = T_{\delta_a}$ for $a \in A(s)$.
+  We will sometimes write $T_a = T_{\delta_a}$ for $a \in \frak{A}(s)$.
   Using this we can express $T$ alternatively as
-  $TV = s \mapsto \sup_{a \in A(s)} T_a V(s)$.
+  $TV = s \mapsto \sup_{a \in \frak{A}(s)} T_a V(s)$.
 \end{rem}
 
 The Bellman optimality operator $T$
@@ -1011,7 +1020,7 @@ with respect to the optimal value function.
   Let $\tau : \cl{S} \leadsto \cl{A} \in S\Pi$ be a stationary policy and
   let $V : \cl{S} \to \R$ be a measurable value-function.
   We define
-  \[ G_V(s) = \argmax_{a \in A(s)} T_a V(s) \subseteq A(s) \]
+  \[ G_V(s) = \argmax_{a \in \frak{A}(s)} T_a V(s) \subseteq \frak{A}(s) \]
   as the set of \defemph{greedy} actions w.r.t. $V$.
   If there exists a measurable $G_V^\tau(s) \subseteq G_V(s)$
   such that
@@ -1048,8 +1057,8 @@ the weak topology (see \cref{defn:weakTop} and
   \begin{enumerate}
     \item $\cl{S}$ and $\cl{A}$ are standard Borel.
     \item The set of admissable actions 
-      $A(s) \subseteq \cl{A}$ is compact for all $s \in \cl{S}$
-      and $\Gamma = \{ (s, a) \in \cl{S} \times \cl{A} \mid a \in A(s) \}$
+      $\frak{A}(s) \subseteq \cl{A}$ is compact for all $s \in \cl{S}$
+      and $\Gamma = \{ (s, a) \in \cl{S} \times \cl{A} \mid a \in \frak{A}(s) \}$
       is a closed subset of $\cl{S} \times \cl{A}$.
     \item The transition kernel $P$ is continuous.
     \item The expected reward function $r = \int r' \difd R(r' \mid \cdot)$
@@ -1150,14 +1159,14 @@ makes sense for value functions.
       follows by \cref{prop:supSemiC}.
     \item Recall that the set of admissable state-action pairs
       $\Gamma = \left\{ (s, a) \in \cl{S} \times \cl{A} 
-      \mid a \in A(s) \right\}$ assumed to be closed in
+      \mid a \in \frak{A}(s) \right\}$ assumed to be closed in
       \cref{sett:BS0}.
       Let $\varphi : \cl{S} \to \cl{A}$ be the Borel-measurable function
       obtained from \cref{prop:measSel}
       with $\Gr(\varphi) \subseteq \Gamma$.
       Let $s \in \cl{S}$ be any state. Then
-      \[ T_{\varphi(s)} V(s) = \sup_{a \in A(s)} T_a V(s) \]
-      thus $\varphi(s) \in \argmax_{a \in A(s)} T_a V(s) = G_V(s)$.
+      \[ T_{\varphi(s)} V(s) = \sup_{a \in \frak{A}(s)} T_a V(s) \]
+      thus $\varphi(s) \in \argmax_{a \in \frak{A}(s)} T_a V(s) = G_V(s)$.
       Therefore the induced deterministic policy
       \[ \tau_V(\cdot \mid s) = \delta_{\varphi(s)} \]
       is greedy with respect to $V$. Upper semicontinuity of $TV$ follows
@@ -1166,16 +1175,16 @@ makes sense for value functions.
       \begin{align*}
 	T_\tau V(s) &=
 	\int \int V(s') \difd P(s' \mid s, a) \difd \tau(a \mid s)
-	\\ & \leq \int \max_{a \in A(s)} \int V(s') \difd P(s' \mid s, a)
+	\\ & \leq \int \max_{a \in \frak{A}(s)} \int V(s') \difd P(s' \mid s, a)
 	\difd \tau(a \mid s)
-	\\ & = \max_{a \in A(s)} \int V(s') \difd P(s' \mid s, a)
+	\\ & = \max_{a \in \frak{A}(s)} \int V(s') \difd P(s' \mid s, a)
 	\\ & = TV(s)
       \end{align*}
       Therefore $\sup_{\tau \in S\Pi} V \leq TV$. On the other hand
       $\tau_V$ is in the supremum so
       $\sup_{\tau \in S\Pi} V \geq TV$.
-    \item By definition $T_{\tau_V} V(s) = T_{\argmax_{a \in A(s)} T_a V(s)}
-      V(s) = \sup_{a \in A(s)} T_a V(s) = TV(s)$.
+    \item By definition $T_{\tau_V} V(s) = T_{\argmax_{a \in \frak{A}(s)} T_a V(s)}
+      V(s) = \sup_{a \in \frak{A}(s)} T_a V(s) = TV(s)$.
   \end{enumerate}
 \end{proof}
 
@@ -1209,7 +1218,7 @@ policy $\tau_{T^k V_0} \in DS\Pi$ which we will denote $\tau^*_k$.
   \dots$.
 
   Secondly we have for any $V \in \cl{L}_\infty(\cl{S})$ that
-  $TV(s) \stackrel{\hrm{def}}{=} \sup_{a \in A(s)} T_a V(s)
+  $TV(s) \stackrel{\hrm{def}}{=} \sup_{a \in \frak{A}(s)} T_a V(s)
   = \sup_{\tau \in S\Pi} T_\tau V(s)$.
 
   As induction basis observe that $0 = V_0 = V_0^*$ is upper semicontinuous.
@@ -1431,7 +1440,7 @@ finite MDP.
   which also makes every map $(s, a) \mapsto \cl{X}$ into some
   topological space continuous. In particular $P$ is continuous and
   $r$ is (upper semi)continuous.
-  The set of admissible actions $A(s)$ is equal to the
+  The set of admissible actions $\frak{A}(s)$ is equal to the
   full action space $\cl{A}$ for all $s \in \cl{S}$, which is trivially
   compact.
   The rewards are bounded by $R_{\max} = 10$
@@ -1522,12 +1531,12 @@ The idea of Q-functions (and the letter Q) originates to
 A clear advantage of working with Q-function
 $Q:\Cal{S}\times\Cal{A} \to \Rext$ rather than a value function
 $V:\Cal{S}\to \Rext$,
-is that finding the optimal action $a^* \in A(s)$ at state $s$
+is that finding the optimal action $a^* \in \frak{A}(s)$ at state $s$
 requires only a maximization over the Q-function itself:
-$a^* = \argmax_{a \in A(s)} Q(s,a)$.
+$a^* = \argmax_{a \in \frak{A}(s)} Q(s,a)$.
 This should be compared to finding an optimal action
 according to a value function $V$:
-$a^* = \argmax_{a \in A(s)} r(s,a) + \gamma \E_{P(\cdot \mid s,a)} V$.
+$a^* = \argmax_{a \in \frak{A}(s)} r(s,a) + \gamma \E_{P(\cdot \mid s,a)} V$.
 Besides being less simple,
 this requires taking an expectation with respect to 
 both the reward and transition kernel.
@@ -1542,7 +1551,7 @@ many concepts such as $T$-operators and the finite, infinite horizon
 policy evaluations and greedy policies, can be defined analogously.
 
 \begin{asm}[Finite admissable actions]
-  $A(s)$ is finite for every $s \in \cl{S}$. 
+  $\frak{A}(s)$ is finite for every $s \in \cl{S}$. 
   \label{asm:finAdmAct}
 \end{asm}
 Throughout this section we will work under
@@ -1550,7 +1559,7 @@ Throughout this section we will work under
 
 \begin{rem}
   We make \cref{asm:finAdmAct} to ensure that the supremum
-  $\sup_{a \in A(s)} Q(s, a)$ is attained for any
+  $\sup_{a \in \frak{A}(s)} Q(s, a)$ is attained for any
   $Q \in \cl{L}_\infty(\cl{S} \times \cl{A})$.
   One might be able discard \cref{asm:finAdmAct} and instead
   demand that all Q-functions be
@@ -1596,7 +1605,7 @@ Throughout this section we will work under
 \end{rem}
 \begin{defn}[Greedy policies for Q-functions]
   Let $\tau : \Cal{S} \leadsto \Cal{A}$ be a stationary policy. Define
-  $G_Q(s) = \argmax_{a \in A(s)} Q(s, a)$.
+  $G_Q(s) = \argmax_{a \in \frak{A}(s)} Q(s, a)$.
   If there exist a measurable set $G_Q^\tau(s) \subseteq G_Q(s)$
   for every $s \in \Cal{S}$ such that
   \[ \tau \left( G_Q^\tau(s) \Mid s \right) = 1 \]
@@ -1623,7 +1632,7 @@ Throughout this section we will work under
 	  $V_\pi$.
       \end{enumerate}
     \item Optimal policies are related by
-      $\max_{a \in A(s)} Q^*(s, a) = V^*(s)$ and
+      $\max_{a \in \frak{A}(s)} Q^*(s, a) = V^*(s)$ and
       \[ Q^*_k(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*_k,
       \quad Q^*(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^* \]
     \end{enumerate}
@@ -1691,8 +1700,8 @@ Throughout this section we will work under
   \leq r + \gamma \E V_k^* = r + \gamma \E V_{\pi_k^*}
   \leq Q_k^*$. The same argument works for the second part.
 
-  Let $s \in \Cal{S}$ then $\sup_{a \in A(s)} Q^*(s, a) = 
-  \sup_{a \in A(s)} (r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*)
+  Let $s \in \Cal{S}$ then $\sup_{a \in \frak{A}(s)} Q^*(s, a) = 
+  \sup_{a \in \frak{A}(s)} (r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*)
   = T V^*(s) = V^*(s)$.
   
   By the definition of $Q_{\tau^*}$ we have
@@ -1705,7 +1714,7 @@ Throughout this section we will work under
   = r + \gamma \E V_\tau = Q_\tau$.
 
     We $T_{\tau_Q} Q = T Q$ for any measurable $Q$ because
-  \[ T_{\tau_Q}(s, a) = r(s, a) + \gamma \int \max_{a' \in A(s')} Q(s', a')
+  \[ T_{\tau_Q}(s, a) = r(s, a) + \gamma \int \max_{a' \in \frak{A}(s')} Q(s', a')
   \difd P(s' \mid s, a) = TQ(s, a) \]
   Therefore by \cref{prop:propQ}.1
   \[ T_{\tau_{k-1}^*} Q_{k-1, (\tau_{k-2}^*, \dots, \tau_0^*)}
@@ -1770,7 +1779,8 @@ We name a few examples:
     the game is still considered worth the effort).
   \item \emph{Pole balancing} in a 2D physical simulation environment
     (see e.g. the famous \emph{cartpole} example from \mcite{BSA83}).
-    One may add random effects such and \emph{wind} to make such an example
+    One may even add random effects (such as \emph{wind} effects)
+    to full use of our stochastic setup.
 \end{enumerate}
 The problem is of course that the value functions and operators
 which are used in \cref{alg:theoSimpleQ} are not computable in practice.

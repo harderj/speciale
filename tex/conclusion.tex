@@ -16,37 +16,25 @@
     rounded corners, 
     align=center,
     draw=black, very thick,
-  },
-  line/.style={draw, thick, <-},
-  decoration={brace},
-  tuborg/.style={decorate},
-  tubnode/.style={midway, right=2pt},
+  }
 }
 \begin{tikzpicture}[
     node distance=0.8cm,
   ]
-  \node[nosplit] (HDP) {
-    \defemph{History dependent decision processes}
-    \\ (HDPs)
-  };
-  \node[splittwo] (Schal) [below=0.5cm of HDP] {
+  \node[splittwo] (HDP) at (0,0) {
     \defemph{HDPs under Schäls conditions}:
     \nodepart{second}
     Existence of optimal policy $\pi^* \in R\Pi$ \\
     and convergence of optimal
     \\ value functions $V^*_n \to V^*$
   };
-  \node[splittwo] (QDP) [right=1.4cm of Schal] {
+  \node[splittwo] (QDP) at (8,0) {
     \defemph{Finite HDPs}:
     \\ Under Q-value uniform assumption (QDP)
     \nodepart{second}
     Convergence of $\wt{Q}_k \to Q^*$.
   };
-  \node[nosplit] (MDP) [below=0.5cm of Schal] {
-    \defemph{Markov decision processes}
-  \\ (MDPs)
-  };
-  \node[splittwo] (Disc) [below=0.5cm of MDP] {
+  \node[splittwo] (MDP) at (0,-3.6) {
     \defemph{Discounted action-finite MDPs}:
     \\ under weak continuity assumptions
     \nodepart{second}
@@ -54,27 +42,27 @@
     \\ Existence of greedy optimal $\tau^* \in S\Pi$
     \\ $T^k Q \to Q^*$ exponentially in $\gamma$
   };
-  \node[splittwo] (Appr) [below=0.5cm of Disc] {
+  \node[splittwo] (ANN) at (0, -7) {
     \defemph{Universal approximation by ANNs}:
     \\ $\cl{S} = [0,1]^w$
     + strong continuity assumptions
-    \nodepart{second} Bound on ANN-approximated Q-functions:
+    \nodepart{second} Bound on $\cl{RN}$-approximated Q-functions:
     \\ $\abs{Q^* - \wt{Q}_k} < \ve/(1-\gamma)$
     for every $\ve > 0$,
     \\ when $k$ and the network is large enough.
   };
-  \node[splittwo] (FQI) [right=1.3cm of Disc] {
+  \node[splittwo] (FQI) at (8, -3.6) {
     \defemph{Bound with the fitted Q-iteration algorithm}:
     \\ \ncite{F20}:
-    $\cl{S} = [0,1]^w$ + various assumptions
+    $\cl{S} \subseteq \R^w$ compact + complicated assumptions
     \nodepart{second}
     $\cl{O}(\gamma^{-k} + n^{-\alpha} \log(n)^\beta)$
     asymptotic convergence \\ (for some $\alpha, \beta > 0$)
-    of $Q_{\wt{\tau}_k} \to Q^*$ in $\norm{\cdot}_{1, \mu}$ with FQI
-    \\ for some class of ReLU network approximators
+    of $Q_{\wt{\tau}_k} \to Q^*$ in $\norm{\cdot}_{1, \mu}$ with DQI
+    \\ with large enough sparse ReLU network structure
   };
-  \node[splittwo] (Async) [right=0.8cm of Appr, yshift=-1cm] {
-    \defemph{Bound on finite model-free MDPs}:
+  \node[splittwo] (Async) at (8,-7){
+    \defemph{Bound on finite MDPs}:
     \\ \ncite{S97} and \ncite{MH18}:
     Finite MDP + various assumptions
     \nodepart{second}
@@ -82,27 +70,75 @@
     \sqrt{k^{-1} \log\log k} \right\} \right)$-asymptotic
     \\ convergence of $\wt{Q}_{k} \to Q^*$
     with asynchronos TD
-    \\ And PAC-learnability of synchronos TD
   };
-  \draw [->, shorten >=4pt] (HDP) -- (Schal);
-  \draw [->, shorten >=4pt] (Schal) -- (MDP);
-  \draw [->, shorten >=4pt] (MDP) -- (Disc);
-  \draw [->, shorten >=4pt] (Disc) -- (Appr);
-  \draw [->, shorten >=4pt] (Schal) -- (QDP);
-  \draw [->, shorten >=4pt] (Disc) -- (FQI);
-  \draw [->, shorten >=4pt] (FQI) -- (Async);
-  \node (Ctop) [above right=0.2cm of HDP] {};
-  \node (Cbot) [below right=0.2cm of Appr] {};
-  \draw [dashed] (Ctop) -- (Cbot);
-  \node (Based) [above=0.4cm of HDP] {Model-based};
-  \node (Free) [right=5cm of Based] {Model-free};
+  \draw [-latex] (HDP) -- (QDP);
+  \draw [-latex] (HDP) -- (MDP);
+  \draw [-latex] (MDP) -- (ANN);
+  \draw [-latex] (MDP) -- (Async);
+  \draw [-latex] (MDP) -- (FQI);
+  \node (uppermiddle) at (3.7,2) {};
+  \node (lowermiddle) at (3.7,-9) {};
+  \node (middleleft) at (-3, -1.3) {};
+  \node (middleright) at (12, -1.3) {};
+  \draw [dashed] (uppermiddle) -- (lowermiddle);
+  \draw [dashed] (middleleft) -- (middleright);
+  \node at (0, 1.5) {Model-dependent HDP};
+  \node at (8, 1.5) {Model-free HDP};
+  \node at (0, -1.7) {Model-dependent MDP};
+  \node at (8, -1.7) {Model-free MDP};
 \end{tikzpicture}
-\caption{Some of the results presented in this thesis ordered by generality.}
+\caption{Some of the convergence bound presented in this thesis.
+Arrows $A \to B$ implies that setting $B$ is a special
+case of setting $A$.}
 \end{figure}
+
+Overall every result provide insights to some classes of decision processes
+which is not covered by any of the other.
+For the history dependent processes we have convergence guarantees
+in the finite Q-value uniform (QDP) setting, as proved in
+\ncite{MH18}. This specializes to finite model-free MDPs, but presents no
+new insight in this setting, as such a result was already covered
+in \ncite{WD92}. It does however provide evidence that results on Q-learning
+may be extended to a history dependent setting.
+
+Turning to MDPs,
+as we have discussed, the exponential convergence of the model-dependent
+Q-iteration while impressive is often not practical and so should be
+seen more as a theoretical background for the other results.
+The model-dependent result using ReLU network approximated Q-functions
+in the continuous setting
+shows that model-dependent methods, when applicable, provide the same
+exponential convergence to a near-optimal approximated Q-function.
+This is comparable to the convergence result by \ncite{F20}, except that it is
+less complicated and requires less assumptions except for the critical
+assumption of model-dependency.
+However because of it being model dependent, it not clear how much
+information about the model-free setting it implies.
+
+The result by \ncite{F20} of DQI has the advantage of being model-free
+and working with a continuous state space, unlike the other results.
+Another advantage is that it succeeds in evaluating the distance to the
+actual policy evaluation $Q_{\wt{\tau}}$ which provides better evidence
+of the nearness to optimality of its output policy, compared to all the
+other results, which only measures the distance to the approximating
+Q-functions.
+A weak point is however that it measures distance in the $\norm{\cdot}_{1, \mu}$
+norm, which is a bit non-standard and weaker than the rest of the results,
+which measures distance in $\norm{\cdot}_\infty$.
+Another weak point is that the result and its assumptions are
+quite complicated and it is not clear how big the it includes
+are.
+
+Specializing to finite model-free MDPs we get much better convergence rates
+in \ncite{S97} even using the $\norm{\cdot}_\infty$ norm.
+This is however at the expense requiring finiteness and
+a full table of state-action values instead of an approximating scheme.
+Also distance is measured between $Q^*$ and $\wt{Q}_K$ rather than
+$\wt{Q}_{\wt{\pi}_K}$ as in \ncite{F20}.
 
 \section{Conclusion}
 
-In this paper we have build up the theory behind Q-learning,
+In this thesis we have build up the theory behind Q-learning,
 covering decision models, optimality of policies,
 value functions and their iteration methods.
 This gave an introduction to Q-learning 
@@ -122,10 +158,10 @@ Theoretically you could say that Q-learning is solved in many situations,
 since, as we have established,
 there is convergence guarrantees for broad classes of problems.
 However as to how these convergence results relate to practical aspects of
-Q-learning we can still say little and as to the succes of the DQN of
+Q-learning we can still say little and as to the success of the DQN of
 \ncite{M15} we are not much further in understanding.
 The major reason is that the computational aspects are so important to their 
-succes, and this part is mostly ignored in the results we have covered.
+success, and this part is mostly ignored in the results we have covered.
 Even though we establish results of the related FQI algorithm in \ncite{F20},
 it is unclear if it captures the critical aspects of DQN,
 such as experience replay.
@@ -133,23 +169,53 @@ In \ncite{F20} convergence of FQI is guaranteed given corresponding
 increases in iterations, batch size and function space complexity.
 It is hard to interpret exactly how large these increases must be
 or whether it is practical.
+However it is also possible that DQN can be seen largely as an instance of FQI 
+and that the results we have covered from \ncite{F20} does explain
+part of its success.
 
 \section{Further directions}
-
-The litterature on Q-learning algorithms and relating topics such as 
+When reading this section it should be clear that many of the questions
+raised is this authors missing research. It might very well be
+that some of the questions have been answered long ago, while others
+are still open questions.
+We point out that
+litterature on Q-learning algorithms and relating topics such as 
 function approximation, dynamic programming and artificial neural networks
 is vast, and only very little made it into this thesis. 
 An obvious direction to go is to review more of the most recent results
 in order to give a more complete picture of the field.
 
+\subsubsection{Examples}
+In this thesis we talk little about concrete decision processes, only
+applying our theory on the rather trivial gridworld environment in
+\cref{ex:gridworld}.
+Generally it examples that drives much of both theoretical and more empirical
+research in RL.
+Applying the theory in this thesis on concrete cases would be a interesting
+next step.
+
 \subsubsection{Relation between FQI and DQN}
 Find a way to prove or disprove the conjecture in \ncite{F20} that
 results about the convergence of FQI can have implications for the 
 DQN algorithm.
+Answering this question probably requires research beyond what can be
+found in litterature already, as otherwise \ncite{F20} would have
+drawn on sourch sources.
+
+\subsubsection{Application of the results of \mcite{MR07}}
+Though \ncite{MR07} does not make explicit bounds for the distance of an approximating
+Q-function to $Q^*$,
+its results provide strong theoretical results
+of model-free Q-learning given a finite set of basis functions. 
+Such a finite set of basis functions is provided by e.g.
+polynomials. It could be interesting to combine the results of \ncite{MR07}
+with various results in approximation theory such as theory on Bernstein
+polynomials and compare the resulting bounds of convergence to the bounds in
+\ncite{F20}.
 
 \subsubsection{Suboptimality of policies}
 This is relating to decision processes and value functions.
-Through out the paper we discuss a wide array of
+Through out this thesis we discuss a wide array of
 approximations of $Q^*$.
 The default strategy is then to accept some close-enough approximation $\wt{Q}$
 and then pick the greedy policy $\wt{\pi}$ with respect to $\wt{Q}$.

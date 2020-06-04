@@ -9,20 +9,34 @@ and related topics such as \emph{value iteration}.
 The topic was inspired by the performance of the algorithms
 implemented by \mcite{M15}.
 In \ncite{M15} it was shown how a single algorithm was able to achieve super
-human performances in a variety of problems, namely playing Atari 2600 video
-games, only using raw pixels and a reward (score) as input and a large number of
+human performances in a variety of problems, namely playing
+\emph{Atari 2600 video games},
+only using raw pixels and a reward (score) as input and a large number of
 interactions with the environment.
 The algorithm used in \ncite{M15} is based on a Q-learning
 algorithm called the \emph{deep Q-network} (DQN) algorithm.
+The success of DQN learning to play Atari was only the beginning.
+In the past 5 years variations of DQN combined with other techniques,
+has solved highly challenging and before unsolved problems,
+such as beating the best human players at the ancient board game \emph{go},
+and the previously best algorithms for playing chess, with an approach
+quite novel to ideas previously employed to such environments.
+Deep Q-learning is now a very active field of research and
+being applied in numerous fields, including robotics.
+
+Despite the great empirical success, it
+seems\footnote{This is for example the opinion in \ncite{F20}}
+that the mathematical theory is lacking behind,
+and we lack theoretical justification for the success.
 
 The purpose of this thesis is
 to investigate what has been proven
 about the convergence of the DQN algorithm
 and what mathematical theory is relevant to establish such proofs.
-This is however not an easy task, as we will only cover a small fraction
+This is however not an easy task and we will only cover a small fraction
 of the topic.
 
-The work began by considering the preprint
+The work on the thesis began by considering the preprint
 \mcite{F20} which claims to establish theoretical justification for
 the convergence of DQN to \emph{the optimal Q-function}.
 In the course of reading \ncite{F20} it became clear that the background
@@ -38,8 +52,66 @@ compare these results.
 
 This provides an introduction to the field and sheds light 
 on the original question of what can be said about convergence of
-RL algorithms. Finally we will discuss some of the many questions that
+Q-learning algorithms. Finally we will discuss some of the many questions that
 still remain.
+
+\section{How to read this thesis}
+
+After this introductory chapter,
+in chapter 2 we will become more rigorous and
+present the background theory of decision processes and dynamic programming,
+which will give language and notation necessary for describing
+RL and Q-learning mathematically.
+The first part for chapter 2 (sections 2.1 and 2.2) is mainly based on two
+sources, namely \mcite{S75} and \mcite{BS07}.
+\ncite{S75} establishes general results of the existence and properties of
+optimal policies in a general history dependent (non-markovian)
+decision processes (HDPs).
+The more recent source \ncite{BS07} focus on the more standard setting
+of \emph{Markov decision processes} (MDPs),
+but in a way that is somewhat different from the present standard which
+is used in \ncite{F20}.
+In this thesis we use a combination of \ncite{S75} and \ncite{BS07} to
+build a framework which is similar to that of \ncite{BS07},
+but many proofs are changed and relies instead on results of \ncite{S75}.
+This way of building the theory is original to this thesis, and
+is done with the purpose of better suiting the later discussions
+of \ncite{F20} in particular.
+In the sections that follow the theory of section 2.1 og 2.2
+is used to guarantee the existence of optimal policies, value functions
+and well definedness of various operators.
+
+Section 2.3 has the slightly contradictory title of \emph{model-based Q-learning}.
+Contradictory since Q-learning traditionally is viewed as a collection of
+model-free algorithms.
+The title is justified in the sense its contents are original to this thesis,
+though we will not claim that it is research to the level of publishability.
+The purpose of section 2.3 is to show how if one stays in the model-dependent
+setting instead of 'going model-free' as is traditional in RL, 
+one may easily establish results on convergence of value-iteration with
+Q-functions. We do this drawing on two results from approximation theory,
+namely the universal approximation theorem for artificial neural networks,
+and the approximation properties of Bernstein polynomials.
+
+Proceeding to chapter 3, the sections 3.1 and 3.2 is a survey on old and
+recent results for (model-free) RL algorithms. These two sections are based
+on the articles \mcite{WD92}, \mcite{J94}, \mcite{S97}, \mcite{MH18}
+and \mcite{MR07}.
+In this part of chapter 3, all proofs are omitted and only the results
+are presented.
+
+In section 3.3 the initial article \mcite{F20} are introduced
+and its results are proved in a level of detail finer that in the original
+preprint. Also some minor mistakes are corrected leading to slightly
+different bounds. The mistakes will we pointed out in this section.
+In correspondance with the authors it was confirmed that the
+mistakes was indeed to be corrected in the next version.
+
+In the comparison and conclusion we briefly compare results we have covered
+in the thesis and discuss to which degree we have answered the original
+questions of what one can say about Q-learning mathematically.
+Finally we discuss in which directions could be interesting to
+investigate further extending on what we have covered in this thesis.
 
 \section{What is Reinforcement Learning?}
 
@@ -64,13 +136,13 @@ Given an environment and a policy one obtains stochastic process,
 that is, a distribution on sequences of states, actions and
 rewards.
 One can then measure the performance of the policy by looking at
-the expected sum of rewards called the \emph{value function}
+the expected accumulated rewards called the \emph{policy evaluations}
 $V_\pi$ of the policy.
 The goal of reinforcement learning is to find an optimal policy $\pi^*$,
 maximizing the value function.
 
 $V_\pi$ is viewed as function that evaluates for each \emph{starting state}
-$s \in \cl{S}_1$ the expected total rewards when starting in state $s$
+$s \in \cl{S}_1$ the expected accumulated rewards when starting in state $s$
 and following policy $\pi$.
 There might therefore be different optimal policies for each such starting
 state.
@@ -91,10 +163,13 @@ With an MDP and a value function $V_1$ satisfying certain assumptions
 one can obtain a policy $\pi_1$ by choosing actions
 leading to the maximum average values (according to $V_1$).
 Such policies are called \emph{greedy policies}.
-We can then evaluate value of $\pi_1$ yielding a new value function $V_2$.
-This leads to an operator on the space of value functions called the
-\emph{Bellman operator} and should satisfy $TV_1 = V_2$.
-This process of applying the Bellman operator
+We can then evaluate the policy $\pi_1$
+yielding a new value function $V_2 = V_{\pi_1}$.
+The process of evaluating policies and picking greedy policies
+is formalised by so called \emph{T-operators} $T_\pi, T$.
+One of these ($T$) is called the \emph{Bellman optimality operator}
+and combines policy evaluation and greedy choices.
+This process of applying the $T$ operators and picking greedy policies
 can be continued indefinitely yielding a sequence of value
 functions and policies.
 Variations of this idea are called \emph{value iteration} and
@@ -107,8 +182,8 @@ of the Bellman optimality operator: $TV^* = V^*$
 This is called the \emph{Bellman optimality equation} and
 is central to all problems in dynamic programming.
 
-We have now described RL as dynamic programming.
-To go beyond this, RL commonly refers to algorithms that
+We have now described the roots of RL in dynamic programming.
+However RL usually refers to algorithms that
 are not merely value iterations, but instead work without
 directly using the transition and reward dynamics,
 and instead estimate value functions based only on sampling from the
@@ -117,18 +192,10 @@ Such algorithms are called \emph{model-free} as opposed to
 \emph{model-based} algorithms, that employ knowledge about the
 environment such as its transition distributions directly
 (such as pure dynamic programming).
-
-A further categorization of RL-algorithms can be made into
-\emph{off-policy} and \emph{on-policy} classes.
-This is simply whether the algorithm learns from data
-(states, actions and rewards) arising from 
-following its own policy (on-policy) or it can learn from more
-arbitrary data (off-policy).
-This \emph{more arbitrary data} could for example be
-the trajectory of another algorithm when interacting with a decision process,
-or simply state-action-reward pairs drawn from some distribution.
-In this thesis we will put emphasis on off-policy algorithms,
-to which both FQI and DQN belong.
+Thus must of the algorithms (e.g. DQN) we will discuss are model-free
+however we will also include a section on how \emph{model-dependent}
+approximative Q-learning may work. Whether such algorithms lie in the
+field of RL can be debated.
 
 \section{What is Q-learning?}
 
@@ -162,6 +229,15 @@ stochastic approximations of the Bellman optimality equation.
 Q-functions in the attempt to improve the derived policy.
 \emph{Deep} Q-learning is then the subcategory of algorithms which
 uses deep neural networks as approximators for the Q-functions.
+We will see in this thesis how Q-functions are used to find optimal
+policies (strategies) for decision processes and how they work
+as the underlying \emph{knowledge} that drives the decisions of
+the agent. We will use a wide array of function classes in the attempt
+to approximate ideal Q-functions such as the policy evaluations and
+optimal Q-functions.
+All this will be made precise in chapter 2.
+Before starting on this we include a brief introduction to the basic
+concept and notation we are going to use throughout the thesis.
 
 \section{Basic concepts and notation}
 
@@ -206,7 +282,5 @@ meaning that $f_n \to f$ is to be read as
 $\forall x \in \cl{X} : f_n(x) \to f(x)$.
 The same goes for logical operators, e.g. $f > 0$ is to be understood
 as $f(x) > 0$ for all $x \in \cl{X}$.
-
-
 
 
