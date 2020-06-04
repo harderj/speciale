@@ -30,21 +30,20 @@
   Then
   \begin{align*}
     \norm{\wh{Q} - TQ}_\nu^2
-    \leq & \frac{(1+\kappa)^2}{\kappa} \frac{1}{n} C_2^2 V_{\max}^2 \log(N_\delta)
-    + (1 + \kappa) \left( \delta C_2^2 V_{\max}^2 \log(N_\delta)
-    + \omega(\Cal{F}) \right) 
-    \notag
-    \\ & + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_\delta}
-    + 8 V_{\max} (n^{-1} + \delta)
+    \leq C_5 \log(N_{(1/n)})/n
+    + 2 \omega(\cl{F})
+    + C_3 \sqrt{\log(N_{(1/n)})/n} + C_6 n^{-1}
   \end{align*}
-  Where
-  \begin{equation*}
+  for absolute constants $C_3, C_5, C_6 > 0$ not depending on
+  $n$, and where we define
+  \begin{equation}
     \omega(\Cal{F}) = \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}}
     \frac{1}{n} \E \norm{f - g}_\nu^2
     \label{eq:defomega}
-  \end{equation*}
+  \end{equation}
 \end{thm}
 
+\begin{rem}
 This is a slightly different result than the one stated in \ncite{F20},
 where they had (translated into notation used here)
 \begin{equation}
@@ -53,6 +52,9 @@ where they had (translated into notation used here)
   \cdot \log (N_\delta) + C'\cdot V_{\max} \delta
   \label{eq:onestepFan}
 \end{equation}
-for constants fitting constants $C, C'$.
-This is due to corrections in their proof.
+for some constants $C, C'>0$ (also not depending on $n$) and where
+in the application of the theorem they set
+$\kappa = 1$ and $\delta = 1/n$.
+This is mainly due to corrections in their proof.
+\end{rem}
 

@@ -10,18 +10,18 @@
   where $\varepsilon_{\max} =
   \max_{k \in [K]} \norm{T \wt{Q}_{k-1} - \wt{Q}_k}_{2, \nu}$.
   %todo: specify constants for \Cal{F}_0 !
-  Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$,
-  $\Cal{F} = \Cal{F}_0$, $\epsilon = 1$ and $\delta = 1/n$, we get
+  Using \cref{thm:oneStep} with $Q = \wt{Q}_{k-1}$ and
+  $\Cal{F} = \Cal{F}_0$, we get
   \begin{align}
-    \varepsilon_{\max} \leq & 6 n^{-1} C_2^2 V_{\max}^2 \log(N_0)
-    + 2 \omega(\Cal{F}_0)
-    + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_0}
-    + 16 V_{\max} n^{-1}
+    \varepsilon_{\max} \leq & 
+    C_5 \log(N_{(1/n)})/n
+    + 2 \omega(\cl{F})
+    + C_3 \sqrt{\log(N_{(1/n)})/n} + C_6 n^{-1}
     \label{eq:mp2}
   \end{align}
-  where $N_0 = \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}$.
-  The remains only to wound $\omega(\Cal{F}_0)$ and $N_0$,
-  starting with $\omega(\Cal{F}_0)$.
+  where $N_0 = N_{(1/n)} = \abs{\Cal{N}(1/n, \Cal{F}_0, \norm{\cdot}_\infty)}$.
+  It remains only to bound $\omega(\Cal{F}_0)$ and $N_0$.
+  We start with $\omega(\Cal{F}_0)$.
 
   \textbf{Step 1}.
   We want to employ the lemma by \ncite{SH17}
@@ -202,8 +202,8 @@
   \end{align*}
   and therefore
   \begin{align*}
-    \omega(\Cal{F}_0) = & \; \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}} 
-     \leq \; C_N n^{-2 \alpha^* \min_{j \in [q]} \beta^*_j / t_j}
+    \omega(\Cal{F}_0)
+     & \leq \; C_N n^{-2 \alpha^* \min_{j \in [q]} \beta^*_j / t_j}
      \leq \; C_N n^{-2 \alpha^* \kappa^*}
     \numberthis \label{eq:boundOmega}
   \end{align*}
@@ -258,22 +258,36 @@
     c_{\wt{L}} \log(n)^{\xi^*} (\alpha^* + 2) \log(n)
     \\ = & \; 8 c_{\wt{s}} c_{\wt{L}} (\alpha^* + 2)
     n^{\alpha^*} \log(n)^{1 + 2\xi^*}
+    \\ = & \; c_{N_0} (\alpha^* + 2) 
+    n^{\alpha^*} \log(n)^{1 + 2\xi^*}
     \numberthis \label{eq:boundN0}
   \end{align*}
-  Finally, combining
-  \cref{eq:mp1}, \cref{eq:mp2}, \cref{eq:boundOmega}, \cref{eq:boundN0}
-  and fiddling around with constants one obtains
+  Where we define $c_{N_0} = 8 c_{\wt{s}} c_{\wt{L}}$.
+  Using \cref{eq:boundN0}, \cref{eq:boundOmega} and
+  \cref{eq:mp2} we can bound 
+  \begin{align}
+    \ve_{\max} \leq C_5 C_{N_0} n^{\alpha^* - 1}/2 \log(n)^{1 + 2\xi^*}
+    + \sqrt{C_5 C_{N_0} n^{\alpha^* - 1} \log(n)^{1 + 2\xi^*}}
+    + 2 c_N n^{-2\alpha^* \kappa^*} + C_6 n^{-1}
+  \end{align}
+  Since we are interested in convergence (to 0) we may assume that
+  $n$ is sufficiently large such that only the largest exponent in the
+  above expression is significant. This leads to the simplification
+  \begin{align}
+    \ve_{\max} & \leq (2 C_5 C_{N_0} + C_3 + 2 c_N + C_6)
+    n^{\max\{ (\alpha^* - 1)/2, -2\alpha^* \kappa^*\} } \log(n)^{1 + 2\xi^*}
+    \\ & = C_7 n^{\max\{ (\alpha^* - 1)/2, -2\alpha^* \kappa^*\}}
+    \log(n)^{1 + 2\xi^*} 
+    \label{eq:boundemaxnew}
+  \end{align}
+  where $C_7 \defeq (2 C_5 C_{N_0} + C_3 + 2 c_N + C_6)$.
+  Now using \cref{eq:mp1} and \cref{eq:boundemaxnew}
   \begin{align*}
     \norm{Q^* - Q_{\pi_K}}_{1, \mu} \leq & \;
-    C_{\varepsilon} \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
+    C_7 \frac{\phi_{\mu, \nu} \gamma}{(1-\gamma)^2} V_{\max}^2
     n^{\max\{-2\alpha^*\kappa^*, (\alpha^*  - 1)/2 \}} \log(n)^{1+2\xi^*}
     + \frac{4 \gamma}{(1-\gamma)^2} R_{\max} \gamma^K
   \end{align*}
-  where
-  \begin{align*}
-    C_{\varepsilon} = 160 C_2^2 C_{\wt{s}} C_{\wt{L}} (\alpha^* + 2)
-    + 4 C_N + 32
-  \end{align*}
-  only depends on the constants in \cref{asm:A2}
+  where $C_7$ only depends on the constants in \cref{asm:A2}
   finishing the proof.
 \end{proof}

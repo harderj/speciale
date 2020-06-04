@@ -246,7 +246,7 @@ We can now begin the proof of \cref{thm:oneStep}.
     We therefore proceed differently, but luckily end up (at \cref{eq:endupat})
     with a bound very similar to that of \ncite{F20} (C.42),
     only different by a absolute constant factor.
-    \label{rem:mistake}
+    \label{rem:mistake1}
   \end{rem}
   Our argument is based on a lemma in the same section of \ncite{V10}:
   \begin{lem}
@@ -360,7 +360,7 @@ We can now begin the proof of \cref{thm:oneStep}.
     & \leq \frac{(1+\kappa)^2}{\kappa} 
     C_2^2 V_{\max}^2 \frac{1}{n} \log(N_\delta)
     \notag
-    \\ &\; + (1 + \kappa) \left(2 C_2 V_{\max} \sqrt{\log(N_\delta)}
+    \\ &\; + (1 + \kappa) \left(2 C_2 V_{\max} \sqrt{\log(N_\delta)} \delta
       + \sup_{g \in \Cal{G}} \inf_{f \in \Cal{F}}
     \norm{f - g}^2_\nu \right)
     \label{eq:c2step1final}
@@ -396,14 +396,14 @@ We can now begin the proof of \cref{thm:oneStep}.
   \end{align}
   Thus we get
   \begin{align}
-    & \norm{\wh{Q} - TQ}_\sigma^2
+    & \norm{\wh{Q} - TQ}_\nu^2
     \\ = {} & \E \frac{1}{n} \sum_{i=1}^n (\wh{Q}(\wt{X}_i) - TQ(\wt{X}_i))^2
     \\ \leq {} & \E \frac{1}{n} \sum_{i=1}^n \left( (\wh{Q}(X_i) - TQ(X_i))^2 
       + (f_{k^*}(\wt{X}_i) - TQ(\wt{X}_i))^2
     - (f_{k^*}(X_i) - TQ(X_i))^2 \right)
     + 8 V_{\max} \delta 
-    \\ = {} & \frac{1}{n} \norm{\wh{Q} - TQ}^2
-    + \frac{1}{n} \sum_{i=1}^n h_{k^*}(X_i, \wt{X}_i)
+    \\ = {} & \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
+    + \E \left( \frac{1}{n} \sum_{i=1}^n h_{k^*}(X_i, \wt{X}_i) \right)
     + 8 V_{\max} \delta
     \label{eq:hfirst}
   \end{align}
@@ -463,11 +463,12 @@ We can now begin the proof of \cref{thm:oneStep}.
     where a factor of 2 is missing in front of $n$.
     This is the reason why \ncite{F20} splits the integral at
     $t=3\Yp n$ rather than at $t=6\Yp n$ as we do here.
+    \label{rem:mistake2}
   \end{rem}
   where we use \cref{lem:normtail}
   from \cref{eq:prenormtail} to \cref{eq:ETboundu}.
   Now set $u = \Yp \sqrt{8 n \log N_\delta}$.
-  We continuing from \cref{eq:ETboundu} getting
+  Continuing from \cref{eq:ETboundu} we get
   \begin{align}
     \dots = & \Yp \sqrt{8 n \log N_\delta}
     + \frac{\Yp^2 8 n N_\delta}{\Yp \sqrt{8 n \log N_\delta}}
@@ -477,21 +478,43 @@ We can now begin the proof of \cref{thm:oneStep}.
     \\ \leq & 4 \sqrt{2} \Yp \sqrt{n \log N_\delta} + 8/3 \Yp
     \label{eq:ETbound}
   \end{align}
-  Now inserting \cref{eq:ETbound} and \cref{eq:c2step1final} into \cref{eq:hfirst}
+  Combining \cref{eq:havgbound}, \cref{eq:hfirst} and \cref{eq:c2step1final}
+  and recalling the definition of $\omega(\cl{F})$ (see \cref{eq:defomega})
   we get
   \begin{align}
-    \norm{\wh{Q} - TQ}^2_\nu \leq & \frac{1}{n} \E \norm{\wh{Q} - TQ}^2
-    + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_\delta}
-    + 8 V_{\max} (n^{-1} + \delta)
-    \\ \leq & \frac{(1+\kappa)^2}{\kappa} \frac{1}{n}
-    C_2^2 V_{\max}^2 \log(N_\delta)
-    + (1 + \kappa) \left( \delta C_2^2 V_{\max}^2 \log(N_\delta)
-    + \omega(\Cal{F}) \right) 
+    \norm{\wh{Q} - TQ}^2_\nu
+    \leq & \frac{1}{n} \norm{\wh{Q} - TQ}^2 + \frac{\Yp}{n} \E T
+    + 8 V_{\max} \delta
+    \\ \leq & \frac{1}{n} \norm{\wh{Q} - TQ}^2 + \frac{1}{n}
+    \left(4\sqrt{2} \Yp^2 \sqrt{n \log(N_\delta)} + 8/3 \Yp^2 \right)
+    + 8 V_{\max} \delta
+    \\ \leq & \frac{1}{n} \norm{\wh{Q} - TQ}^2
+    + C_3 \sqrt{\log(N_\delta)/n} + C_4 n^{-1}
+    + 8 V_{\max} \delta
+    \\ \leq & \frac{(1 + \kappa)^2}{\kappa} C_2^2 V_{\max}^2 \log(N_\delta)/n
+    + (1 + \kappa) \omega(\cl{F}) + (1 + \kappa) 2 C_2 V_{\max}
+    \sqrt{\log(N_\delta)} \delta
     \notag
-    \\ & + 8 \sqrt{2} V_{\max} n^{-1/2} \sqrt{\log N_\delta}
-    + 8 V_{\max} (n^{-1} + \delta)
-    \label{eq:C2final}
+    \\ & + C_3 \sqrt{\log(N_\delta)/n} + C_4 n^{-1}
+    + 8 V_{\max} \delta
+   \label{eq:C2final}
   \end{align}
+  where $C_3 = 4\sqrt{2} \Yp^2$ and $C_4 = 8/3 \Yp^2$.
+  Now we set $\kappa = 1$ and $\delta = 1/n$ to det
+  \begin{align}
+    \norm{\wh{Q} - TQ}_\nu^2
+    \leq & 4 C_2^2 V_{\max}^2 \log(N_{(1/n)})/n
+    + 2 \omega(\cl{F}) + 4 C_2 V_{\max}
+    \sqrt{\log(N_{(1/n)})}/n
+    \notag
+    \\ & + C_3 \sqrt{\log(N_{(1/n)})/n} + C_4 n^{-1}
+    + 8 V_{\max} n^{-1} 
+    \\
+    \leq & C_5 \log(N_\delta)/n
+    + 2 \omega(\cl{F})
+    + C_3 \sqrt{\log(N_{(1/n)})/n} + C_6 n^{-1}
+  \end{align}
+  where $C_5 = 4 C_2^2 V_{\max}^2$ and $C_6 = C_4 + 8 V_{\max}$,
   finishing the proof.
 \end{proof}
 
