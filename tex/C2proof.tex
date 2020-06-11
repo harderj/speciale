@@ -438,7 +438,7 @@ We can now begin the proof of \cref{thm:oneStep}.
     \label{eq:hvarbound}
   \end{align}
   (here $\Var$ denotes the variance operator on random variables).
-  so by union bounding for any $u < 6 n \Yp$ we have
+  So by union bounding for any $u < 6 n \Yp$ we have
   \begin{align}
     \E T = & \int_0^\infty \Prob(T \geq t)
     \\ \leq & u + \int_u^\infty \Prob(T \geq t) \difd t
@@ -458,15 +458,6 @@ We can now begin the proof of \cref{thm:oneStep}.
     \right) 
     \label{eq:ETboundu}
   \end{align}
-  \begin{rem}
-    Here is another small mistake in \ncite{F20} eq. (C.53)
-    which corresponds to \cref{eq:smallmis} above.
-    The mistake occurs in the application of Bernsteins inequality,
-    where a factor of 2 is missing in front of $n$.
-    This is the reason why \ncite{F20} splits the integral at
-    $t=3\Yp n$ rather than at $t=6\Yp n$ as we do here.
-    \label{rem:mistake2}
-  \end{rem}
   where we use \cref{lem:normtail}
   from \cref{eq:prenormtail} to \cref{eq:ETboundu}.
   Now set $u = \Yp \sqrt{8 n \log N_\delta}$.
