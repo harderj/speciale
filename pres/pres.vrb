@@ -1,0 +1,16 @@
+\usetikzlibrary{trees, arrows}
+  \definecolor{pf7}{RGB}{166, 118, 29}
+  \tikzset{
+    font={\small},
+    edge from parent/.style={draw,-latex}
+  }%
+  \begin{tikzpicture}
+    \Tree [.{Artificial Intelligence}
+      [.{Machine Learning}
+	[.{Reinforcement Learning}
+	  [.{hey hey}]%
+	]%
+	[.{Supervised Learning, Unsupervised etc.} ]%
+      ]%
+    ]%
+  \end{tikzpicture}

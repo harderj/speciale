@@ -1,0 +1,331 @@
+\documentclass{beamer}[10]
+\input{preamble}
+\usepackage{pgf}
+\usepackage[danish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphics,epsfig, subfigure}
+\usepackage{url}
+\usepackage{srcltx}
+\usepackage{hyperref}
+\usepackage{tikz-dependency}
+\usepackage{tikz-qtree}
+
+\definecolor{kugreen}{RGB}{50,93,61}
+\definecolor{kugreenlys}{RGB}{132,158,139}
+\definecolor{kugreenlyslys}{RGB}{173,190,177}
+\definecolor{kugreenlyslyslys}{RGB}{214,223,216}
+\setbeamercovered{transparent}
+\mode<presentation>
+\usetheme[numbers,totalnumber,compress,sidebarshades]{PaloAlto}
+\setbeamertemplate{footline}[frame number]
+
+  \usecolortheme[named=kugreen]{structure}
+  \useinnertheme{circles}
+  \usefonttheme[onlymath]{serif}
+  \setbeamercovered{transparent}
+  \setbeamertemplate{blocks}[rounded][shadow=true]
+
+\logo{\includegraphics[width=0.8cm]{KULogo}}
+\title{Theoretical aspects of Q-learning}
+\subtitle{Masters thesis defense}
+\institute{Jacob Harder \\
+Department of Mathematical Sciences \\ University of Copenhagen}
+\date{26 June, 2020}
+
+\begin{document}
+
+\frame{\titlepage \vspace{-0.5cm}
+}
+
+\frame
+{
+\frametitle{Overview}
+\tableofcontents%[pausesection]
+}
+
+\subsection{The goal of RL}
+
+\begin{frame}
+  \frametitle{Q-learning as AI}
+  \usetikzlibrary{trees, arrows, shapes.multipart}
+  \tikzset{
+    edge from parent/.style={draw,-latex},
+    level distance=1.5cm
+  }
+  \begin{tikzpicture}[
+      every node/.style={align=center,anchor=north},
+    ]
+    \Tree [.{Artificial Intelligence (AI)}
+      [.{Machine Learning (ML)}
+	[.{Reinforcement Learning (RL)}
+	  [.{\defemph{Q-learning}} ]
+	]
+	[.{Supervised Learning, etc.} ]
+      ]
+    ]
+  \end{tikzpicture}
+\end{frame}
+
+\frame{
+  \frametitle{Machine learning}
+  Machine Learning is
+  ``the study of computer algorithms that improve automatically through
+  \emph{experience}''.
+  \begingroup
+  \fontsize{10pt}{12pt}\selectfont
+  \begin{itemize}
+    \item[-] \defemph{Supervised learning}: Tasks are learned from data 
+      based on feedback from a
+      \emph{supervisor}. E.g. image classification.
+    \item[-] \defemph{Unsupervised learning}:
+      Data is given without evaluatory feedback,
+      general trends about the data are analysed.
+      E.g. principal component analysis, and cluster analysis.
+    \item[-] $\rightarrow$\footnote{``$\rightarrow$'': Our main area of focus
+      in this thesis.}
+	\defemph{Reinforcement learning}: Algorithms
+      which learns through interactions with an \emph{environment}.
+  \end{itemize}
+  \endgroup
+}
+
+\frame{
+  \frametitle{Challenges in RL}
+  Challenges in Reinforcement Learning include:
+  \begingroup
+  \fontsize{10pt}{12pt}\selectfont
+  \begin{itemize}
+    \item[-] \defemph{Exploration-exploitation trade-off}. Training and
+      performing occurs simultaneously so one optimizes the total reward on some
+      time horizon. This is studied
+      in e.g. the multi-armed bandit problem.
+    \item[-] $\rightarrow$ \defemph{Deriving optimal policies}.
+      Training and performing is
+      distinguished and emphasis is put on the expected performance of the final
+      derived policy rather than rewards occuring during training.
+  \end{itemize}
+  \endgroup
+}
+
+\frame{
+  \frametitle{The environment}
+  The \defemph{environment} in RL is often formalized as a
+  \defemph{Markov decision process} (MDP), which consists of
+  \begin{itemize}
+    \item[-] $\Cal{S}$ a 
+      measurable space of states.
+    \item[-] $\Cal{A}$ a 
+      measurable space of actions.
+    \item[-] $P : \Cal{S} \times \Cal{A} \leadsto \Cal{S}$
+      a transition kernel\footnote{
+	Here $\leadsto$ denotes a \emph{stochastic mapping} (to be
+      defined soon).}.
+    \item[-] $R : \Cal{S} \times \Cal{A} \leadsto \R$
+      a reward kernel discounted by
+    \item[-] a discount factor $\gamma \in [0,1)$.
+    \item[-] $\frak{A}(s) \subseteq \cl{A}$ a set of admissable actions
+      for each $s \in \cl{S}$.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Examples of MDPs}
+  Examples of Markov decision processes include
+  \begin{itemize}
+    \item[-] Board games where one plays against a fixed opponent,
+      e.g. \emph{chess} where the set of states $\cl{S}$
+      is the set of all obtainable chess-positions.
+    \item[-] Time-descretized physics simulations with action inputs and reward
+      outputs, including most single player video games and
+      the classic \emph{cartpole} example (balancing a stick).
+  \end{itemize}
+}
+
+\frame{
+  \begingroup
+  \fontsize{10pt}{12pt}\selectfont
+  \frametitle{The probability kernels}
+  \begin{block}{Probability kernel}
+    A \defemph{probability kernel}
+    (also called a \emph{stochastic mapping}, \emph{stochastic kernel}
+    or \emph{Markov kernel})
+    $\kappa : \cl{X} \leadsto \cl{Y}$ is a collection of probability measures
+    $\kappa(\cdot \mid x)$, one for each $x \in \cl{X}$ such that
+    for any measurable set $B \subseteq \cl{Y}$ the function
+    $x \mapsto \kappa(B \mid x)$ is measurable.
+  \end{block}
+  The transition probability measure $P(\cdot \mid s, a)$ 
+  of the pair $(s, a) \in \cl{S} \times \cl{A}$ determines
+  what states are likely to follow after \emph{being} in state $s$ and
+  \emph{choosing} action $a$. Similarly from the reward kernel $R$ one obtains the
+  measure $R(\cdot \mid s, a)$ determining the reward distribution following
+  the timestep $(s, a)$.
+  \endgroup
+}
+
+\frame{
+  \frametitle{Policies}
+  Given a Markov decision process one can define a \defemph{policy} $\pi$ by
+  sequence of probability kernels $\pi = (\pi_1, \pi_2, \dots)$ where
+  $\pi_i : \cl{H}_i \leadsto \cl{A}$ and
+  $\cl{H}_i = \cl{S} \times \cl{A} \times \dots \times \cl{S}$
+  is the \emph{history space} at the $i$th timestep.
+}
+
+\frame{
+  \frametitle{Stochastic processes}
+  An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ together with a policy
+  $\pi = (\pi_1, \pi_2, \dots)$ and a distribution $\mu$ on $\cl{S}$
+  give rise to a stochastic process
+  $(S_1, A_1, S_2, A_2, \dots) \sim \kappa_\pi \mu$ such that for any
+  $i \in \N$ we have
+  $(S_1, A_1, \dots, S_i) \sim P\pi_{i-1} \dots P \pi_1 \mu$
+  where $P\pi_{i-1} \dots P \pi_1$ denotes the \emph{kernel-composition}
+  of the probability kernels $P, \pi_1, \dots, \pi_{i-1}$.
+  We denote by $\E_s^\pi$ expectation over $\kappa_\pi \mu$ where
+  $\mu = \delta_s$, that is, $S_1 = s$ a.s.
+}
+
+\frame{
+  \frametitle{Policy evaluation}
+  For a policy $\pi$ we can define the policy evaluation function:
+  \begin{block}{Policy evaluation}
+    \begingroup
+    \small
+    Denote by $r(s, a) = \int x \difd R(x \mid s, a)$ the \emph{expected
+    reward function}. We define the \defemph{policy evaluation function} by
+    $$ V_\pi(s) = \E_s^\pi \sum_{i=1}^\infty \gamma^{i-1} r \circ \rho_i $$
+    where $\rho_i$ is projection onto $(\cl{S}_i, \cl{A}_i)$.
+    \endgroup
+  \end{block}
+  This an example of a (state-) \emph{value function}, as it assigns a real
+  number to every state $s \in \cl{S}$.
+}
+
+\frame{
+  \frametitle{Finite policy evaluation}
+  Similar to the infinite horizon policy evaluation we can also consider
+  a finite horizon version:
+  \begin{block}{Definition: Finite policy evaluation}
+    We define the function $V_{n, \pi} : \cl{S} \to \R$ by
+    \[ V_{n,\pi}(s) = \E_{s}^\pi \sum_{i=1}^n \gamma^{i-1} r \circ \rho_i \]
+    called the $k$th \defemph{finite policy evaluation}\footnote{When
+    $n=0$ we say $V_{0,\pi} = V_0 \defeq 0$ for any $\pi$.}.
+  \end{block}
+}
+
+\frame{
+  \frametitle{Optimal value function}
+  \begingroup
+  \footnotesize
+  \begin{block}{Definition: Optimal value functions}
+    \begin{align*}
+      V_n^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_{n,\pi}(s)
+      = \sup_{\pi \in R\Pi} \E_s^\pi \sum_{i=1}^n r_i
+      \\
+      V^*(s) \defeq & \; \sup_{\pi \in R\Pi} V_\pi(s)
+      = \sup_{\pi \in R\Pi} \E_s^\pi \sum_{i=1}^\infty r_i
+    \end{align*}
+    This is called the \defemph{optimal value function} (and the $n$th
+    optimal value function).
+    A policy $\pi^* \in R\Pi$ for which $V_{\pi^*} = V^*$ is called an
+    \defemph{optimal policy}.
+    If $V_{n, \pi^*} = V^*_n$ then $\pi^*$ is called $n$-optimal.
+  \end{block}
+  Provided such an optimal policy $\pi^*$ exists,
+  obtaining such a policy is the ultimate goal
+  of Reinforcement Learning.
+  \endgroup
+}
+
+\frame{
+  \frametitle{Operators on value functions}
+  \begin{block}{The $T$-operators}
+    For a stationary policy $\tau \in S\Pi$ and a value function
+    $V:\Cal{S} \to \R \in \cl{L}_\infty(\cl{S})$
+    we define the operators 
+    \begin{gather*}
+      \text{The policy evaluation operator: }
+      \\ T_\tau V \defeq s \mapsto \int r(s, a)
+      + \gamma V(s') \difd (P \tau)(a, s'\mid s)
+      \\ \text{The Bellman optimality operator: }
+      \\ T V \defeq s \mapsto 
+      \sup_{a \in \frak{A}(s)} \left(r(s, a) + \gamma \int V(s')
+      \difd P(s' \mid s, a) \right)
+    \end{gather*}
+  \end{block}
+}
+
+\frame{
+  \title{Greedy policies}
+  %todo: greedy policies for value functions
+}
+
+\subsection{Q-functions}
+
+\frame{
+  \frametitle{Q-functions}
+  A \defemph{Q-function}
+  is simply any function assigning a real number to every state-action pair.
+  They are also called (state-) \emph{action value functions}.
+  \\ \vspace{0.3cm}
+  A \defemph{Q-learning} algorithm is any algorithm which uses Q-functions
+  to derive a policy for an environment\footnote{Some authors refer to
+    Q-learning as a specific variation of temporal difference learning,
+    but this fails to capture many algorithms which are also referred to
+  as \emph{Q-learning algorithms}.}.
+  \\ \vspace{0.3cm}
+  How to derive a policy from a Q-function? One way to do this is
+  by picking \emph{greedy actions}.
+}
+
+\subsection{Value iteration}
+
+\frame{
+  \frametitle{Greedy policies}
+  \begingroup
+  \small
+    Let $Q:\cl{S} \times \cl{A} \to \R$ be a measurable Q-function and
+    $\tau: \cl{S} \leadsto \cl{A}$ be a (stationary) policy.
+  \begin{block}{Greedy policy}
+    Define the set of
+    \emph{greedy actions} by
+    $G_Q(s) \defeq \argmax_{a \in \frak{A}(s)} Q(s, a)$.
+    If there exist a measurable set $G_Q^\tau(s) \subseteq G_Q(s)$
+    for every $s \in \Cal{S}$ such that
+    \[ \tau \left( G_Q^\tau(s) \Mid s \right) = 1 \]
+    then $\tau$ is said to be \defemph{greedy} with respect to $Q$ and is
+    denoted $\tau_Q$.
+  \end{block}
+  \endgroup
+}
+
+
+\frame{
+  \frametitle{Q-function operators}
+  \begingroup
+  \footnotesize
+  \begin{block}{Operators for Q-functions}
+    For any stationary policy $\tau \in S\Pi$ and
+    integrable Q-function $Q:\Cal{S} \times \Cal{A} \to \R
+    \in \cl{L}_\infty(\cl{S} \times \cl{A})$ we define
+    \begin{gather*}
+      \text{Next-step operator: }
+      \\ P_\tau Q(s, a) = \int Q(s', a') \difd \tau P(s', a' \mid s, a)
+      \\ \text{Policy evaluation operator: } 
+      \\
+      T_\tau Q(s, a) = 
+      r(s, a) + \gamma \int Q(s', a') \difd \tau P(s', a' \mid s, a)
+      \\ \text{Bellman optimality operator: } 
+      \\ T Q(s, a) = r(s, a) + \gamma
+      \int \max_{a' \in \Cal{A}} Q(s', a') \difd P(s' \mid s, a)
+    \end{gather*}
+    where $T_a = T_{\delta_a}$.
+  \end{block}
+  \endgroup
+}
+
+
+
+\end{document}

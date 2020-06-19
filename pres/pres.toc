@@ -1,0 +1,4 @@
+\babel@toc {danish}{}
+\beamer@subsectionintoc {0}{1}{The goal of RL}{3}{0}{0}
+\beamer@subsectionintoc {0}{2}{Q-functions}{16}{0}{0}
+\beamer@subsectionintoc {0}{3}{Value iteration}{17}{0}{0}
