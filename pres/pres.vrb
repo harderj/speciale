@@ -1,16 +1,20 @@
-\usetikzlibrary{trees, arrows}
-  \definecolor{pf7}{RGB}{166, 118, 29}
-  \tikzset{
-    font={\small},
-    edge from parent/.style={draw,-latex}
-  }%
-  \begin{tikzpicture}
-    \Tree [.{Artificial Intelligence}
-      [.{Machine Learning}
-	[.{Reinforcement Learning}
-	  [.{hey hey}]%
-	]%
-	[.{Supervised Learning, Unsupervised etc.} ]%
-      ]%
-    ]%
-  \end{tikzpicture}
+\frametitle{Q-iteration}
+  \begingroup
+  \small
+  \emph{Q-iteration} is the analogue of value-iteration for Q-function.
+  It can be stated in the form of an algorithm as follows:
+  \begin{block}{Algorithm (Q-iteration)}
+    \begin{algorithm*}[H]
+      \KwData{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
+      Initialize expected reward function
+      $r \leftarrow \int x \difd R(x \mid \cdot)$
+      and $\wt{Q}_0 \leftarrow r$.
+      \\ \For{$k = 0,1, \dots K-1$}{
+	$\wt{Q}_{k+1} \leftarrow T \wt{Q}_k$
+      }
+      \KwOut{$\wt{Q}_K$}
+    \end{algorithm*}
+  \end{block}
+  In the context of a greedy MDP we immedially have that the output of
+  the Q-iteration algorithm $\wt{Q}_K = Q^*_K$ is $K$-optimal.
+  \endgroup

@@ -1,7 +1,7 @@
 \documentclass{beamer}[10]
 \input{preamble}
 \usepackage{pgf}
-\usepackage[danish]{babel}
+%\usepackage[danish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{beamerthemesplit}
 \usepackage{graphics,epsfig, subfigure}
@@ -10,6 +10,9 @@
 \usepackage{hyperref}
 \usepackage{tikz-dependency}
 \usepackage{tikz-qtree}
+\usepackage{wrapfig}
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
 
 \definecolor{kugreen}{RGB}{50,93,61}
 \definecolor{kugreenlys}{RGB}{132,158,139}
@@ -17,16 +20,21 @@
 \definecolor{kugreenlyslyslys}{RGB}{214,223,216}
 \setbeamercovered{transparent}
 \mode<presentation>
-\usetheme[numbers,totalnumber,compress,sidebarshades]{PaloAlto}
+\usetheme[width=1.6cm,numbers,totalnumber,compress,sidebarshades]{PaloAlto}
 \setbeamertemplate{footline}[frame number]
 
-  \usecolortheme[named=kugreen]{structure}
-  \useinnertheme{circles}
-  \usefonttheme[onlymath]{serif}
-  \setbeamercovered{transparent}
-  \setbeamertemplate{blocks}[rounded][shadow=true]
+\usecolortheme[named=kugreen]{structure}
+\useinnertheme{circles}
+\usefonttheme[onlymath]{serif}
+\setbeamercovered{transparent}
+\setbeamertemplate{blocks}[rounded][shadow=true]
 
-\logo{\includegraphics[width=0.8cm]{KULogo}}
+\logo{\includegraphics[width=0.5cm]{KULogo}}
+
+\makeatletter
+\beamer@headheight=1.5\baselineskip     %controls the height of the headline, default is 2.5
+\makeatother
+
 \title{Theoretical aspects of Q-learning}
 \subtitle{Masters thesis defense}
 \institute{Jacob Harder \\
@@ -44,7 +52,7 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 \tableofcontents%[pausesection]
 }
 
-\subsection{The goal of RL}
+\section{Introduction}
 
 \begin{frame}
   \frametitle{Q-learning as AI}
@@ -107,6 +115,8 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   \end{itemize}
   \endgroup
 }
+
+\subsection{The environment}
 
 \frame{
   \frametitle{The environment}
@@ -187,6 +197,8 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   $\mu = \delta_s$, that is, $S_1 = s$ a.s.
 }
 
+\subsection{Value functions and the goal of RL}
+
 \frame{
   \frametitle{Policy evaluation}
   For a policy $\pi$ we can define the policy evaluation function:
@@ -239,8 +251,106 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   \endgroup
 }
 
+\subsection{Value iteration}
+
+\frame{
+  \frametitle{Greediness}
+  In order to show existence of optimal policies and talk about algorithms
+  which can determine such policies, we define the concept of \emph{greediness}.
+}
+
+\frame{
+  \frametitle{Greedy actions}
+  \begingroup
+  \footnotesize
+  The purpose of (most) value functions $V : \cl{S} \to \R$ is to give an estimate
+  on how \emph{good} a certain state is, in terms of the rewards one may expect
+  after visiting it.
+  \\ This give rise to the idea of \emph{greedy actions}, that is,
+  actions leading to states high \emph{values} (according to $V$).
+  \begin{block}{Definition greedy actions}
+    Let $V : \cl{S} \to \R$ be a measurable value-function.
+    We define
+    \[ G_V(s) = \argmax_{a \in \frak{A}(s)} T_a V(s) \subseteq \frak{A}(s) \]
+    as the set of \defemph{greedy} actions w.r.t. $V$.
+  \end{block}
+  \endgroup
+}
+
+\frame{
+  \frametitle{Greedy policies}
+  Greedy actions leads to \emph{greedy policies}:
+  \begin{block}{Definition: Greedy policy}
+    Let $V : \cl{S} \to \R$ be a measurable value-function and
+    let $\tau : \cl{S} \leadsto \cl{A} \in S\Pi$ be a stationary policy.
+    If there exists a measurable $G_V^\tau(s) \subseteq G_V(s)$
+    such that
+    \[ \tau(G_V^\tau(s) \mid s) = 1 \]
+    for every $s \in \cl{S}$, then $\tau$ is called greedy w.r.t. $V$.
+    We will often denote a $V$-greedy policy by $\tau_V$.
+  \end{block}
+}
+
+\frame{
+  \frametitle{Existence of greedy policies}
+  \begingroup
+  \footnotesize
+  \begin{block}{Theorem (Existence of greedy policies)}
+    Suppose $V: \cl{S} \to \R$ is \emph{upper semicontinuous} and that
+    \begin{itemize}
+      \item[1.] $\cl{S}$ and $\cl{A}$ are standard Borel.
+      \item[2.]  The set of admissable actions 
+	$\frak{A}(s) \subseteq \cl{A}$ is compact for all $s \in \cl{S}$
+	and $\Gamma = \{ (s, a) \in \cl{S} \times \cl{A} \mid a \in \frak{A}(s) \}$
+	is a closed subset of $\cl{S} \times \cl{A}$.
+      \item[3.] The transition kernel $P$ is continuous.
+      \item[4.] The expected reward function $r = \int r' \difd R(r' \mid \cdot)$
+	is upper semicontinuous and bounded from above.
+    \end{itemize}
+    Then there exists a deterministic policy $\pi_V$ which is greedy for $V$.
+  \end{block}
+  If assumptions 1.-4. hold we will say that the MDP is \emph{greedy}.
+  \endgroup
+}
+
+\frame{
+  \frametitle{Policy iteration}
+  \begingroup
+  \footnotesize
+  Using the concepts we have defined one can get the following idea:
+  Iteratively generate value functions by
+  picking greedy policies and then evaluating these policies.
+  This is called \emph{policy iteration}.
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \def \n {3}
+      \def \radius {1cm}
+      \def \margin {30} % margin in angles, depends on the radius
+      \def \txt {
+	{$V$},
+	{$\tau_V$},
+	{$V_{\tau_V}$}
+      }
+
+      \foreach \t [count=\s from 0] in \txt
+      {
+	\node[draw, circle] at ({360/\n * (\s - 1)}:\radius) {\t};
+	\draw[->, >=latex] ({360/\n * (\s - 1)+\margin}:\radius)
+	arc ({360/\n * (\s - 1)+\margin}:{360/\n * (\s)-\margin}:\radius);
+      }
+    \end{tikzpicture}
+  \end{figure}
+  Policy iteration is a well studied algorithm and can be shown to
+  converges to optimum for a variety of environments. We will however
+  move on to talk about a related concept called
+  \emph{value iteration}.
+  \endgroup
+}
+
 \frame{
   \frametitle{Operators on value functions}
+  Before defining value iteration we introduce some operators
   \begin{block}{The $T$-operators}
     For a stationary policy $\tau \in S\Pi$ and a value function
     $V:\Cal{S} \to \R \in \cl{L}_\infty(\cl{S})$
@@ -258,8 +368,137 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 }
 
 \frame{
-  \title{Greedy policies}
-  %todo: greedy policies for value functions
+  \frametitle{Properties of the $T$-operators}
+  \begingroup
+  \footnotesize
+  \begin{block}{Proposition (Properties of the $T$-operators)}
+    \begin{itemize}
+      \item $V_{k, \pi} = T_{\tau_1} V_{k-1, (\tau_2, \dots)}
+	= T_{\tau_1} \dots T_{\tau_k} V_0$.
+      \item $V_\pi = \lim_{k \to \infty} T_{\tau_1} \dots T_{\tau_k} V_0$
+      \item For the stationary policy $\tau$ we have $T_\tau V_\tau = V_\tau$.
+      \item $T$ and $T_\tau$ are $\gamma$-contractive
+	on $\Cal{L}_\infty(\Cal{S})$.
+      \item $V_\tau$ is the unique bounded fixed point of $T_\tau$
+	in $\Cal{L}_\infty(\Cal{S})$.
+    \end{itemize}
+  \end{block}
+  This way $T_\tau$ can be interpreted as a 'one-step policy evaluation'.
+  On the other hand $T$ can be interpreted as a 'one-step evaluation, when
+  always choosing greedy actions'.
+  \endgroup
+}
+
+\frame{
+  \frametitle{Value iteration}
+  \begingroup
+  \footnotesize
+  \emph{Value iteration} is the iterative application of the $T$-operator.
+  The following theorem show why
+  value iteration is a 
+  central idea Reinforcement Learning\footnote{Actually value iteration
+  is inherited from dynamic programming.}.
+  \begin{block}{Theorem (Existence optimal policies
+    \& convergence of value iteration)}
+    Given a greedy MDP we have that
+    \[ V^*_k = T^k V_0 = T_{\tau^*_{k-1}} \dots T_{\tau^*_0} V_0
+    = V_{k, (\tau^*_{k-1}, \dots, \tau^*_0)} \]
+    The policy $(\tau^*_{k-1}, \dots, \tau^*_0)$ is a deterministic
+    $k$-optimal policy
+    where $\tau_k^* = \tau_{T^k V_0}$ is any deterministic
+    greedy policy for $T^k V_0$ for any $k \in \N$.
+    \\ Furthermore $V^* = \lim_{k\to\infty} T^k V^*_0$, the greedy policy
+    $\tau^* = \tau_{V^*}$ exists and an optimal policy.
+  \end{block}
+  \endgroup
+}
+
+\frame{
+  \frametitle{Convergence rates}
+  We can also show that the optimal value function $V^*$ is a fixed point of
+  the Bellman optimality operator $T$.
+  \[ TV^* = V^* \]
+  This is often called \emph{Bellman's optimality equation}.
+  \\ Recalling that $T$ is $\gamma$-contractive, by Banach's fixed point theorem 
+  we get exponential convergence rates for value iteration:
+  \[ \norm{T^k V - V^*} \leq \gamma^k \norm{V - V^*}_\infty = \cl{O}(\gamma^k) \]
+}
+
+\frame{
+  \frametitle{Example: Gridworld}
+  \begingroup
+  \footnotesize
+  \begin{wrapfigure}{R}{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \draw[step=0.5cm, color=gray] (0,0) grid (2.5,2.5);
+      \node (A) at (0.75,2.25) {A};
+      \node (A') at (0.75,0.25) {A'};
+      \node (B) at (1.75,2.25) {B};
+      \node (B') at (1.75,1.25) {B'};
+      \draw [->][bend left=15] (A) edge node[left] {\scriptsize{+10}} (A');
+      \draw [->][bend left=15] (B) edge node[left] {\scriptsize{+5}} (B');
+    \end{tikzpicture}
+  \end{wrapfigure}
+  The \emph{gridworld} MDP consist of 25 states $\cl{S} = [5]^2$ and 4 actions
+  $\cl{A} = \{U, D, L, R\}$ for \emph{up}, \emph{down}, \emph{left} and 
+  \emph{right} and moves the agent
+  1 square up, down, left or right.
+  A reward of 0 is given by default, except when
+  \begingroup
+  \scriptsize
+  \begin{itemize}
+    \item[-] \emph{hitting the boundary} a reward of -1 is given
+    \item[-] when in $A = (2,1)$ any action moves to $A' = (2,5)$ and
+      is rewarded 10.
+    \item[-] when in $B = (4,1)$ any action moves to $B' = (4,3)$ and
+      is rewarded 5.
+  \end{itemize}
+  \endgroup
+  Finally $\gamma = 0.9$ is the standard value of the discount factor
+  in this example.
+  \endgroup
+}
+
+\frame{
+  \frametitle{Example: Gridworld}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{figs/gridworld1_1.png}
+    \caption{Policy evaluations of the gridworld environment.
+      Note that $V_{\max} \cdot \gamma^{400} = 100 \cdot (0.9)^{400}
+      \approx 4.97 \cdot 10^{-17}$ so $V_{\tau_r, 400}$
+      are very close to the true infinite horizon value functions
+    $V_{\tau_r}$ (providing numerical errors are insignificant).}
+    \label{fig:gw1}
+  \end{figure}
+}
+
+\frame{
+  \frametitle{Example: Gridworld}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{figs/gridworld1_2.png}
+    \caption{Optimal value functions of the gridworld environment.
+      By the same upper bound as before we have
+    $\norm{V^* - V^*_{400}}_\infty < 4.97 \cdot 10^{-17}$.}
+    \label{fig:gw1}
+  \end{figure}
+}
+
+\frame{
+  \frametitle{Example: Gridworld}
+  \vspace{-0.35cm}
+  \begin{figure}
+    \includegraphics[scale=0.45]{figs/gridworld2.png}
+  \end{figure}
+  \footnotesize Convergence of gridworld value functions compared with
+  the theoretical bounds. The black dashed line is the general theoretical
+  bound for both $T$ and $T_{\tau}$ by Banachs fixed point theorem and
+  the maximum value $V_{\max} = R_{\max} / (1-\gamma)$.
+  The dotted blue and orange uses $\abs{V_k^*}$ and $\abs{V_{\tau, k}}$ 
+  respectively, which might not be available.
+  ($\gamma = 0.9$).
 }
 
 \subsection{Q-functions}
@@ -275,15 +514,24 @@ Department of Mathematical Sciences \\ University of Copenhagen}
     Q-learning as a specific variation of temporal difference learning,
     but this fails to capture many algorithms which are also referred to
   as \emph{Q-learning algorithms}.}.
-  \\ \vspace{0.3cm}
-  How to derive a policy from a Q-function? One way to do this is
-  by picking \emph{greedy actions}.
 }
 
-\subsection{Value iteration}
+\frame{
+  \frametitle{Motivation for Q-functions}
+  A clear advantage of working with Q-function
+  $Q:\Cal{S}\times\Cal{A} \to \R$ rather than a value function
+  $V:\Cal{S}\to \R$,
+  is that finding the optimal action $a^* \in \frak{A}(s)$ at state $s$
+  requires only a maximization over the Q-function itself:
+  $a^* = \argmax_{a \in \frak{A}(s)} Q(s,a)$.
+  This should be compared to finding an optimal action
+  according to a value function $V$:
+  $a^* = \argmax_{a \in \frak{A}(s)} r(s,a) + \gamma \E_{P(\cdot \mid s,a)} V$.
+}
 
 \frame{
-  \frametitle{Greedy policies}
+  \frametitle{Greed with Q-functions}
+  Formally we define greedy actions and policies w.r.t. a Q-function as
   \begingroup
   \small
     Let $Q:\cl{S} \times \cl{A} \to \R$ be a measurable Q-function and
@@ -301,11 +549,11 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   \endgroup
 }
 
-
 \frame{
   \frametitle{Q-function operators}
   \begingroup
   \footnotesize
+  Moreover we define $T$-operators similar to ones for value functions
   \begin{block}{Operators for Q-functions}
     For any stationary policy $\tau \in S\Pi$ and
     integrable Q-function $Q:\Cal{S} \times \Cal{A} \to \R
@@ -326,6 +574,148 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   \endgroup
 }
 
+\frame{
+  \frametitle{Relation between value- and Q-functions}
+  \begingroup
+  \footnotesize
+  \begin{block}{Theorem (Relations between Q- and value functions)}
+    Let $\pi = (\tau_1, \tau_2, \dots) \in M\Pi$ be a Markov policy
+    and $\tau \in S\Pi$ stationary. Then
+    \begin{itemize}
+      \item[-] Policy evaluations are related by
+	$\E_{\tau(\cdot \mid s)} Q_{k, \pi} = V_{k+1, (\tau, \pi)}(s)$.
+      \item[-] $T_\tau$-operators are related by $T_\tau Q_{k, \pi}(s, a)
+	= r + \gamma \E_{P(\cdot \mid s, a)} T_\tau V_{k, \pi}$.
+      \item[-] $\tau$ is greedy for
+	$Q_{k, \pi}$ if and only if $\tau$ is greedy for $V_{k, \pi}$
+	and
+	\\ $\tau$ is greedy for $Q_\pi$ if and only if $\tau$ is greedy for
+	$V_\pi$.
+      \item[-] Optimal policies are related by
+	$\max_{a \in \frak{A}(s)} Q^*(s, a) = V^*(s)$ and
+	\[ Q^*_k(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^*_k,
+	\quad Q^*(s, a) = r(s, a) + \gamma \E_{P(\cdot \mid s, a)} V^* \]
+    \end{itemize}
+  \end{block}
+  \endgroup
+}
 
+\frame{
+  \frametitle{Properties of Q-functions}
+  Because of the close relations
+  many properties are inherited from value function to Q-functions:
+  \begin{block}{Proposition (Properties of Q-functions)}
+    Let $\pi = (\tau_1, \tau_2, \dots) \in M\Pi$ be a Markov policy
+    and $\tau \in S\Pi$ stationary. Then
+    \begin{itemize}
+      \item $Q_{k, \pi} = T_{\tau_1} \dots T_{\tau_k} Q_0$ and
+	$Q^*_k = T^k Q^*_0$.
+      \item $Q_\pi = \lim_{k \to \infty} Q_{k, \pi}$ and
+	$Q^* = \lim_{k\to\infty} Q_k^*$. 
+      \item $T,\; T_\tau$ are $\gamma$-contractive on
+	$\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
+	and $Q^*,\; Q_\tau$ are their unique fixed points.
+      \item $Q^* = Q_{\tau^*}$
+    \end{itemize}
+  \end{block}
+}
+
+\subsection{Q-iteration}
+
+\begin{frame}[fragile]
+  \frametitle{Q-iteration}
+  \begingroup
+  \small
+  \emph{Q-iteration} is the analogue of value-iteration for Q-function.
+  It can be stated in the form of an algorithm as follows:
+  \begin{block}{Algorithm (Q-iteration)}
+    \begin{algorithm*}[H]
+      \KwData{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
+      Initialize expected reward function
+      $r \leftarrow \int x \difd R(x \mid \cdot)$
+      and $\wt{Q}_0 \leftarrow r$.
+      \\ \For{$k = 0,1, \dots K-1$}{
+	$\wt{Q}_{k+1} \leftarrow T \wt{Q}_k$
+      }
+      \KwOut{$\wt{Q}_K$}
+    \end{algorithm*}
+  \end{block}
+  In the context of a greedy MDP we immedially have that the output of
+  the Q-iteration algorithm $\wt{Q}_K = Q^*_K$ is $K$-optimal.
+  \endgroup
+\end{frame}
+
+\frame{
+  \frametitle{Value iteration with Q-functions}
+  Similar to value-iteration we can use
+  Banach fixed point theorem with the contractive properties
+  of the $T$-operator for Q-functions to obtain exponential
+  convergence of Q-iteration:
+  \begin{block}{Proposition (Convergence of Q-iteration)}
+    Suppose the Q-iteration algorithm is run with a greedy MDP.
+    Then the output $\wt{Q}_K = Q^*_K$ satisfy
+    \[ \norm{Q^* - Q^*_K}_\infty \leq \gamma^K V_{\max} \]
+  \end{block}
+}
+
+\begin{frame}
+  \frametitle{Why are we not done?}
+  \begingroup
+  \footnotesize
+  We have exponential convergence for the broad class of problems expressible
+  as a greedy MDP. This class includes highly difficult environments such as
+  control problems in time-descretized simulation environments such as computer
+  games, including the game of \emph{chess}. Are we then done?
+  \begin{block}{Problems of Q-iteration}
+    \begin{itemize}
+      \item[1.] It is assumed that we know how to integrate over $P$ and $R$.
+	\begin{itemize}
+	  \item[-] The distributions of $P$ and $R$ might be impractical to
+	    work with in a computer.
+	  \item[-] It is common in RL to assume that $P$ and $R$ are unknown,
+	    thus including a variety of environments, which we have not yet
+	    considered.
+	\end{itemize}
+      \item[2.] It is assumed that we know how to represent $Q$ functions in 
+	a feasible way in a computer.
+    \end{itemize}
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example: Chess}
+  The state space of chess is very large
+  (roughly $\abs{\cl{S}_{\hrm{chess}}} \geq 10^{43}$).
+  This means that if we were to use Q-iteration naively
+  (with finite implementation as in the gridworld example)
+  then we would have to store a vector of
+  roughly $N \cdot 10^{43}$ real numbers for each Q-function we define,
+  where $N$ is the average number of admissable actions at each state
+  $\frak{A}(s), s \in \cl{S}$
+  which has been estimated to around $N \approx 35$ for chess.
+  This requires roughly $1.4 \cdot 10^{45}$ bytes, if each number is stored as a
+  single precision floating point number (4 bytes).
+  For comparison the entire digital data capacity in the world is estimated
+  less than $10^{23}$ bytes as of 2020.
+  Needless to say this is beyond any practical relevance.
+\end{frame}
+
+\begin{frame}
+  \frametitle{What have we done so far?}
+\end{frame}
+
+\section{Model-dependent algorithms}
+
+\begin{frame}
+  \frametitle{Model-dependent algorithms}
+  %\todo
+\end{frame}
+
+\subsection{Another subsection}
+
+\begin{frame}
+  \frametitle{Another frame}
+\end{frame}
 
 \end{document}
