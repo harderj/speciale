@@ -5,4 +5,13 @@
 \BOOKMARK [3][]{Outline0.1.4.27}{Q-functions}{Outline0.1}% 5
 \BOOKMARK [3][]{Outline0.1.5.33}{Q-iteration}{Outline0.1}% 6
 \BOOKMARK [2][]{Outline0.2}{Model-dependent algorithms}{}% 7
-\BOOKMARK [3][]{Outline0.2.1.39}{Another subsection}{Outline0.2}% 8
+\BOOKMARK [3][]{Outline0.2.1.40}{Approximation and algorithmic errors}{Outline0.2}% 8
+\BOOKMARK [3][]{Outline0.2.2.44}{Approximation using ANNs}{Outline0.2}% 9
+\BOOKMARK [3][]{Outline0.2.3.50}{Approximation with Bernstein polynomials}{Outline0.2}% 10
+\BOOKMARK [2][]{Outline0.3}{Model-free algorithms}{}% 11
+\BOOKMARK [3][]{Outline0.3.1.56}{Finite case}{Outline0.3}% 12
+\BOOKMARK [3][]{Outline0.3.2.60}{History dependent setting}{Outline0.3}% 13
+\BOOKMARK [3][]{Outline0.3.3.67}{Linear function approximation}{Outline0.3}% 14
+\BOOKMARK [3][]{Outline0.3.4.73}{Deep fitted Q-iteration}{Outline0.3}% 15
+\BOOKMARK [2][]{Outline0.4}{Conclusion}{}% 16
+\BOOKMARK [3][]{Outline0.4.1.76}{Errata}{Outline0.4}% 17

@@ -1,4 +1,9 @@
-from cartpoleBernstein import *
+from cartpole_bernstein import *
+
+def approx_dist(f, g, xs, p=2): # 2-norm default
+    if isinstance(xs[0], float) :
+        return (sum([abs(f(x) - g(x))**p for x in xs])**(1/p)) / len(xs)
+    return (sum([abs(f(*x) - g(*x))**p for x in xs])**(1/p)) / len(xs)
 
 def test_polynomial_add():
     m1 = np.random.rand(2,3)
@@ -36,10 +41,13 @@ def plot_bernstein1():
     m = 4
     xs = np.linspace(0,1,n)
     ys = np.empty(shape=(n, m + 1))
+    fig, ax = plt.subplots()
     for i in range(m + 1): 
-        b = bernstein_basis(i, m)
+        b = bernstein_basis(i, m) * xs[i]
         ys[:,i] = [b(x) for x in xs]
-    plt.plot(xs, ys)
+    sum_ys = ys.sum(axis=1)
+    ax.plot(xs, ys)
+    ax.plot(xs, sum_ys, '--')
     plt.show()
 
 def plot_bernstein2():
@@ -56,7 +64,7 @@ def plot_bernstein2():
     f = f4
 
     l = 100 # plotting definition x-axis
-    n = 15 # approximation definition
+    n = 12 # approximation definition
     xs = np.linspace(0, 1, l)
     p = bernstein_approx(f, n)
 
@@ -99,8 +107,6 @@ def plot_bernstein3():
     plt.show()
     #seems to work
 
-
-
-plot_bernstein3()
+plot_bernstein2()
 
 

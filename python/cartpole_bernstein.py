@@ -1,13 +1,7 @@
 
 import matplotlib.pyplot as plt
-import gym
+# import gym
 from polynomial import *
-
-def approx_dist(f, g, xs, p=2): # 2-norm default
-    return (sum([abs(f(*x) - g(*x))**p for x in xs])**(1/p)) / len(xs)
-
-
-
 
 
 def randEpisode():

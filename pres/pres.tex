@@ -20,7 +20,14 @@
 \definecolor{kugreenlyslyslys}{RGB}{214,223,216}
 \setbeamercovered{transparent}
 \mode<presentation>
-\usetheme[width=1.6cm,numbers,totalnumber,compress,sidebarshades]{PaloAlto}
+\usetheme[
+  width=1.6cm,
+  numbers,
+  totalnumber,
+  compress,
+  sidebarshades,
+  hideothersubsections
+]{PaloAlto}
 \setbeamertemplate{footline}[frame number]
 
 \usecolortheme[named=kugreen]{structure}
@@ -383,7 +390,8 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 	in $\Cal{L}_\infty(\Cal{S})$.
     \end{itemize}
   \end{block}
-  This way $T_\tau$ can be interpreted as a 'one-step policy evaluation'.
+  This way $T_\tau$ can be interpreted as a 'one-step policy evaluation, when
+  following the policy $\tau$'.
   On the other hand $T$ can be interpreted as a 'one-step evaluation, when
   always choosing greedy actions'.
   \endgroup
@@ -659,29 +667,49 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 }
 
 \begin{frame}
-  \frametitle{Why are we not done?}
-  \begingroup
-  \footnotesize
+  \frametitle{What have we done so far?}
+  For greedy MDPs we have proved
+  \begin{itemize}
+    \item[-] Existence of optimal policies.
+    \item[-] Exponential convergence of Q-iteration to the optimal
+      policy.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Are we not done?}
   We have exponential convergence for the broad class of problems expressible
   as a greedy MDP. This class includes highly difficult environments such as
   control problems in time-descretized simulation environments such as computer
   games, including the game of \emph{chess}. Are we then done?
-  \begin{block}{Problems of Q-iteration}
-    \begin{itemize}
-      \item[1.] It is assumed that we know how to integrate over $P$ and $R$.
-	\begin{itemize}
-	  \item[-] The distributions of $P$ and $R$ might be impractical to
-	    work with in a computer.
-	  \item[-] It is common in RL to assume that $P$ and $R$ are unknown,
-	    thus including a variety of environments, which we have not yet
-	    considered.
-	\end{itemize}
-      \item[2.] It is assumed that we know how to represent $Q$ functions in 
-	a feasible way in a computer.
-    \end{itemize}
-  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problems of Q-iteration}
+  \begingroup
+  \footnotesize
+  \textbf{Model-dependency}:
+  It is assumed that we know how to integrate over $P$ and $R$.
+  \begin{itemize}
+    \item[-] The distributions of $P$ and $R$ might be impractical to
+      work with in a computer.
+    \item[-] It is common in RL to assume that $P$ and $R$ are unknown,
+      thus including a variety of environments, which we have not yet
+      considered.
+  \end{itemize}
+  \textbf{Representation infeasibility}:
+  It is assumed that we know how to represent $Q$ functions in 
+  a feasible way in a computer.
+  \begin{itemize}
+    \item[-] Representing the functions arising from use of the $T$-operator
+      may be difficult as these functions are defined by succesive 
+      intergration over potentially complex transition kernels.
+    \item[-] Even in the finite case where $Q$ can be represented as a table,
+      this table may be excessively large.
+  \end{itemize}
   \endgroup
 \end{frame}
+
 
 \begin{frame}
   \frametitle{Example: Chess}
@@ -700,22 +728,515 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   less than $10^{23}$ bytes as of 2020.
   Needless to say this is beyond any practical relevance.
 \end{frame}
-
-\begin{frame}
-  \frametitle{What have we done so far?}
-\end{frame}
-
 \section{Model-dependent algorithms}
 
 \begin{frame}
   \frametitle{Model-dependent algorithms}
-  %\todo
+  To deal with the problem of representation infeasibility we will investigate
+  what happens when using approximations of $TQ$ in the Q-iteration algorithm.
+  The hope is then that we can choose an class of approximation-functions
+  \[ \cl{F} \subseteq \cl{Q} = \{ Q : \cl{S} \times \cl{A} \to \R \} \]
+  that is both \emph{representable} (in a computer) and \emph{dense}
+  (to some degree) in $T \cl{F} = \left\{ TQ \mid Q \in \cl{Q} \right\}$.
 \end{frame}
 
-\subsection{Another subsection}
+\subsection{Approximation and algorithmic errors}
 
 \begin{frame}
-  \frametitle{Another frame}
+  \frametitle{Approximation and algorithmic errors}
+  Let $\norm{\cdot}$ be any norm the space of Q-functions $\cl{Q}$.
+  Suppose we can approximate $T\wt{Q}_0$ by some $\wt{Q}_1 \in \cl{F}$
+  to $\ve_1 > 0$ precision
+  and then approximate $T\wt{Q}_1$ by $\wt{Q}_2 \in \cl{F}$
+  and so on. This way we get a sequence of Q-functions satisfying
+  \begin{equation*}
+    \norm{T\wt{Q}_{k-1} - \wt{Q}_k} \leq \ve_k, \forall k \in \N
+    \label{eq:defnvei}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Approximation and algorithmic errors}
+  First observe that
+  \begin{align*}
+    \norm{T^k \wt{Q}_0 - \wt{Q}_k}
+    &\leq \norm{T^k \wt{Q}_0 - T \wt{Q}_{k-1}} + \norm{T\wt{Q}_{k-1} - \wt{Q}_k}
+    \\ &\leq \gamma \norm{T^{k-1} \wt{Q}_0 - \wt{Q}_{k-1}}
+    + \norm{T\wt{Q}_{k-1} - \wt{Q}_k}
+  \end{align*}
+  Using this iteratively we get
+  \begin{equation*}
+    \norm{T^k \wt{Q}_0 - \wt{Q}_k} \leq \sum_{i=1}^k \gamma^{k-i} \ve_i
+  \end{equation*}
+  Using this we can bound \ldots
+\end{frame}
+
+\begin{frame}
+  \frametitle{Approximation and algorithmic errors}
+  \begin{align*}
+    \norm{Q^* - \wt{Q}_k}
+    &\leq \norm{Q^* - T^k \wt{Q}_0} + \norm{T^k \wt{Q}_0 - \wt{Q}_k}
+    \\ & \leq
+    \gamma^k \norm{Q^* - \wt{Q}_0} + \sum_{i=1}^k \gamma^{k-i} \ve_i
+  \end{align*}
+  \begin{small}
+    \begin{itemize}
+      \item[-] The first term is called the \defemph{algorithmic error}
+	and decreases
+	exponentially with $k$, so we will be content with this.
+      \item[-] The second term $\sum_{i=1}^k \gamma^{k-i} \ve_i$
+	is where the trouble from our approximative strategy arises
+	and is therefroe called the \defemph{approximation error}.
+	We denote it $\ve_{\mathrm{approx}}(k)$.
+	It is this the approximation error which we will now struggle
+	to bound.
+    \end{itemize}
+  \end{small}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Theoretical approximation errors}
+  We here give a few examples of how the approximation error behave in relation
+  to the step-wise errors $\ve_i$.
+  \begin{itemize}
+    \item[-] If $\ve_i(k) = \ve$ for some $\ve > 0$ we easily get the bound
+      $$ \ve_{\mathrm{approx}}(k) =
+      \ve \frac{1-\gamma^k}{1-\gamma} \leq \frac{\ve}{1-\gamma} $$
+    \item[-] If $\ve_i \leq c\gamma^i$ we get
+      $$ \ve_{\mathrm{approx}}(k) \leq ck \gamma^k \to 0$$
+      as $k \to \infty$.
+    \item[-] Generally we have
+      $ \sum_{i-1}^k \gamma^{k-i} \ve_i \to 0 $
+      whenever $\ve_k \to 0$ as $k \to \infty$.
+  \end{itemize}
+\end{frame}
+
+\subsection{Approximation using ANNs}
+
+\begin{frame}
+  \frametitle{Artificial Neural Networks}
+  \begingroup
+  \footnotesize
+  We will now consider the approach of (model-dependent) Q-iteration using
+  artificial neural networks (ANNs) as function approximators.
+  \begin{block}{Definition: Artificial neural network}
+    An \defemph{artificial neural network} (ANN) with $L \in \N_0$
+    hidden layers, structure
+    $(d_i)_{i=0}^{L+1} \subseteq \N$,
+    activation functions $(\sigma_i)_{i=1}^L$,
+    weights $(W_i)_{i=1}^{L+1} \in M^{d_i \times d_{i-1}}$ and
+    biases $(v_i)_{i=1}^{L+1} \in \R^{d_i}$
+    is the function $f:\R^{d_0} \to \R^{d_{L+1}}$ defined by
+    \[ f = w_{L+1} \circ \sigma_L \circ w_L
+    \circ \sigma_{L-1} \circ \dots \circ \sigma_1 \circ w_1 \]
+    where $w_i$ is the affine function $x \mapsto W_i x + v_i$,
+    and $\sigma_i : \R^{d_i} \to \R^{d_i}$ is coordinate-wise
+    application of components $\sigma_{ij} : \R \to \R$.
+    We denote the class of these networks (or functions)
+    \[ \cl{DN} \left( (\sigma_i)_{i=1}^L,\; (d_i)_{i=0}^{L+1} \right) \]
+    An ANN is called \emph{deep} if there are two or more hidden layers.
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{ANNs as graphs}
+  \begin{figure}[h]
+  \centering
+  \tikzset{%
+    every neuron/.style={
+      circle,
+      draw,
+      minimum size=0.5cm
+    },
+    neuron missing/.style={
+      draw=none, 
+      scale=2,
+      text height=0.2cm,
+      execute at begin node=\color{black}$\vdots$
+    },
+  }
+  \begin{tikzpicture}[x=1cm, y=1cm, >=stealth]
+
+    \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+    \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+
+    \foreach \m [count=\y] in {1,missing,2}
+    \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
+
+    \foreach \m [count=\y] in {1,missing,2}
+    \node [every neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
+
+    \foreach \l [count=\i] in {1,2,3,d_0}
+    \draw [<-] (input-\i) -- ++(-1,0)
+    node [above, midway] {$x_{\l}$};
+
+    \foreach \l [count=\i] in {1,d_1}
+    \node [above=0.2cm] at (hidden-\i.north) { $n_{1, \l}$};
+
+    \foreach \l [count=\i] in {1,d_2}
+    \draw [->] (output-\i) -- ++(1,0)
+    node [above, midway] {$f(x)_{\l}$};
+
+    \foreach \i in {1,2,4} % 3 is looked at individually
+    \foreach \j in {1,2}
+    \draw [->] (input-\i) -- (hidden-\j);
+      % 3
+    \draw [->] (input-3) -- (hidden-2);
+
+    \foreach \i in {1,...,2}
+    \foreach \j in {1,...,2}
+    \draw [->] (hidden-\i) -- (output-\j);
+
+    \foreach \l [count=\x from 0] in {Input, Hidden, Ouput}
+    \node [align=center, above, font=\footnotesize] at (\x*2,2)
+    {\l \\ layer with \\ $d_{\x}$ nodes};
+  \end{tikzpicture}
+  \caption{An ANN with one hidden layer ($L=1$). Notice that there is no edge
+    from $n_{0,3}$ to $n_{1,1}$ which means that
+  $W_1(1,3) = 0$.}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Universal approximation theorem for ANNs}
+  \begin{thm}[Universal approximation theorem for ANNs]
+  Let $\sigma: \R \to \R$ be non-constant, bounded and continuous
+  activation function.
+  Let $\ve > 0$ and $f \in C([0,1]^w)$.
+  Then there exists an $N \in \N$ and a network
+  $F \in \cl{DN}(\sigma, (w, N, 1))$
+  with one hidden layer,
+  unbiased final layer (that is $v_2 = 0$)
+  and activation function $\sigma$ such that
+  \[ \norm{F - f}_\infty < \ve \]
+  In other words $\bigcup_{N \in \N} \cl{DN}(\sigma, (w, N, 1))$ is
+  dense in $C([0,1]^w)$.
+\end{thm}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Notation and setting}
+  Rectified linear unit (ReLU) activation function:
+  \[ \sigma_r(x) = \max(0,x) \]
+  Class of \emph{ReLU networks}:
+  \[ \cl{RN}\left( (d_i)_{i=0}^{L+1} \right)
+  \defeq \cl{DN}\left( \sigma_r, (d_i)_{i=0}^{L+1} \right) \] 
+  Setting: Greedy MDP with state-space $\cl{S} = [0,1]^w \subseteq \R^w$
+  inside the unit (hyper-) cube, finite action space $\abs{\cl{A}} < \infty$ and 
+  expected reward function $r$ being (fully) \emph{continuous}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Q-iteration with ANN-approximation - bound}
+  \begingroup \footnotesize
+  \begin{block}{Theorem}
+    Let $\varepsilon > 0$.
+    Assume that one of the following two conditions hold:
+    \begin{itemize}
+      \item[1.] $P$ is deterministic with $P(\cdot \mid s, a) = \delta_{p(s, a)}$.
+	For some continuous $p: \cl{S} \times \cl{A} \to \cl{S}$.
+      \item[2.] $P(\cdot \mid s, a)$ is absolutely continuous
+	with respect to the same measure $\nu$ on $\cl{S}$ for all
+	$(s, a) \in \cl{S} \times \cl{A}$ with density
+	$p(\cdot \mid s, a)$ which is continuous in $s$.
+    \end{itemize}
+    Then for every $k \in \N$ there exists a $N\in \N$ and a sequence of
+    Q-networks $(\wt{Q}_i)_{i=1}^k \subseteq \cl{RN}(w \abs{\cl{A}}, N, 1)$
+    such that
+    \[ \ve_{\mathrm{approx}}(i) = \norm{T\wt{Q}_{i-1} - \wt{Q}_i}_\infty < \ve \]
+    for all $i \in [k]$.
+    In particular
+    \[ \abs{Q^* - \wt{Q}_k} < \gamma^k V_{\max} + \varepsilon/(1 - \gamma) \]
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Q-iteration with ANN: conclusion}
+  What we have accomplished: Arbitrarily precise approximation of $Q^*$ using
+  a concrete class of approximators, namely ANNs.
+  \\ What is still missing:
+  \begin{itemize}
+    \item[-] How large must the network depth $N$ be?
+      This requires going through a contructive proof of the universal
+      approximation theorem, which is available in litterature.
+    \item[-] How to obtain the each approximator $\wt{Q}_i$? Optimization
+      using ANNs are extensively studied, so this might be answered in
+      litterature.
+  \end{itemize}
+\end{frame}
+
+\subsection{Approximation with Bernstein polynomials}
+
+\begin{frame}
+  \frametitle{Bernstein polynomials}
+  We now turn to a new approximation technique:
+  \begingroup
+  \footnotesize
+  \begin{block}{Definition: Bernstein polynomial}
+    The (multivariate) Bernstein polynomial $B_{f, n}$ of degree
+    $n=(n_1, \dots, n_w) \in \N^w$ approximating the function $f:[0,1]^w \to \R$
+    is defined by
+    \begin{align*}
+      B_{f, n}(x_1, \dots, x_w) = &
+      \\ \sum_{j = 1}^w \sum_{k_j = 0}^{n_j} &
+      f\left( \frac{k_1}{n_1}, \dots, \frac{k_w}{n_w} \right)
+      \prod_{\ell = 1}^w \left(
+      \binom{n_\ell}{k_\ell} x_\ell^{k_\ell}(1-x_\ell)^{n_\ell - k_\ell} \right)
+    \end{align*}
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Approximation with Bernstein polynomials}
+  \begin{block}{Theorem: Approximation properties of Bernstein polynomials}
+    Let $f : [0,1]^w \to \R$ be Lipschitz
+    w.r.t. the standard euclidean 2-norm induced metrics on $[0,1]^w$ and $\R$
+    with constant $L$. 
+    Let $n = (n_1, \dots, n_w) \in \N^w$.
+    The Bernstein polynomial
+    $B_{f,n} : [0,1]^w \to \R$ satisfies
+    \begin{itemize}
+      \item[1.] $\norm{f - B_{f,n}}_\infty
+	\leq \frac{L}{2} \sqrt{\sum_{j=1}^w \frac{1}{n_j}}$
+      \item[2.] $\norm{B_{f,n}}_\infty \leq \norm{f}_\infty$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Q-iteration with Bernstein polynomials}
+  \begingroup
+  \footnotesize
+  \begin{block}{Proposition}
+    Suppose we are given a greedy MDP with $\cl{S} = [0,1]^w$ and finite
+    action space. Assume that there exists a probability measure
+    $\mu \in \cl{P}(\cl{S})$ such that $P(\cdot \mid s, a)$ has density
+    $p(\cdot \mid s, a) : \cl{S} \to \R$ w.r.t $\mu$ for all
+    $(s, a) \in \cl{S} \times \cl{A}$. Furthermore assume that $r(\cdot, a)$
+    and $p(s \mid \cdot, a)$ are $\norm{\cdot}_2$-Lipschitz with constants
+    $L_r, L_p$ for all $(s, a) \in \cl{S} \times \cl{A}$.
+    \\Using Bernstein polynomials of degree
+    $n = (m, \dots, m) \in \N^w$ for $m \in \N$ we have the following bound
+    \[ \norm{Q^* - \wt{Q}_k}_\infty \leq \gamma^{k} V_{\max}
+      + \frac{L_r + \gamma V_{\max} L_p}{2(1-\gamma)} \sqrt{w}
+    \frac{1}{\sqrt{m}} \]
+    In particular $\norm{Q^* - \wt{Q}_k}_\infty
+    = \cl{O}(\gamma^{k} + \frac{1}{\sqrt{m}})$
+    when using $k$ iterations.
+  \end{block} 
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conclusion on Bernstein polynomials}
+  \begingroup
+  \footnotesize
+  What we have achieved: $\cl{O}(\gamma^k + 1/\sqrt{m})$ convergence bound 
+  for Q-iteration with $(m, \dots, m)$-degree Bernstein polynomial approximation.
+  \\ This solves two problems with approximation with ANNs of
+  \begin{itemize}
+    \item[1.] the function class not being conrete
+    \item[2.] not knowing
+      how to obtain each approximator $\wt{Q}_i$
+  \end{itemize}
+  We mention two weak points
+  \begin{itemize}
+    \item[1.] The restiction on $P$:
+      For example we cannot use the bound on deterministic
+      decision processes, since if $P$ is deterministic then there
+      are no measure $\mu \in \cl{P}(\cl{S})$ which allows for a
+      density $p(\cdot \mid s, a)$ (i.e. $p \cdot \mu = P(\cdot \mid s, a)$),
+      unless $P(\cdot \mid s, a) = \delta_{s'}$ for all $(s, a) \in \cl{S} \times
+      \cl{A}$, which would lead to a quite boring environment.
+      Generally the processes with fast convergence bounds must be very stochastic.
+    \item[2.] We lack understanding of the computational complexity involved. 
+  \end{itemize}
+  \endgroup
+\end{frame}
+
+\section{Model-free algorithms}
+
+\begin{frame}
+  \frametitle{Overview}
+  We deal with the model-free algorithm of this thesis in two parts:
+  \begin{itemize}
+    \item[1.] The first part (section 3.1 and 3.2) is a survey
+      on various old and recent convergence bounds. Most bounds
+      are either confined to finite processes (section 3.1) or
+      not establishing concrete bounds (section 3.2).
+    \item[2.] The second secttion (section 3.3) is a detailed
+      presentation of a preprint [Fan et al. (2020+)] proving convergence
+      of a Q-learning algorithm in a continuous state-space setting.
+  \end{itemize} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{What is model-free algorithms?}
+
+\end{frame}
+
+\subsection{Finite case}
+
+\begin{frame}
+  \frametitle{The finite setting}
+\end{frame}
+
+\begin{frame}
+  \frametitle{TD-learning}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Asynchronos Q-learning}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Convergence and bounds on Async. QL}
+
+\end{frame}
+
+\subsection{History dependent setting}
+
+\begin{frame}
+  \frametitle{History dependent setting: Introduction}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{History based Q-functions}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Partial observability}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{State-uniformity}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{History dependent TD-learning}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Convergence theorem}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{HDP classes}
+
+\end{frame}
+
+\subsection{Linear function approximation}
+
+\begin{frame}
+  \frametitle{Setting}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear function classes}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{TD gradient steps}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{The algorithm}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{The theorem}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conclusion}
+
+\end{frame}
+
+\subsection{Deep fitted Q-iteration}
+
+\begin{frame}
+  \frametitle{Introduction}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fitted Q-iteration}
+
+\end{frame}
+
+
+
+\section{Conclusion}
+
+\begin{frame}
+  \frametitle{Conclusion}
+\end{frame}
+
+\subsection{Errata}
+
+\begin{frame}
+  \frametitle{Error corrections}
+  \begingroup
+  \footnotesize
+  \begin{itemize}
+    \item[p. 31] Continuous MDP should also be greedy (i.e. condition on $P$
+      is missing).
+    \item[p. 33] Top: Discussion of proofs of theorem 2.77:
+      ``\ldots to obtain a contradiction to the statement that
+      $\bigcup_{N \in \N} \cl{DN}(\sigma, (w,N,1))$
+      is \defemph{not} dense in $C([0,1]^w)$''.
+    \item[p. 33] Middle: the bound on $\abs{Q^* - \wt{Q}_k}$ should be
+      $\leq \gamma^k V_{\max} + \ve / (1-\gamma)$ (and not 
+      $< \ve / (1-\gamma)$).
+    \item[p. 36] Corollary 2.84: $\norm{Q^* - \wt{Q}_k}_\infty \leq \gamma^{
+      \mathbf{k}} V_{\max} + \dots$.
+    \item[p. 46] Top: ``we may view FQI as a class of \defemph{algorithms},
+      because \ldots''.
+  \end{itemize}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algorithm reference error}
+  \begingroup
+  \footnotesize
+  Due to an unexpected behavior of the \LaTeX-package \emph{cleveref}
+  when adding line
+  numbers to algorithms, many references to 'algorithm $n$'
+  was accidentally changed to 'line $k$'.
+  \begin{itemize}
+    \item[p. 19] 
+      Replace 'line 3' with 'algorithm 1'.
+    \item[p. 24]
+      Replace 'line 3' with 'algorithm 2'.
+    \item[p. 25]
+      Top: ``and therefore \defemph{algorithm 2} could be applied''.
+      \\Middle: ``To use \defemph{algorithm 1} and \defemph{algorithm 2}''.
+      \\ Bottom: ``update step $\wt{V}_{k+1} \leftarrow T_\tau \wt{V}_k$ 
+      in \defemph{algorithm 2} becomes''.
+    \item[p. 26] ``Similarly in \defemph{algorithm 2} the update step \ldots''.
+    \item[p. 29] ``we thus have convergence of \defemph{algorithm 3}:''.
+    \item[p. 30] Top: ``which are used in \defemph{algorithm 3} are not [\ldots]
+      This means that if we were to use \defemph{algorithm 3} naively \ldots''.
+    \item[p. 37] ``It is clear that in the model-free setting \defemph{algorithm
+      3} will not work \ldots''.
+  \end{itemize}
+  \endgroup
 \end{frame}
 
 \end{document}
