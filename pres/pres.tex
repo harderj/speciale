@@ -1061,14 +1061,14 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 \section{Model-free algorithms}
 
 \begin{frame}
-  \frametitle{Overview}
+  \frametitle{Model-free algorithms: Overview}
   We deal with the model-free algorithm of this thesis in two parts:
   \begin{itemize}
     \item[1.] The first part (section 3.1 and 3.2) is a survey
       on various old and recent convergence bounds. Most bounds
       are either confined to finite processes (section 3.1) or
       not establishing concrete bounds (section 3.2).
-    \item[2.] The second secttion (section 3.3) is a detailed
+    \item[2.] The second section (section 3.3) is a detailed
       presentation of a preprint [Fan et al. (2020+)] proving convergence
       of a Q-learning algorithm in a continuous state-space setting.
   \end{itemize} 
@@ -1076,63 +1076,368 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 
 \begin{frame}
   \frametitle{What is model-free algorithms?}
+  In model-free algorithms are based on \emph{sampling} from the environment
+  dynamics instead of using these distributions directly (e.g. by taking
+  expectations).
+  \\ This means that we cannot use any of the approaches so far
+  considered without modification because
+  taking expectations over the kernels $P$ and $R$ is no longer possible
+  (directly).
+\end{frame}
 
+\begin{frame}
+  \frametitle{Motivating model-free algorithms}
+  \begingroup
+  \footnotesize
+  Why put the model-free restriction upon our algorithms?
+  \begin{itemize}
+    \item[-] Big actors in both research and industry (such as
+      \emph{Google DeepMind}) favor model-free approaches.
+      Thus much research goes in this direction.
+    \item[-] Some environments may be hard to model, but easy to sample from,
+      such as the stock-market.
+    \item[-] Works \emph{out of the box}: No need for adaptation to each model as
+      only access to samples are required.
+    \item[-] Philosophical interest: Are humans model-free algorithms?
+    \item[-] Experience that Monte Carlo approaches can lead to faster computation.
+  \end{itemize}
+  \endgroup
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Non-example: Model-free Q-iteration}
+  \begingroup
+  \scriptsize
+  \begin{block}{Model-free Q-iteration (example of thought)}
+    \begin{algorithm}[H]
+      \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
+      For all $(s, a) \in \cl{S} \times \cl{A}$ let
+      $\wt{Q}_0(s, a)$ be sampled from $R(\cdot \mid s, a)$.
+
+      \For{$k = 0,1,2,\dots,K-1$}{
+	For all $(s, a) \in \cl{S} \times \cl{A}$ sample
+	a reward $r'$ from $R(\cdot \mid s, a)$,
+	a next-state $s'$ from $P(\cdot \mid s, a)$
+	and let
+	\[\wt{Q}_{k+1}(s, a) \leftarrow
+	r' + \gamma \sup_{a' \in \cl{A}} \wt{Q}_k(s', a')\]
+      }
+      Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
+      \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+    \end{algorithm}
+  \end{block}
+  Problems?
+  \begin{itemize}
+    \item[-] Uncountable $\cl{S}$ or $\cl{A}$ does not make much sense:
+      How are the estimations $\wt{Q}_i$ well-defined?
+    \item[-] Even in finite case: Convergence is not possible for
+      non-deterministic processes.
+  \end{itemize}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Direct vs. indirect approaches}
+  There are broadly two ways of dealing with these
+  problems.
+  \\ In the \emph{indirect} approaches one tries to first estimate $P$ and $R$
+  by sampling.
+  We can then use the model-dependent methods of the last chapter with
+  estimated kernels $\wt{P}$ and $\wt{R}$.
+  We will not go further into indirect methods in this thesis.
+  \\ The \emph{direct} approaches covers \emph{the rest},
+  and it is mainly these were are going to look at throughout this
+  thesis.
 \end{frame}
 
 \subsection{Finite case}
 
 \begin{frame}
   \frametitle{The finite setting}
+  \begin{block}{Finite action-uniform MDP}
+    We consider a (discounted) MDP $(\cl{S}, \cl{A}, P, R, \gamma)$ where
+    $\abs{\cl{S}} = \frak{s} \in \N$ and $\abs{\cl{A}} = \frak{a} \in \N$
+    are finite.
+    Also we assume unrestricted actions, i.e. that the set of admissable
+    actions $\frak{A}(s) = \cl{A}$ is the same for all $s \in \cl{S}$
+  \end{block}
+  This setting is a special case of a greedy MDP, and thus we get existence
+  of optimal value functions and convergence of $Q^*_k \to Q^*$.
 \end{frame}
 
 \begin{frame}
   \frametitle{TD-learning}
+  \begingroup \footnotesize
+  A popular way of dealing with the problems of naive model-free Q-iteration,
+  is called \emph{temporal difference learning} (TD-learning)
+  and is based on the following \emph{update-step}:
+  \begin{equation*}
+    \wt{Q}_{k+1}(s, a) \leftarrow (1-\alpha_k) \wt{Q}_k(s, a)
+    + \alpha_k (r' + \gamma \cdot \max_{a' \in \cl{A}} \wt{Q}_k(s', a'))
+  \end{equation*}
+  Where
+  \begin{itemize}
+    \item[-] $r'$ and $s'$ are the reward and next-state drawn from the
+      reward and transition kernels,
+    \item[-] $\alpha_k \in [0,1]$ is called the \defemph{learning rate},
+    \item[-] $r' + \gamma \max_{a' \in \cl{A}} \wt{Q}_k(s', a')$
+      is called the \defemph{T-value}, due to its similarity to
+      $T \wt{Q}_k(s, a)
+      = r(s, a) + \gamma \int \max_{a' \in \cl{A}} \wt{Q}_k(s', a')
+      \difd P(s' \mid s, a)$,
+    \item[-] the \defemph{temporal difference} term
+      $ \alpha_k ( r' + \gamma \cdot \max_{a \in \cl{A}} \wt{Q}_k(s', a')
+      - \wt{Q}_k(s, a) )$.
+  \end{itemize}
+  \endgroup
 \end{frame}
 
 \begin{frame}
-  \frametitle{Asynchronos Q-learning}
+  \frametitle{Finite asynchronos Q-learning}
+  \begingroup \footnotesize
+  \begin{block}{Algorithm: Finite asynchronos Q-learning}
+    \begin{algorithm}[H]
+      \KwIn{Finite MDP $(\cl{S}, \cl{A}, P, R, \gamma)$,
+	number of iterations $K$,
+	state-action pairs $(s_1,a_1, \dots, s_K, a_K)$,
+	learning rates $(\alpha_1, \dots, \alpha_K)$,
+	initial $\wt{Q}_0 : \cl{S}\times\cl{A} \to \R$
+      }
+
+      \For{$k = 1,2,\dots,K$}{
+	Sample $r' \sim R(\cdot \mid s_k, a_k), \;
+	s' \sim P(\cdot \mid s_k, a_k)$.
+	\\ Update action-value function:
+	For all $(s, a) \in \cl{S} \times \cl{A}$ let
+	\begin{tiny}
+	  \[ \wt{Q}_k(s, a) \leftarrow \begin{cases}
+	      \wt{Q}_{k-1}(s, a) & (s, a) \neq (s_k, a_k)
+	      \\ (1 - \alpha_k) \wt{Q}_{k-1} +
+	      \alpha_k (r' + \gamma \max_{a' \in \cl{A}} \wt{Q}_{k-1}(s', a'))
+	      & (s, a) = (s_k, a_k)
+	    \end{cases}
+	  \]
+	\end{tiny}
+      }
+      Define $\wt{\pi}_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
+      \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\wt{\pi}_K$}
+    \end{algorithm}
+  \end{block}
+  \endgroup
 \end{frame}
 
 \begin{frame}
-  \frametitle{Convergence and bounds on Async. QL}
+  \frametitle{Convergence result}
+  \begingroup \small
+  \begin{block}{Theorem (Watkins, Dayan 1992): Convergence of asynchronos QL}
+    Let $s_1, a_1, s_2, a_2, \dots \in
+    \cl{S} \times \cl{A} \times \cl{S} \times \cl{A} \times \dots$
+    be random variables and $\alpha_1, \alpha_2, \dots \in [0,1]$
+    be a sequence of learning rates.
+    The output $\wt{Q}_K$ of the finite asynchronos Q-learning algorithm
+    converges to $Q^*$ provided that for all $(s, a) \in \cl{S} \times \cl{A}$
+    it holds that
+    \begin{itemize}
+      \item[-] $\Prob\left(\sum_{i=1}^\infty \alpha_i
+	[(s_i, a_i) = (s,a)] = \infty \right) = 1$
+	and
+	$\Prob\left(\sum_{i=1}^\infty \alpha_i^2
+	[(s_i, a_i) = (s,a)] < \infty\right) = 1$.
+      \item[-] $\Var(R(\cdot \mid s, a)) < \infty$ for all $(s, a) \in
+	\cl{S}\times\cl{A}$.
+    \end{itemize}
+    Here $[(s_i, a_i) = (s, a)]$ is the Bernoulli random variable with
+    $\Prob([(s_i, a_i) = (s, a)] = 1) = \Prob(s_i = s \text{ and } a_i = a)$.
+  \end{block}
+  \endgroup
+\end{frame}
 
+\begin{frame}
+  \frametitle{Bound on convergence}
+  \begingroup\scriptsize
+  \begin{block}{Theorem (Szepesvári 1997)}
+    Using the finite asynchronos algorithm
+    let $K \in \N$ and
+    $(s_1, a_1), (s_2, a_2) \dots, (s_K, a_K)$ be sampled i.i.d. from
+    a distribution
+    $p \in \cl{P}(\cl{S} \times \cl{A})$ with $\supp(p) = \cl{S} \times \cl{A}$,
+    i.e. all state-action pairs have non-zero probability of occuring.
+    Set the learning rates such that
+    $\alpha_k
+    = |\{ i \in [k] \mid (s_i, a_i) = (s_k, a_k) \}|^{-1}$,
+    i.e. they are the reciprocal of the frequency of $(s_k, a_k)$ at step $k$.
+    Let $\beta = \max_{x \in \cl{S} \times \cl{A}} p(x) /
+    \min_{x \in \cl{S} \times \cl{A}} p(x)$.
+    Then for some $B > 0$ the following holds asymptotically almost
+    surely
+    \begin{equation}
+      \abs{\wt{Q}_K - Q^*} \leq B \frac{1}{K^{\beta (1-\gamma)}}
+      \label{eq:Szepesvari1}
+    \end{equation}
+    and
+    \begin{equation}
+      \abs{\wt{Q}_K - Q^*} \leq B \sqrt{\frac{\log \log K}{K}}
+      \label{eq:Szepesvari2}
+    \end{equation}
+    For the output $\wt{Q}_K$ of the finite asynchronos Q-learning algorithm
+    with $K$-steps.
+  \end{block}
+  Note that \cref{eq:Szepesvari1} is tightest when $\gamma > 1 - \beta/2$
+  otherwise \cref{eq:Szepesvari2} is tighter.
+  \endgroup
 \end{frame}
 
 \subsection{History dependent setting}
 
 \begin{frame}
   \frametitle{History dependent setting: Introduction}
+  Staying in setting of decision processes with finite states and actions,
+  we will now turn to the setting of history dependent processes,
+  and present a result found in [Majeed and Hutter (2018)].
+\end{frame}
 
+\begin{frame}
+  \frametitle{History dependent setting}
+  Define $\cl{H}^* = \bigcup_{i \in \N} \cl{H}_i$ as the space of all
+  \emph{finite histories}.
+  We will write (history-) tuples
+  $h_k = (s_1, a_1, s_2, \dots, a_{k-1}, s_k) \in \cl{H}_k$
+  as strings $h_k = s_1 a_1 s_2 \dots a_{k-1} s_k$ for convenience.
+  \begin{itemize}
+    \item[-] Transition dynamics are history dependent
+      $P : \cl{H}^* \times \cl{A} \leadsto \cl{S}$.
+    \item[-] Rewards are history dependent, deterministic
+      $r : \cl{H}^* \times \cl{A} \to \R$,
+      and discounted by $\gamma \in [0,1)$, that is 
+      $r(h_n, a) \in [-\gamma^{n-2}R_{\max}, \gamma^{n-2} R_{\max}]$ for any
+      $h_n \in \cl{H}_n$ and $a \in \cl{A}$.
+    \item[-] Actions are unrestricted, so that
+      $\frak{A}(s) = \cl{A}$ for all $s \in \cl{S}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Remark on existence of optimal value functions}
+  The finite history dependent setting
+  can be analysed with theorems developed by [Schäl, 1974],
+  which considers history dependent processes generalized to arbitrary
+  standard Borel $\cl{S}$ and $\cl{A}$.
+  This implies by the existence of an optimal
+  $\pi^* \in R\Pi$ and that $V^*_n \to V^*$\footnote{These remarks was not
+  discussed in the original article by Majeed and Hutter.}.
 \end{frame}
 
 \begin{frame}
   \frametitle{History based Q-functions}
-
+  Q-functions are generalized so that
+  they are taking values in $\cl{H}^* \times \cl{A}$.
+  Likewise the $T$-operator is generalized by defining
+  \begin{equation*}
+    TQ(h, a) \defeq r(ha) +
+    \gamma \sum_{s\in\cl{S}} \max_{a' \in \cl{A}} Q(has, a') P(s \mid ha)
+  \end{equation*}
+  The optimal Q-function $Q^*$ is defined as
+  the fixed point of the $T$ operator in
+  $\cl{L}_\infty(\cl{H}^* \times \cl{A})$.
 \end{frame}
 
 \begin{frame}
   \frametitle{Partial observability}
+  A function $\phi : \cl{H}^* \to \cl{X}$ is introduced
+  which maps a history to a new finite space $\cl{X}$.
+  The intuition here is that $x_n = \phi(h_{n-1} a_{n-1} s_n)$ is the
+  state $s_n$ as it is perceived by the agent.
+  This is called \defemph{partial observability}.
+  Using $\phi$ we are now considering a class of problems
+  which is wider than a 
+  history dependent decision process (HDP).
+  Namely a partially observable HDP or shortened: POHDP.
+  A kernel for the observable process is defined for each $h \in \cl{H}^*$
+  \begin{align*} p_h & : \cl{A} \leadsto \cl{X}
+    \\ p_h & (x' \mid a)
+    = \sum_{s:\phi(has)=x'} P(s \mid ha)
+  \end{align*}
+\end{frame}
 
+\begin{frame}
+  We can now consider yet another kind of Q-functions defined
+  on $\cl{X} \times \cl{A} \to \R$, which we will call \emph{partial} to avoid
+  confusion. The optimal partial Q-function $q_h^*$,
+  naturally dependent on a history $h \in \cl{H}^*$ and is defined by the equation
+  \begin{equation}
+    q_h^*(x, a) = r(h,a) + \gamma \sum_{x' \in \cl{X}} 
+    \max_{a' \in \cl{A}} q^*_h(x', a') p_h(x' \mid xa)
+  \end{equation}
 \end{frame}
 
 \begin{frame}
   \frametitle{State-uniformity}
-
+  We can now introduce a central assumption:
+  \begin{block}{Assumption: State-uniformity}
+    For any $h,h' \in \cl{H}^*$ we have
+    \[ \phi(h) = \phi(h') \implies Q^*(h, \cdot) = Q^*(h', \cdot) \]
+  \end{block}
+  Under this assumption the process is called (by Majeed and Hutter)
+  a \emph{Q-Value uniform decision process} (QDP).
+  State-uniformity is important because of the following theorem:
+  \begin{thm}[Hutter, 2016]
+    Under the state-uniformity assumption we have
+    $q^*_{h'}(\phi(h), a) = Q^*(h, a)$ for any $h'\in \cl{H}^*$.
+  \end{thm}
 \end{frame}
 
 \begin{frame}
   \frametitle{History dependent TD-learning}
-
+  Motivated by fact that the partial $q$-functions attains
+  the (non-partial) optimum, we will use the asynchronos 
+  Q-learning algorithm with update step
+  \[ q_{t+1}(x, a) = q_t(x, a) + \alpha_t(x, a)
+    \left(r' + \gamma \max_{a \in \cl{A}} q_t(x', a') - q_t(x, a)\right),
+  \quad x = \phi(h), r' = r(h,a) \]
 \end{frame}
 
 \begin{frame}
   \frametitle{Convergence theorem}
-
+  \begin{thm}
+    Assume
+    \begin{itemize}
+      \item[1.] State-uniformity.
+      \item[2.] Any state is reached eventually under any policy.
+      \item[3.] Learning rate satisfies
+	\[ \sum_{t=0}^\infty \alpha_t(x, a) = \infty, \quad
+	\sum_{t=0}^\infty \alpha_t(x, a)^2 < \infty \]
+    \end{itemize}
+    Then starting with any $q_0 : \cl{X} \times \cl{A} \to \R$
+    the asynchronos Q-learning algorithm yields a sequence
+    $(q_t)_{t \in \N}$ such that
+    \[q_t \to Q^* \] 
+  \end{thm}
 \end{frame}
 
 \begin{frame}
   \frametitle{HDP classes}
-
+  \begin{footnotesize}
+  It seems relevant to ask how restrictive the state-uniformity assumption is.
+  [Majeed, Hutter (2018)]
+  answers this by an array of examples showing the following
+  relations of the classes of decision processes:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw (0,0) circle (70pt) ;
+      \node at (0,2) { POHDP };
+      \draw (0,-0.5) circle [x radius = 2cm, y radius = 1.3cm]; % (40pt) ;
+      \node at (0,0.1) { POMDP };
+      \draw (0,-1) circle (17pt) ;
+      \node at (0,-0.9) { MDP };
+      \draw[dashed] (0, -0.3) circle [x radius=1cm, y radius=2cm];
+      \node at (0,1.2) { QDP };
+    \end{tikzpicture}
+    \caption{Classes of finite decision processes considered in
+      [Majeed, Hutter (2018)].
+    }
+  \end{figure}
+\end{footnotesize}
 \end{frame}
 
 \subsection{Linear function approximation}

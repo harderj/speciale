@@ -9,9 +9,9 @@
 \beamer@subsectionintoc {2}{2}{Approximation using ANNs}{44}{0}{2}
 \beamer@subsectionintoc {2}{3}{Approximation with Bernstein polynomials}{50}{0}{2}
 \beamer@sectionintoc {3}{Model-free algorithms}{54}{0}{3}
-\beamer@subsectionintoc {3}{1}{Finite case}{56}{0}{3}
-\beamer@subsectionintoc {3}{2}{History dependent setting}{60}{0}{3}
-\beamer@subsectionintoc {3}{3}{Linear function approximation}{67}{0}{3}
-\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{73}{0}{3}
-\beamer@sectionintoc {4}{Conclusion}{75}{0}{4}
-\beamer@subsectionintoc {4}{1}{Errata}{76}{0}{4}
+\beamer@subsectionintoc {3}{1}{Finite case}{59}{0}{3}
+\beamer@subsectionintoc {3}{2}{History dependent setting}{64}{0}{3}
+\beamer@subsectionintoc {3}{3}{Linear function approximation}{74}{0}{3}
+\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{80}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{82}{0}{4}
+\beamer@subsectionintoc {4}{1}{Errata}{83}{0}{4}

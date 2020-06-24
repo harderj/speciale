@@ -1,20 +1,29 @@
-\frametitle{Q-iteration}
+\frametitle{Non-example: Model-free Q-iteration}
   \begingroup
-  \small
-  \emph{Q-iteration} is the analogue of value-iteration for Q-function.
-  It can be stated in the form of an algorithm as follows:
-  \begin{block}{Algorithm (Q-iteration)}
-    \begin{algorithm*}[H]
-      \KwData{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
-      Initialize expected reward function
-      $r \leftarrow \int x \difd R(x \mid \cdot)$
-      and $\wt{Q}_0 \leftarrow r$.
-      \\ \For{$k = 0,1, \dots K-1$}{
-	$\wt{Q}_{k+1} \leftarrow T \wt{Q}_k$
+  \scriptsize
+  \begin{block}{Model-free Q-iteration (example of thought)}
+    \begin{algorithm}[H]
+      \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
+      For all $(s, a) \in \cl{S} \times \cl{A}$ let
+      $\wt{Q}_0(s, a)$ be sampled from $R(\cdot \mid s, a)$.
+
+      \For{$k = 0,1,2,\dots,K-1$}{
+	For all $(s, a) \in \cl{S} \times \cl{A}$ sample
+	a reward $r'$ from $R(\cdot \mid s, a)$,
+	a next-state $s'$ from $P(\cdot \mid s, a)$
+	and let
+	\[\wt{Q}_{k+1}(s, a) \leftarrow
+	r' + \gamma \sup_{a' \in \cl{A}} \wt{Q}_k(s', a')\]
       }
-      \KwOut{$\wt{Q}_K$}
-    \end{algorithm*}
+      Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
+      \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
+    \end{algorithm}
   \end{block}
-  In the context of a greedy MDP we immedially have that the output of
-  the Q-iteration algorithm $\wt{Q}_K = Q^*_K$ is $K$-optimal.
+  Problems?
+  \begin{itemize}
+    \item[-] Uncountable $\cl{S}$ or $\cl{A}$ does not make much sense:
+      How are the estimations $\wt{Q}_i$ well-defined?
+    \item[-] Even in finite case: Convergence is not possible for
+      non-deterministic processes.
+  \end{itemize}
   \endgroup
