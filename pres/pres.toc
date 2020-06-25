@@ -12,6 +12,7 @@
 \beamer@subsectionintoc {3}{1}{Finite case}{59}{0}{3}
 \beamer@subsectionintoc {3}{2}{History dependent setting}{64}{0}{3}
 \beamer@subsectionintoc {3}{3}{Linear function approximation}{74}{0}{3}
-\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{80}{0}{3}
-\beamer@sectionintoc {4}{Conclusion}{82}{0}{4}
-\beamer@subsectionintoc {4}{1}{Errata}{83}{0}{4}
+\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{77}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{86}{0}{4}
+\beamer@subsectionintoc {4}{1}{Further direction}{88}{0}{4}
+\beamer@subsectionintoc {4}{2}{Errata}{89}{0}{4}

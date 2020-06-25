@@ -1,29 +1,10 @@
-\frametitle{Non-example: Model-free Q-iteration}
-  \begingroup
-  \scriptsize
-  \begin{block}{Model-free Q-iteration (example of thought)}
-    \begin{algorithm}[H]
-      \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
-      For all $(s, a) \in \cl{S} \times \cl{A}$ let
-      $\wt{Q}_0(s, a)$ be sampled from $R(\cdot \mid s, a)$.
-
-      \For{$k = 0,1,2,\dots,K-1$}{
-	For all $(s, a) \in \cl{S} \times \cl{A}$ sample
-	a reward $r'$ from $R(\cdot \mid s, a)$,
-	a next-state $s'$ from $P(\cdot \mid s, a)$
-	and let
-	\[\wt{Q}_{k+1}(s, a) \leftarrow
-	r' + \gamma \sup_{a' \in \cl{A}} \wt{Q}_k(s', a')\]
-      }
-      Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
-      \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
-    \end{algorithm}
-  \end{block}
-  Problems?
-  \begin{itemize}
-    \item[-] Uncountable $\cl{S}$ or $\cl{A}$ does not make much sense:
-      How are the estimations $\wt{Q}_i$ well-defined?
-    \item[-] Even in finite case: Convergence is not possible for
-      non-deterministic processes.
-  \end{itemize}
+\frametitle{Overview of results}
+  \begingroup \scriptsize
+  \begin{figure}
+    \includegraphics[scale=0.43]{figs/overview.png}
+  \end{figure}
+  \vspace{-0.3cm}
+  Some of the convergence bound presented in this thesis.
+      Arrows $A \to B$ implies that setting $B$ is a special
+    case of setting $A$.
   \endgroup

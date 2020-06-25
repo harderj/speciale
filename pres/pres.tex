@@ -1443,54 +1443,311 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 \subsection{Linear function approximation}
 
 \begin{frame}
-  \frametitle{Setting}
-
+  \frametitle{Linear function approximation}  
+  Q-functions approximation by a linear span from a set of basis functions.
+  \begin{block}{Setting: Continuous state, finite action, discounted MDP}
+    \leavevmode
+    \begin{itemize}
+      \item[-] An MDP $(\cl{S}, \cl{A}, P, R, \gamma)$
+      \item[-] $\cl{S} \subseteq \R^w$ is a compact subset of a euclidean space.
+      \item[-] $\cl{A}$ is finite and unrestricted, that
+	is $\frak{A}(s) = \cl{A}$ for all 
+	$s \in \cl{S}$.
+      \item[-] $r_i$ is upper semicontinuous.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Linear function classes}
-
+  \frametitle{Linear function approximation}
+  $\left\{ \xi_1, \dots, \xi_M \right\}$ - a finite set of linearly
+  independent, measurable and bounded Q-functions.
+  \[ \cl{F} = \Span \{ \xi_i \mid i \in [M] \} \]
+  \begin{equation*}
+    \theta_{k+1} = \theta_k + \alpha_k \xi(s_k, a_k)
+    \left( r_k + \gamma \max_{b \in \cl{A}} Q_{\theta_k}(s_{k+1}, b)
+    - Q_{\theta_k}(s_k, a_k) \right)
+  \end{equation*}
+  \begin{block}{Theorem (Melo, Ribeiro 2007)}
+    Convergence of $\theta_k \to \theta^*$
+    where $\theta^* = \rho_{\cl{F}} Q^*$.
+  \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{TD gradient steps}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{The algorithm}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{The theorem}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Conclusion}
-
+  \frametitle{Linear function approximation}
+  Question: How far is $Q_{\theta^*}$ from $Q^*$?
 \end{frame}
 
 \subsection{Deep fitted Q-iteration}
 
-\begin{frame}
-  \frametitle{Introduction}
-
+\begin{frame}[fragile]
+  \frametitle{FQI algorithm}
+  \begingroup \scriptsize
+  \begin{block}{Fitted Q-Iteration Algorithm}
+    \begin{algorithm}[H] 
+      \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, function class $\Cal{F}$,
+	sampling distribution $\nu \in \cl{P}(\cl{S} \times \cl{A})$,
+	number of iterations $K$,
+	batch-size $n$, initial estimator $\widetilde{Q}_0$
+      }
+      \For{$k = 0,1,2,\dots,K-1$}{
+	Sample $n$ times independently from the distribution $\nu$ to get the batch
+	$(S_i, A_i)_{i \in [n]}$.
+	\label{line:batchsample}
+	\\ For each $i \in [n]$ sample a reward
+	$R_i \sim R(S_i, A_i)$ and a next-state $S'_i \sim P(S_i, A_i)$.
+	\\ From this define the T-values $Y_i \leftarrow
+	R_i + \gamma \cdot \max_{a \in \Cal{A}} \widetilde{Q}_k(S'_i, a)$
+	\\ Update action-value function
+	by solving the least squares optimization problem
+	$ \widetilde{Q}_{k+1} \leftarrow
+	\argmin_{f \in \Cal{F}} 
+	\sum_{i=1}^n (Y_i - f(S_i, A_i))^2 $
+	over the function class $\cl{F}$.
+	\label{line:fqioptimize}
+      }
+      Define $\wt{\tau}_K$ as the greedy policy w.r.t. $\widetilde{Q}_K$ \\
+      \KwOut{An estimator $\widetilde{Q}_K$ of the optimal value function $Q^*$
+      and an estimator of the optimal policy $\wt{\tau}_K$}
+    \end{algorithm}
+  \end{block}
+  \endgroup
 \end{frame}
 
 \begin{frame}
-  \frametitle{Fitted Q-iteration}
+  \frametitle{Function class}
+  \begingroup \scriptsize
+  \begin{block}{Definition: Sparse ReLU networks}
+    For $s,V \in \R$ the ReLU network $f$
+    is called $(s,V)$-\defemph{sparse} if
+    \begin{itemize}
+      \item[-] $\max_{\ell \in [L+1]} \norm{\widetilde{W}_\ell}_\infty \leq 1$
+      \item[-] $\sum_{\ell = 1}^{L+1} \norm{\widetilde{W}_\ell}_0 \leq s$
+      \item[-]  $\max_{j \in [d_{L+1}]} \norm{f_j}_\infty \leq V$
+    \end{itemize}
+    The set of them we denote $\Cal{SRN}\left(s, V, (d_i)_{i=0}^{L+1}, L \right)$
+    and by $\cl{SRN}(s, V)$ we mean the set of $(s, V)$-sparse ReLU networks
+    with any (finite) structure.
+    We may leave out $L$ when clear from the structure writing
+    $\cl{SRN}\left(s, V, (d_i)_{i=0}^{L+1} \right)$.
+  \end{block}
+  \endgroup
+\end{frame}
 
+\begin{frame}
+  \frametitle{Definition of DQI}
+  A \defemph{deep fitted Q-iteration} (DQI) algorithm,
+  is the fitted Q-iteration algorithm when applied with a function class
+  of sparse ReLU networks $\cl{SRN}$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Definition: Hölder smooth functions}
+  \begingroup \tiny
+  \begin{block}{Hölder smoothness}
+    Define the \defemph{Hölder smooth norm} of $f$ by
+    \begin{equation*}
+      \norm{f}_{C_w} \defeq 
+      \sum_{|{\alpha}| < \beta}
+      \norm{\partial^{\alpha}f}_\infty +
+      \sum_{\norm{{\alpha}}_1 = \floor{\beta}}
+      \sup_{\substack{x \neq y \\ x, y \in \cl{S}^\circ}}
+      \frac{|\partial^\alpha (f(x) - f(y))|}
+      {\norm{x-y}_\infty^{\beta-\floor{\beta}}}
+    \end{equation*}
+    If $\norm{f}_{C_w} < \infty$ then $f$ is \defemph{Hölder smooth}.
+    The space of Hölder smooth functions on $\Cal{D} \subseteq \R^w$:
+    \[ C_w(\Cal{D}, \beta, H) \defeq
+    \left\{ f : \Cal{D} \to \R \Mid \norm{f}_{C_w} \leq H \right\} \]
+  \end{block}
+  \begin{block}{Hölder smooth compositions}
+    For any $j \in [q]$ let $t_j, p_j
+    \in \N$, $t_j\leq p_j$ and $H_j, \beta_j > 0$.
+    We say that $f:[a_1, b_1]^{p_1} \to \R$
+    is a \defemph{composition of Hölder smooth functions} when
+    \[ f = g_q \circ \dots \circ g_1 \]
+    for some functions $g_j : [a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]^{p_{j+1}}$
+    (where $p_{q+1} = 1$)
+    that only depend on $t_j$ of their inputs
+    for each of their components $g_{jk}:[a_j, b_j]^{p_j} \to [a_{j+1}, b_{j+1}]$,
+    and satisfies $g_{jk} \in C_{t_j}([a_j, b_j]^{t_j}, \beta_j, H_j)$, 
+    i.e. they are Holder smooth.
+    We denote the class of these functions
+    \[ \Cal{G}(\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}) \]
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Assumption 1: Hölder smoothness}
+  \begingroup \footnotesize
+  \begin{block}{Definition}
+    Define
+    \[ \Cal{F}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R \Mid
+	\forall a \in \Cal{A} : f(\cdot, a) \in \Cal{SRN}\left( s, V_{\max},
+    (d_i)_{i=0}^{L+1} \right) \right\} \]
+    and
+    \[ \Cal{G}_0 = \left\{ f : \Cal{S} \times \Cal{A} \to \R
+	\Mid \forall a \in \Cal{A} :
+	f(\cdot, a) = \Cal{G}\left(\{p_j, t_j, \beta_t, H_j\}_{j \in [q]} \right)
+    \right\} \]
+  \end{block}
+  It is assumed $ T \Cal{F}_0 \subseteq \Cal{G}_0$.
+    \endgroup
 \end{frame}
 
 
+\begin{frame}
+  \frametitle{Assumption 2: Concentration coefficients}
+  \begingroup \footnotesize
+  \begin{block}{Concentration coefficients}
+    Let $\nu_1, \nu_2 \in \Cal{P}(\Cal{S}\times \Cal{A})$ be probability measures,
+    absolutely continuous w.r.t. $\lambda^w \otimes \mu_\Cal{A}$
+    (the product of the $w$-dimensional Lebesgue measure and the counting measure
+    on $\Cal{A}$).
+    Define
+    \[ \kappa(m, \nu_1, \nu_2) = \sup_{\pi_1, \dots, \pi_m \in S\Pi}
+      \left[ \E_{v_2} \left( \frac{\mathrm{d}
+	  ((P \pi_m) \circ \dots \circ (P \pi_1) \nu_1)}
+    {\mathrm{d} \nu_2} \right)^2 \right]^{1/2} \]
+    where $\frac{\difd \mu_1}{\difd \mu_2}$ are the Radon-Nikodym derivative
+  \end{block}
+  \begin{block}{Assumption 2}
+    For two probability measure $\nu, \mu \in \cl{P}(\cl{S} \times \cl{A})$ 
+    on $\cl{S} \times \cl{A}$
+    it is assumed that there exists a finite constant $\phi_{\mu, \nu} > 0$
+    such that
+    \[ \phi_{\mu, \nu} \defeq 
+      (1 - \gamma)^2 \sum_{m\geq 1} \gamma^{m-1} m \kappa(m, \mu, \nu)
+    < \infty \]
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{The theorem}
+  \begingroup \footnotesize
+  \begin{block}{Theorem (Fan et al. 2020)}
+  Let $\nu, \mu \in \cl{P}(\cl{S} \times \cl{A})$ satisfy assumption 2 with
+  $\phi_{\mu, \nu} > 0$.
+  Let $n \in \N$ be a sufficiently large \emph{batch size}.
+  
+  Assume assumption 1 holds with constants
+  $q \in \N$ and $\{p_j, t_j, \beta_j, H_j\}_{j \in [q]}$
+  for $\cl{F}_0$ with 
+  any sparsity constant and structure.
+
+  Then there exists structure and sparsity constants (for $\cl{F}_0$)
+  such that when running the FQI algorithm we have
+  \[ \norm{Q^* - Q_{\pi_K}}_{1, \mu} =
+  \cl{O}\left( n^{-\ve^*} \log(n)^{c^*} + \gamma^K \right) \]
+  For some $\ve^*, c^* > 0$.
+  \end{block}
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mistake in proof}
+  \begingroup \footnotesize
+  $f_1, \dots, f_N$ centers of a minimal $1/n$-covering of $\cl{F}_0$.
+  \[ Z_j = \sum_{i = 1}^n (Y_i - TQ(X_i))\cdot (f_j(X_i) - TQ(X_i))
+  \left(\sum_{k=1} (f_j(X_k) - TQ(X_k))^2 \right)^{-1/2} \]
+  \begin{block}{Lemma}
+    Let $X$ be a \defemph{centered} sub-exponential random variable. Then for $t$
+    such that $\abs{t} \leq c/\norm{X}_{\psi_1}$ one has
+    \[ \E \exp(t X) \leq \exp(C t^2 \norm{X}_{\psi_1}^2) \]
+    where $C, c > 0$ are absolute constants.
+  \end{block}
+  The mistake here is that while $Z_j^2$ is sub-exponential enough, it
+  is not clear why it should be centered.
+  Indeed as $Z_j^2 \geq 0$ a.s. it is centered if and only if it is
+  equal to 0 a.s!
+  \endgroup
+\end{frame}
+
+\begin{frame}
+  \frametitle{Correction of mistake}
+  \begingroup \tiny
+  We luckily end up 
+  with a very similar bound.
+  Our argument is based on a lemma
+  \begin{block}{Lemma (Vershynin)}
+    $\E \exp(c X^2 / \norm{X}_{\psi_2}^2) \leq \exp(1) = e$
+  \end{block}
+  By this lemma we have
+  \begin{equation*}
+    \E \exp \left(c Z_j^2/\norm{Z_j}_{\psi_2}^2 \right) \leq e
+  \end{equation*}
+  so
+  \begin{align*}
+    \E \max_{j \in N_\delta} Z_j^2
+    = &\; \frac{\max_{j \in [N_\delta]} \norm{Z_j}_{\psi_2}^2}{c}
+    \E \left( \max_{j \in [N_\delta]} \frac{  c Z_j^2 } 
+    {\max_{k \in [N_\delta]} \norm{Z_k}_{\psi_2}} \right)
+    \\ \leq &\; \dots
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \log \left( \sum_{j \in [N_\delta]} \E \exp \left( \frac{  c Z_j^2 } 
+    {\norm{Z_j}_{\psi_2}} \right) \right)
+    \\ \leq &\; \frac{4 V_{\max}^2 C_1}{c}
+    \log \left( e N_\delta \right)
+    \\ \leq &\; C_2^2 V_{\max}^2 \log(N_\delta)
+  \end{align*}
+  \endgroup
+\end{frame}
 
 \section{Conclusion}
 
+\begin{frame}[fragile]
+  \frametitle{Overview of results}
+  \begingroup \scriptsize
+  \begin{figure}
+    \includegraphics[scale=0.43]{figs/overview.png}
+  \end{figure}
+  \vspace{-0.3cm}
+  Some of the convergence bound presented in this thesis.
+      Arrows $A \to B$ implies that setting $B$ is a special
+    case of setting $A$.
+  \endgroup
+\end{frame}
+
 \begin{frame}
   \frametitle{Conclusion}
+  \begingroup \footnotesize
+  We have:
+  \begin{itemize}
+    \item[-] Build up theory behind Q-learning: Decision models, optimality
+      of policies, value functions and Q-iteration.
+    \item[-] Approximation with Q-iteration: Artificial neural networks,
+      Bernstein polynomials.
+    \item[-] Survey of model-free algorithms.
+    \item[-] Proof of convergence bound of the fitted Q-iteration algorithm.
+  \end{itemize}
+  Are we closer to understanding the succes of DQN?
+  \\ Yes: we have theoretical justification for convergence of related algorithms.
+  \\ No: we still lack understanding of computational complexity aspects.
+  \endgroup
 \end{frame}
+
+\subsection{Further direction}
+
+\begin{frame}
+  \frametitle{Further directions}
+  \begingroup \footnotesize
+  Given more time it would have been interesting to go further into
+  \begin{itemize}
+    \item[-] Exploring more concrete examples:
+      Our only concrete example of a decision process is the finite gridworld
+      environment.
+    \item[-] Use the results of Melo and Ribeiro (2007)
+      on a concrete class of functions e.g. 
+      polynomials. 
+    \item[-] Relations
+      between $\norm{Q^* - Q_{\wt{\pi}}}_\infty$ and $\norm{Q^* - \wt{Q}}_\infty$.
+  \end{itemize}
+  \endgroup
+\end{frame}
+
 
 \subsection{Errata}
 
