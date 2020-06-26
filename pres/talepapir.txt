@@ -1,5 +1,7 @@
+
 Hello and welcome to my masters thesis defense about
 Theoretical aspects of Q-learning
+
 *
 Following the structure of the thesis I am first going to introduce RL,
 value functions, value iteration, Q-functions and Q-iteration.
@@ -11,14 +13,17 @@ first a survey of articles
 and then the algorithm Deep fitted Q-iteration and its proof.
 Finally we will conclude 
 and talk about what could be some interesting next steps following this work.
+
 *
 Q-learning as a field lies in the general topics of artificial intelligence,
 Machine learning, and Reinforcement learning.
+
 *
 Machine Learning is the study of computer algorithms that improve automatically
 through 'experience'. Experience is mostly equivalent to data.
 In the case of Reinforcement learning, this means data arising from
 interaction of an 'agent' with an 'environment'.
+
 *
 Two main branches of research in reinforcement learning deal with two
 different problems. The exploration-exploitation trade-off problem
@@ -27,28 +32,36 @@ Here rewards occuring during training are important.
 The topic not this thesis is the more direct problem of finding optimal
 policies, disregarding the rewards occuring during training
 and focusing on the total expected reward of the final policy.
+
 *
 The environment in Reinforcement learning is typically formalized as a 
 Markov decision process, though we also generalize this in the thesis and
 look at a few results concerning what we call 'history dependent processes'.
+
 *
 Markov decision processes can model a wide array of environments from
 board games to any time descretized Markov system with rewards.
+
 *
 The transistion and reward dynamics are formalized as 'probability kernels'.
+
 *
 This is also the case for 'policies', that is the control of the agents
 behavior. Though policies are generally allowing to be non-markov.
 We will also talk about markov policies.
+
 *
 A Markov decision process and a policy gives rise (via. the ionescu tulcea
 theorem) to a stochastic process.
+
 *
 If we take expectations with respect to the measure of this processes and the
 reward kernel, we can define the 'policy evaluation function', which is an
 example of a value-function since it assigns a real number to every state.
+
 *
-We can also define value functions for a finite number of steps.
+We can also define policy evaluations for a finite number of steps.
+
 *
 The optimal value functions are defined by taking supremum over all policies
 for each state.
@@ -56,52 +69,67 @@ One can then ask we there exists a policy achieving this supremum uniformly
 across the state-space
 We give sufficient conditions for the existence of optimal
 policies based on the sources Schäl and Bertsekas.
-* skip to 19
+
+* skip to Operators on value functions
 Value iteration is based on the contractive 'Bellman optimality operator'
 denoted by a 'T'.
+
 * skip to 22
 We show that the optimal value function is the unique fixed point of
 the 'T'-operator.
 So that we have exponential convergence, when repeatedly applying 'T'.
 This is what's called 'Value iteration'.
+
 * 23
 We now look at the simple 'gridworld' example.
 This example is original to a lecture by
 David Silver.
+
 *
 Using a random policy we achieve the follow policy evaluation.
+
 *
 While using greedy policies we get the following optimal value functions.
+
 *
 The convergence of the finite policy evaluations and finite-horizon
 optimal value functions are shown here.
+
 *
 We now move on to define Q-functions and Q-learning.
 A Q-function is simply any function state-action pair and assigning a real
 number to it.
 So they are very similar to value functions, but 'taking actions aswell'.
+
 *
 Q-functions were introduced originally to simply the process of picking greedy
 actions, as only maximization over the function itself is required, as opposed
 to value functions where transition dynamics has to be involved.
+
 *
 We can define 'T' operators analoguosly for Q-functions.
+
 *
 And we show a close relationship between Q-function and value functions.
+
 *
 As an outcome of this value iteration also works for Q-functions.
 This is then called 'Q-iteration'.
+
 * Skip to 34
 So we also have the exponential convergence of Q-iteration.
+
 *
 To summarize we have shown existence of optimal policies
 and exponential convergence of Q-iteration
 (which is a Q-learning algorithm)
+
 *
 So are we not done?
 The environments captured by MDPs under the conditions we need
 is a diverse and include very difficult problems such as chess and computer
 games.
+
 *
 There are two major problems that we have not discussed.
 One is 'Model-dependency' - It is assumed that we know how to integrate over
@@ -113,75 +141,93 @@ Another is the problem of representing the Q-functions in a computer.
 How to represent the complex function which arise by using the T-operator?
 Even in the finite case where everything can be stored as a large table
 of floating point numbers. This table might simply be too big.
+
 *
 For example in the case of chess we have 10 to the power of 43 states
 but we only have 10 to the power of 23 bytes available in the entire worlds
 digital data capacity.
+
 *
 In the sections on model-dependent algorithms we deal with the
 problem of representing Q-functions by using approximations which are both
 easily representable in a computer and 'dense' in some way in the
 space of functions arising from using the 'T' operator.
+
 *
 The main idea is to use Q-iteration but use approximations in each step.
 We assume we can get close up to this epsilon-k at the k'th step.
+
 *
 Then iteratively using the triangle inequality the can bound ...
+
 *
 The distance to the optimal value function this way.
 The first term we call the algorithmic error and decreases exponentially
 by the results from Q-iteration, so we dont care about this.
 The second term is called the approximation error, and is where the pain
 of our approximations come to show.
+
 *
 To give a few example of the behavior of approximation errors:
 If the step-wise error are all bounded by some epsilon we get the bound
 epsilon divided by (1 minus gamma).
 If the step-wise erros decrease to zero, we have convergence.
+
 *
 The first concrete example of a approximation function class is
 artificial neural networks.
 Artificial neural networks are simply composition of affine function
 and coordinate-wise application of some 'activation functions' are typically
 monotonely increasing and continous.
+
 *
 Neural networks are typically depicted as graphs.
 For example here we show a 3-layer network.
+
 *
 The universal approximation theorem gives us that neural nets are dense in
 the space of continuous functions, with mild assumptions on the
 activation functions.
+
 *
 We use the ReLU activation function for several contruction in this thesis
 because some nice theoretical properties it possesses.
+
 *
 Using the universal approximation theorem and properties of ReLU networks,
 we relatively easily get arbitrary precision approximations of the 
 optimal Q-function, under mild assumptions on the decision process.
+
 *
 However we do not establish bounds on the network width.
 Also we do not explicitly bound computational complexity.
+
 *
 To address these problem, we tried another method of approximation
 using Bernstein polynomials.
+
 *
 Bernstein polynomials have the advantage of being easily evaluated,
 represented.
+
 * skip to slide 52
 This time we need a Lipschitz condition on the density function of the 
 transition dynamics. Achieving inverse square root convergence in the
 degree of the polynomial for the approximation error.
+
 *
 Some weak points of the Bernstein polynomial approximation is that
 the restriction on the transition dynamics is quite strong.
 For example it rules out all deterministic MDPs.
 Also we have not fully uncovered the computational complexity issue.
+
 *
 We now turn to model-free algorithms,
 that is, algorithms that only uses sampling from the transition and reward
 kernels, and does not directly take expectations over the kernels.
 First we survey some results for finite processes,
 before turning to the Deep Q-iteration algorithm.
+
 * skip 1
 Why restrict to only using sampling?
 Big actors are driving the research.
@@ -195,69 +241,158 @@ Monte Carlo methods can lead to fast computation.
 We start by looking at finite processes were strongest results are available.
 In the finite setting all results from the model-dependent setting is available,
 including existence of policies and exponential converges of Q-iteration.
+
 * TD-learning
 Because we are using samples we need to avoid unstable updates of our
 Q-functions.
 This is usually done with the 'temporal difference' update step.
 This can be seen as an interpolation between the old Q-value and the
 T-value, where in Q-iteration we only used the T-value.
+
 * Finite asynchronos Q-learning
 The main finite model-free algorithm we consider is the finite aschronos
 Q-learning algorithm.
 This algorithm simply updates one state-action pair at a time.
+
 * Convergence result
 It was already proved in 1992
 to convergence given these standard conditions.
+
 * Bound on convergence
 Later in 1997 the following bounds were established.
+
 * History dependent setting
 We now turn to a history depedent setting
+
 * 
 This setting is really quite similar to Markov decision processes,
 but now the kernels are allowed to change over time according to the
 history.
+
 *
 We point out that for this setting our theory from the first part of the
 thesis apply, to give existence of optimal policies and convergence of
 the finite optimal value functions.
+
 *
 In this setting we have to generalize Q-functions
+
 *
 Also in their article 'partial observability' is added to the setup.
 Meaning that the agent sees only a transformation of the state space
 which we denote 'X'.
+
 *
 This gives rise to 'partial' q functions which are
 defined on a observable state and an action.
+
 * State-uniformity
 The state-uniformity condition is imposed and implies that
 optimal partial q-funtions for any history equals the non-partial optimal Q
 function.
+
 * History dependent TD-learning
 This motivates us to use TD-learning with partial q-functions and hope that it
 works.
+
 * Convergence theorem
 And this is the case given some standard conditions.
+
 * HDP classes
 In related articles various examples show the following inclusion of
 finite decision processes.
+
 * Linear function approximation
 Let's move on to the Linear function approximation section
 We are now considering non-finite euclidean state spaces.
+
 * 
 The point is to use a linear span of functions as approximators,
 parametrized by a theta.
 Theta-star is then the projection of the optimal Q-function.
 The theorem by Melo and Ribeiro say that we have convergence
 to this optimal theta.
+
 *
 However since we dont have a concrete set of functions this does not
 tell us how far this approximator is from Q-star.
+
 *
 This is not the case for the result about deep Q-iteration,
 where our function class is a very concrete set of 'sparse relu networks.
 Here is shown the fitted Q-iteration algorithm.
+Notice that the function class is not defined yet,
+therefore Fitted Q-iteration is rather a class of algorithms for each function
+class.
+
 *
+Sparsity is about the number of non-zero weights in the neural network
+and the absolute value of the weights being below 1.
+
+*
+Deep Q-iteration is when we use the function class of sparse RelU networks.
+
+* Definition Hölder smooth functions
+Before presenting the main theorem we mention the two main assumptions.
+
+*
+The first is a restriction on the T-operator
+that when applying it to the sparse relu networks you should get a
+composition of Hölder smooth functions.
+
+* Assumption 2
+The second is involving two probability measures over the space of 
+state-action pairs.
+The first is the sample distribution.
+And the second is the distribution over which we measure distance to
+optimality in the main theorem.
+The assumption 2 says that the dissimilarity between the measures
+after applying the process arising from using any policy should stay
+bounded in some way.
+
+* The theorem
+Under these two assumptions the main theorem then establishes bounds
+of the 1-norm distance over some measure mü from the output of the
+Deep Q-iteration algorithm to the optimal Q-function.
+This is slowest convergence we have seen so far:
+the epsilon-star constant can be close to 1 and the c-star more than 2.
+However the bounded decreases to zero as the batch-size and number of
+iterations increases.
+
+* skip to Overview of results
+Here is shown an overview of some of the convergence results we have covered
+in this thesis. Arrows means that the pointed box is a 'special case',
+however this is interpreted theoretically.
+In fact every result we have presented adds new knowledge about convergence
+results because it allows for algorithms that was before not feasible to
+implement in a computer or because its bound is better.
+
+* To summerize
+We have build up theory behind Q-learning: Decision models,
+optimality of policies, vlaue functions and Q-iteration
+We have used approximation with Q-iteration, using Artificial neural networks
+and Bernstein polynomials
+We have surveys related results for model-free algorithms
+and finally presented and proved a bound for the deep Q-iteration algorithm.
+Are we closer to understanding the success of the Deep Q-network algorithm,
+which driven much of this research?
+Yes: we have provided some theoretical justification for its convergence
+as a special case of the convergence of our more theoretical algorithms.
+And no: we still lack understanding of computational complexity aspects.
+
+*
+We have not had time to build and analyse some concrete examples, which could
+have been interesting, to see the theory in practice. We have only looked
+at the trivial gridworld example.
+The article by Melo and Ribeiro from 2007 could be interesting to apply to a 
+concrete function class, now that we have build the required approximation
+theory.
+The proof of the Deep-Q iteration article succeeded in showing distance to the
+(theoretical) policy evaluation, and not merely the Q-function.
+It could have been interesting to see if this could be extended to the rest of
+the results we have covered.
+
+
 
 
 
