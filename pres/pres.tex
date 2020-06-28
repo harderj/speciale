@@ -263,101 +263,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 \subsection{Value iteration}
 
 \frame{
-  \frametitle{Greediness}
-  In order to show existence of optimal policies and talk about algorithms
-  which can determine such policies, we define the concept of \emph{greediness}.
-}
-
-\frame{
-  \frametitle{Greedy actions}
-  \begingroup
-  \footnotesize
-  The purpose of (most) value functions $V : \cl{S} \to \R$ is to give an estimate
-  on how \emph{good} a certain state is, in terms of the rewards one may expect
-  after visiting it.
-  \\ This give rise to the idea of \emph{greedy actions}, that is,
-  actions leading to states high \emph{values} (according to $V$).
-  \begin{block}{Definition greedy actions}
-    Let $V : \cl{S} \to \R$ be a measurable value-function.
-    We define
-    \[ G_V(s) = \argmax_{a \in \frak{A}(s)} T_a V(s) \subseteq \frak{A}(s) \]
-    as the set of \defemph{greedy} actions w.r.t. $V$.
-  \end{block}
-  \endgroup
-}
-
-\frame{
-  \frametitle{Greedy policies}
-  Greedy actions leads to \emph{greedy policies}:
-  \begin{block}{Definition: Greedy policy}
-    Let $V : \cl{S} \to \R$ be a measurable value-function and
-    let $\tau : \cl{S} \leadsto \cl{A} \in S\Pi$ be a stationary policy.
-    If there exists a measurable $G_V^\tau(s) \subseteq G_V(s)$
-    such that
-    \[ \tau(G_V^\tau(s) \mid s) = 1 \]
-    for every $s \in \cl{S}$, then $\tau$ is called greedy w.r.t. $V$.
-    We will often denote a $V$-greedy policy by $\tau_V$.
-  \end{block}
-}
-
-\frame{
-  \frametitle{Existence of greedy policies}
-  \begingroup
-  \footnotesize
-  \begin{block}{Theorem (Existence of greedy policies)}
-    Suppose $V: \cl{S} \to \R$ is \emph{upper semicontinuous} and that
-    \begin{itemize}
-      \item[1.] $\cl{S}$ and $\cl{A}$ are standard Borel.
-      \item[2.]  The set of admissable actions 
-	$\frak{A}(s) \subseteq \cl{A}$ is compact for all $s \in \cl{S}$
-	and $\Gamma = \{ (s, a) \in \cl{S} \times \cl{A} \mid a \in \frak{A}(s) \}$
-	is a closed subset of $\cl{S} \times \cl{A}$.
-      \item[3.] The transition kernel $P$ is continuous.
-      \item[4.] The expected reward function $r = \int r' \difd R(r' \mid \cdot)$
-	is upper semicontinuous and bounded from above.
-    \end{itemize}
-    Then there exists a deterministic policy $\pi_V$ which is greedy for $V$.
-  \end{block}
-  If assumptions 1.-4. hold we will say that the MDP is \emph{greedy}.
-  \endgroup
-}
-
-\frame{
-  \frametitle{Policy iteration}
-  \begingroup
-  \footnotesize
-  Using the concepts we have defined one can get the following idea:
-  Iteratively generate value functions by
-  picking greedy policies and then evaluating these policies.
-  This is called \emph{policy iteration}.
-  \begin{figure}
-    \centering
-    \begin{tikzpicture}
-      \def \n {3}
-      \def \radius {1cm}
-      \def \margin {30} % margin in angles, depends on the radius
-      \def \txt {
-	{$V$},
-	{$\tau_V$},
-	{$V_{\tau_V}$}
-      }
-
-      \foreach \t [count=\s from 0] in \txt
-      {
-	\node[draw, circle] at ({360/\n * (\s - 1)}:\radius) {\t};
-	\draw[->, >=latex] ({360/\n * (\s - 1)+\margin}:\radius)
-	arc ({360/\n * (\s - 1)+\margin}:{360/\n * (\s)-\margin}:\radius);
-      }
-    \end{tikzpicture}
-  \end{figure}
-  Policy iteration is a well studied algorithm and can be shown to
-  converges to optimum for a variety of environments. We will however
-  move on to talk about a related concept called
-  \emph{value iteration}.
-  \endgroup
-}
-
-\frame{
   \frametitle{Operators on value functions}
   Before defining value iteration we introduce some operators
   \begin{block}{The $T$-operators}
@@ -374,29 +279,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
       \difd P(s' \mid s, a) \right)
     \end{gather*}
   \end{block}
-}
-
-\frame{
-  \frametitle{Properties of the $T$-operators}
-  \begingroup
-  \footnotesize
-  \begin{block}{Proposition (Properties of the $T$-operators)}
-    \begin{itemize}
-      \item $V_{k, \pi} = T_{\tau_1} V_{k-1, (\tau_2, \dots)}
-	= T_{\tau_1} \dots T_{\tau_k} V_0$.
-      \item $V_\pi = \lim_{k \to \infty} T_{\tau_1} \dots T_{\tau_k} V_0$
-      \item For the stationary policy $\tau$ we have $T_\tau V_\tau = V_\tau$.
-      \item $T$ and $T_\tau$ are $\gamma$-contractive
-	on $\Cal{L}_\infty(\Cal{S})$.
-      \item $V_\tau$ is the unique bounded fixed point of $T_\tau$
-	in $\Cal{L}_\infty(\Cal{S})$.
-    \end{itemize}
-  \end{block}
-  This way $T_\tau$ can be interpreted as a 'one-step policy evaluation, when
-  following the policy $\tau$'.
-  On the other hand $T$ can be interpreted as a 'one-step evaluation, when
-  always choosing greedy actions'.
-  \endgroup
 }
 
 \frame{
@@ -540,26 +422,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 }
 
 \frame{
-  \frametitle{Greed with Q-functions}
-  Formally we define greedy actions and policies w.r.t. a Q-function as
-  \begingroup
-  \small
-    Let $Q:\cl{S} \times \cl{A} \to \R$ be a measurable Q-function and
-    $\tau: \cl{S} \leadsto \cl{A}$ be a (stationary) policy.
-  \begin{block}{Greedy policy}
-    Define the set of
-    \emph{greedy actions} by
-    $G_Q(s) \defeq \argmax_{a \in \frak{A}(s)} Q(s, a)$.
-    If there exist a measurable set $G_Q^\tau(s) \subseteq G_Q(s)$
-    for every $s \in \Cal{S}$ such that
-    \[ \tau \left( G_Q^\tau(s) \Mid s \right) = 1 \]
-    then $\tau$ is said to be \defemph{greedy} with respect to $Q$ and is
-    denoted $\tau_Q$.
-  \end{block}
-  \endgroup
-}
-
-\frame{
   \frametitle{Q-function operators}
   \begingroup
   \footnotesize
@@ -608,26 +470,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
     \end{itemize}
   \end{block}
   \endgroup
-}
-
-\frame{
-  \frametitle{Properties of Q-functions}
-  Because of the close relations
-  many properties are inherited from value function to Q-functions:
-  \begin{block}{Proposition (Properties of Q-functions)}
-    Let $\pi = (\tau_1, \tau_2, \dots) \in M\Pi$ be a Markov policy
-    and $\tau \in S\Pi$ stationary. Then
-    \begin{itemize}
-      \item $Q_{k, \pi} = T_{\tau_1} \dots T_{\tau_k} Q_0$ and
-	$Q^*_k = T^k Q^*_0$.
-      \item $Q_\pi = \lim_{k \to \infty} Q_{k, \pi}$ and
-	$Q^* = \lim_{k\to\infty} Q_k^*$. 
-      \item $T,\; T_\tau$ are $\gamma$-contractive on
-	$\Cal{L}_\infty(\Cal{S}\times\Cal{A})$
-	and $Q^*,\; Q_\tau$ are their unique fixed points.
-      \item $Q^* = Q_{\tau^*}$
-    \end{itemize}
-  \end{block}
 }
 
 \subsection{Q-iteration}
@@ -746,20 +588,12 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 
 \begin{frame}
   \frametitle{Approximation and algorithmic errors}
-  Let $\norm{\cdot}$ be any norm the space of Q-functions $\cl{Q}$.
-  Suppose we can approximate $T\wt{Q}_0$ by some $\wt{Q}_1 \in \cl{F}$
-  to $\ve_1 > 0$ precision
-  and then approximate $T\wt{Q}_1$ by $\wt{Q}_2 \in \cl{F}$
-  and so on. This way we get a sequence of Q-functions satisfying
+  Suppose we have a sequence of Q-functions satisfying
   \begin{equation*}
     \norm{T\wt{Q}_{k-1} - \wt{Q}_k} \leq \ve_k, \forall k \in \N
     \label{eq:defnvei}
   \end{equation*}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Approximation and algorithmic errors}
-  First observe that
+  Observe that
   \begin{align*}
     \norm{T^k \wt{Q}_0 - \wt{Q}_k}
     &\leq \norm{T^k \wt{Q}_0 - T \wt{Q}_{k-1}} + \norm{T\wt{Q}_{k-1} - \wt{Q}_k}
@@ -1054,7 +888,8 @@ Department of Mathematical Sciences \\ University of Copenhagen}
       density $p(\cdot \mid s, a)$ (i.e. $p \cdot \mu = P(\cdot \mid s, a)$),
       unless $P(\cdot \mid s, a) = \delta_{s'}$ for all $(s, a) \in \cl{S} \times
       \cl{A}$, which would lead to a quite boring environment.
-      Generally the processes with fast convergence bounds must be very stochastic.
+      Generally the processes with fast convergence bounds
+      must be quite stochastic.
     \item[2.] We lack understanding of the computational complexity involved. 
   \end{itemize}
   \endgroup

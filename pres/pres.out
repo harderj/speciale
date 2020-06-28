@@ -2,17 +2,17 @@
 \BOOKMARK [3][]{Outline0.1.1.6}{The environment}{Outline0.1}% 2
 \BOOKMARK [3][]{Outline0.1.2.11}{Value functions and the goal of RL}{Outline0.1}% 3
 \BOOKMARK [3][]{Outline0.1.3.14}{Value iteration}{Outline0.1}% 4
-\BOOKMARK [3][]{Outline0.1.4.27}{Q-functions}{Outline0.1}% 5
-\BOOKMARK [3][]{Outline0.1.5.33}{Q-iteration}{Outline0.1}% 6
+\BOOKMARK [3][]{Outline0.1.4.21}{Q-functions}{Outline0.1}% 5
+\BOOKMARK [3][]{Outline0.1.5.25}{Q-iteration}{Outline0.1}% 6
 \BOOKMARK [2][]{Outline0.2}{Model-dependent algorithms}{}% 7
-\BOOKMARK [3][]{Outline0.2.1.40}{Approximation and algorithmic errors}{Outline0.2}% 8
-\BOOKMARK [3][]{Outline0.2.2.44}{Approximation using ANNs}{Outline0.2}% 9
-\BOOKMARK [3][]{Outline0.2.3.50}{Approximation with Bernstein polynomials}{Outline0.2}% 10
+\BOOKMARK [3][]{Outline0.2.1.32}{Approximation and algorithmic errors}{Outline0.2}% 8
+\BOOKMARK [3][]{Outline0.2.2.35}{Approximation using ANNs}{Outline0.2}% 9
+\BOOKMARK [3][]{Outline0.2.3.41}{Approximation with Bernstein polynomials}{Outline0.2}% 10
 \BOOKMARK [2][]{Outline0.3}{Model-free algorithms}{}% 11
-\BOOKMARK [3][]{Outline0.3.1.59}{Finite case}{Outline0.3}% 12
-\BOOKMARK [3][]{Outline0.3.2.64}{History dependent setting}{Outline0.3}% 13
-\BOOKMARK [3][]{Outline0.3.3.74}{Linear function approximation}{Outline0.3}% 14
-\BOOKMARK [3][]{Outline0.3.4.77}{Deep fitted Q-iteration}{Outline0.3}% 15
+\BOOKMARK [3][]{Outline0.3.1.50}{Finite case}{Outline0.3}% 12
+\BOOKMARK [3][]{Outline0.3.2.55}{History dependent setting}{Outline0.3}% 13
+\BOOKMARK [3][]{Outline0.3.3.65}{Linear function approximation}{Outline0.3}% 14
+\BOOKMARK [3][]{Outline0.3.4.68}{Deep fitted Q-iteration}{Outline0.3}% 15
 \BOOKMARK [2][]{Outline0.4}{Conclusion}{}% 16
-\BOOKMARK [3][]{Outline0.4.1.88}{Further direction}{Outline0.4}% 17
-\BOOKMARK [3][]{Outline0.4.2.89}{Errata}{Outline0.4}% 18
+\BOOKMARK [3][]{Outline0.4.1.79}{Further direction}{Outline0.4}% 17
+\BOOKMARK [3][]{Outline0.4.2.80}{Errata}{Outline0.4}% 18
