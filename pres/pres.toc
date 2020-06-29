@@ -9,10 +9,10 @@
 \beamer@subsectionintoc {2}{2}{Approximation using ANNs}{35}{0}{2}
 \beamer@subsectionintoc {2}{3}{Approximation with Bernstein polynomials}{41}{0}{2}
 \beamer@sectionintoc {3}{Model-free algorithms}{45}{0}{3}
-\beamer@subsectionintoc {3}{1}{Finite case}{50}{0}{3}
-\beamer@subsectionintoc {3}{2}{History dependent setting}{55}{0}{3}
-\beamer@subsectionintoc {3}{3}{Linear function approximation}{65}{0}{3}
-\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{68}{0}{3}
-\beamer@sectionintoc {4}{Conclusion}{77}{0}{4}
-\beamer@subsectionintoc {4}{1}{Further direction}{79}{0}{4}
-\beamer@subsectionintoc {4}{2}{Errata}{80}{0}{4}
+\beamer@subsectionintoc {3}{1}{Finite case}{48}{0}{3}
+\beamer@subsectionintoc {3}{2}{History dependent setting}{53}{0}{3}
+\beamer@subsectionintoc {3}{3}{Linear function approximation}{58}{0}{3}
+\beamer@subsectionintoc {3}{4}{Deep fitted Q-iteration}{61}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{70}{0}{4}
+\beamer@subsectionintoc {4}{1}{Further direction}{72}{0}{4}
+\beamer@subsectionintoc {4}{2}{Errata}{73}{0}{4}

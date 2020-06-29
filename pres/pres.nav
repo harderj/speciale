@@ -117,91 +117,77 @@
 \headcommand {\beamer@framepages {46}{46}}
 \headcommand {\slideentry {3}{0}{3}{47/47}{}{0}}
 \headcommand {\beamer@framepages {47}{47}}
-\headcommand {\slideentry {3}{0}{4}{48/48}{}{0}}
+\headcommand {\beamer@subsectionpages {45}{47}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{48}{Finite case}}
+\headcommand {\slideentry {3}{1}{1}{48/48}{Finite case}{0}}
 \headcommand {\beamer@framepages {48}{48}}
-\headcommand {\slideentry {3}{0}{5}{49/49}{}{0}}
+\headcommand {\slideentry {3}{1}{2}{49/49}{Finite case}{0}}
 \headcommand {\beamer@framepages {49}{49}}
-\headcommand {\beamer@subsectionpages {45}{49}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{50}{Finite case}}
-\headcommand {\slideentry {3}{1}{1}{50/50}{Finite case}{0}}
+\headcommand {\slideentry {3}{1}{3}{50/50}{Finite case}{0}}
 \headcommand {\beamer@framepages {50}{50}}
-\headcommand {\slideentry {3}{1}{2}{51/51}{Finite case}{0}}
+\headcommand {\slideentry {3}{1}{4}{51/51}{Finite case}{0}}
 \headcommand {\beamer@framepages {51}{51}}
-\headcommand {\slideentry {3}{1}{3}{52/52}{Finite case}{0}}
+\headcommand {\slideentry {3}{1}{5}{52/52}{Finite case}{0}}
 \headcommand {\beamer@framepages {52}{52}}
-\headcommand {\slideentry {3}{1}{4}{53/53}{Finite case}{0}}
+\headcommand {\beamer@subsectionpages {48}{52}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{53}{History dependent setting}}
+\headcommand {\slideentry {3}{2}{1}{53/53}{History dependent setting}{0}}
 \headcommand {\beamer@framepages {53}{53}}
-\headcommand {\slideentry {3}{1}{5}{54/54}{Finite case}{0}}
+\headcommand {\slideentry {3}{2}{2}{54/54}{History dependent setting}{0}}
 \headcommand {\beamer@framepages {54}{54}}
-\headcommand {\beamer@subsectionpages {50}{54}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{55}{History dependent setting}}
-\headcommand {\slideentry {3}{2}{1}{55/55}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{2}{3}{55/55}{History dependent setting}{0}}
 \headcommand {\beamer@framepages {55}{55}}
-\headcommand {\slideentry {3}{2}{2}{56/56}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{2}{4}{56/56}{History dependent setting}{0}}
 \headcommand {\beamer@framepages {56}{56}}
-\headcommand {\slideentry {3}{2}{3}{57/57}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{2}{5}{57/57}{History dependent setting}{0}}
 \headcommand {\beamer@framepages {57}{57}}
-\headcommand {\slideentry {3}{2}{4}{58/58}{History dependent setting}{0}}
+\headcommand {\beamer@subsectionpages {53}{57}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{58}{Linear function approximation}}
+\headcommand {\slideentry {3}{3}{1}{58/58}{Linear function approximation}{0}}
 \headcommand {\beamer@framepages {58}{58}}
-\headcommand {\slideentry {3}{2}{5}{59/59}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{3}{2}{59/59}{Linear function approximation}{0}}
 \headcommand {\beamer@framepages {59}{59}}
-\headcommand {\slideentry {3}{2}{6}{60/60}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{3}{3}{60/60}{Linear function approximation}{0}}
 \headcommand {\beamer@framepages {60}{60}}
-\headcommand {\slideentry {3}{2}{7}{61/61}{History dependent setting}{0}}
+\headcommand {\beamer@subsectionpages {58}{60}}
+\headcommand {\beamer@subsectionentry {0}{3}{4}{61}{Deep fitted Q-iteration}}
+\headcommand {\slideentry {3}{4}{1}{61/61}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {61}{61}}
-\headcommand {\slideentry {3}{2}{8}{62/62}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{4}{2}{62/62}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {62}{62}}
-\headcommand {\slideentry {3}{2}{9}{63/63}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{4}{3}{63/63}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {63}{63}}
-\headcommand {\slideentry {3}{2}{10}{64/64}{History dependent setting}{0}}
+\headcommand {\slideentry {3}{4}{4}{64/64}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {64}{64}}
-\headcommand {\beamer@subsectionpages {55}{64}}
-\headcommand {\beamer@subsectionentry {0}{3}{3}{65}{Linear function approximation}}
-\headcommand {\slideentry {3}{3}{1}{65/65}{Linear function approximation}{0}}
+\headcommand {\slideentry {3}{4}{5}{65/65}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {65}{65}}
-\headcommand {\slideentry {3}{3}{2}{66/66}{Linear function approximation}{0}}
+\headcommand {\slideentry {3}{4}{6}{66/66}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {66}{66}}
-\headcommand {\slideentry {3}{3}{3}{67/67}{Linear function approximation}{0}}
+\headcommand {\slideentry {3}{4}{7}{67/67}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {67}{67}}
-\headcommand {\beamer@subsectionpages {65}{67}}
-\headcommand {\beamer@subsectionentry {0}{3}{4}{68}{Deep fitted Q-iteration}}
-\headcommand {\slideentry {3}{4}{1}{68/68}{Deep fitted Q-iteration}{0}}
+\headcommand {\slideentry {3}{4}{8}{68/68}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {68}{68}}
-\headcommand {\slideentry {3}{4}{2}{69/69}{Deep fitted Q-iteration}{0}}
+\headcommand {\slideentry {3}{4}{9}{69/69}{Deep fitted Q-iteration}{0}}
 \headcommand {\beamer@framepages {69}{69}}
-\headcommand {\slideentry {3}{4}{3}{70/70}{Deep fitted Q-iteration}{0}}
+\headcommand {\beamer@sectionpages {45}{69}}
+\headcommand {\beamer@subsectionpages {61}{69}}
+\headcommand {\sectionentry {4}{Conclusion}{70}{Conclusion}{0}}
+\headcommand {\slideentry {4}{0}{1}{70/70}{}{0}}
 \headcommand {\beamer@framepages {70}{70}}
-\headcommand {\slideentry {3}{4}{4}{71/71}{Deep fitted Q-iteration}{0}}
+\headcommand {\slideentry {4}{0}{2}{71/71}{}{0}}
 \headcommand {\beamer@framepages {71}{71}}
-\headcommand {\slideentry {3}{4}{5}{72/72}{Deep fitted Q-iteration}{0}}
+\headcommand {\beamer@subsectionpages {70}{71}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{72}{Further direction}}
+\headcommand {\slideentry {4}{1}{1}{72/72}{Further direction}{0}}
 \headcommand {\beamer@framepages {72}{72}}
-\headcommand {\slideentry {3}{4}{6}{73/73}{Deep fitted Q-iteration}{0}}
+\headcommand {\beamer@subsectionpages {72}{72}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{73}{Errata}}
+\headcommand {\slideentry {4}{2}{1}{73/73}{Errata}{0}}
 \headcommand {\beamer@framepages {73}{73}}
-\headcommand {\slideentry {3}{4}{7}{74/74}{Deep fitted Q-iteration}{0}}
+\headcommand {\slideentry {4}{2}{2}{74/74}{Errata}{0}}
 \headcommand {\beamer@framepages {74}{74}}
-\headcommand {\slideentry {3}{4}{8}{75/75}{Deep fitted Q-iteration}{0}}
-\headcommand {\beamer@framepages {75}{75}}
-\headcommand {\slideentry {3}{4}{9}{76/76}{Deep fitted Q-iteration}{0}}
-\headcommand {\beamer@framepages {76}{76}}
-\headcommand {\beamer@sectionpages {45}{76}}
-\headcommand {\beamer@subsectionpages {68}{76}}
-\headcommand {\sectionentry {4}{Conclusion}{77}{Conclusion}{0}}
-\headcommand {\slideentry {4}{0}{1}{77/77}{}{0}}
-\headcommand {\beamer@framepages {77}{77}}
-\headcommand {\slideentry {4}{0}{2}{78/78}{}{0}}
-\headcommand {\beamer@framepages {78}{78}}
-\headcommand {\beamer@subsectionpages {77}{78}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{79}{Further direction}}
-\headcommand {\slideentry {4}{1}{1}{79/79}{Further direction}{0}}
-\headcommand {\beamer@framepages {79}{79}}
-\headcommand {\beamer@subsectionpages {79}{79}}
-\headcommand {\beamer@subsectionentry {0}{4}{2}{80}{Errata}}
-\headcommand {\slideentry {4}{2}{1}{80/80}{Errata}{0}}
-\headcommand {\beamer@framepages {80}{80}}
-\headcommand {\slideentry {4}{2}{2}{81/81}{Errata}{0}}
-\headcommand {\beamer@framepages {81}{81}}
-\headcommand {\beamer@partpages {1}{81}}
-\headcommand {\beamer@subsectionpages {80}{81}}
-\headcommand {\beamer@sectionpages {77}{81}}
-\headcommand {\beamer@documentpages {81}}
-\headcommand {\gdef \inserttotalframenumber {81}}
+\headcommand {\beamer@partpages {1}{74}}
+\headcommand {\beamer@subsectionpages {73}{74}}
+\headcommand {\beamer@sectionpages {70}{74}}
+\headcommand {\beamer@documentpages {74}}
+\headcommand {\gdef \inserttotalframenumber {74}}

@@ -941,52 +941,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   \endgroup
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Non-example: Model-free Q-iteration}
-  \begingroup
-  \scriptsize
-  \begin{block}{Model-free Q-iteration (example of thought)}
-    \begin{algorithm}[H]
-      \KwIn{MDP $(\cl{S}, \cl{A}, P, R, \gamma)$, number of iterations $K$}
-      For all $(s, a) \in \cl{S} \times \cl{A}$ let
-      $\wt{Q}_0(s, a)$ be sampled from $R(\cdot \mid s, a)$.
-
-      \For{$k = 0,1,2,\dots,K-1$}{
-	For all $(s, a) \in \cl{S} \times \cl{A}$ sample
-	a reward $r'$ from $R(\cdot \mid s, a)$,
-	a next-state $s'$ from $P(\cdot \mid s, a)$
-	and let
-	\[\wt{Q}_{k+1}(s, a) \leftarrow
-	r' + \gamma \sup_{a' \in \cl{A}} \wt{Q}_k(s', a')\]
-      }
-      Define $\pi_K$ as the greedy policy w.r.t. $\wt{Q}_K$ \\
-      \KwOut{An estimator $\widetilde{Q}_K$ of $Q^*$ and policy $\pi_K$}
-    \end{algorithm}
-  \end{block}
-  Problems?
-  \begin{itemize}
-    \item[-] Uncountable $\cl{S}$ or $\cl{A}$ does not make much sense:
-      How are the estimations $\wt{Q}_i$ well-defined?
-    \item[-] Even in finite case: Convergence is not possible for
-      non-deterministic processes.
-  \end{itemize}
-  \endgroup
-\end{frame}
-
-\begin{frame}
-  \frametitle{Direct vs. indirect approaches}
-  There are broadly two ways of dealing with these
-  problems.
-  \\ In the \emph{indirect} approaches one tries to first estimate $P$ and $R$
-  by sampling.
-  We can then use the model-dependent methods of the last chapter with
-  estimated kernels $\wt{P}$ and $\wt{R}$.
-  We will not go further into indirect methods in this thesis.
-  \\ The \emph{direct} approaches covers \emph{the rest},
-  and it is mainly these were are going to look at throughout this
-  thesis.
-\end{frame}
-
 \subsection{Finite case}
 
 \begin{frame}
@@ -1127,13 +1081,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
 \subsection{History dependent setting}
 
 \begin{frame}
-  \frametitle{History dependent setting: Introduction}
-  Staying in setting of decision processes with finite states and actions,
-  we will now turn to the setting of history dependent processes,
-  and present a result found in [Majeed and Hutter (2018)].
-\end{frame}
-
-\begin{frame}
   \frametitle{History dependent setting}
   Define $\cl{H}^* = \bigcup_{i \in \N} \cl{H}_i$ as the space of all
   \emph{finite histories}.
@@ -1162,65 +1109,6 @@ Department of Mathematical Sciences \\ University of Copenhagen}
   This implies by the existence of an optimal
   $\pi^* \in R\Pi$ and that $V^*_n \to V^*$\footnote{These remarks was not
   discussed in the original article by Majeed and Hutter.}.
-\end{frame}
-
-\begin{frame}
-  \frametitle{History based Q-functions}
-  Q-functions are generalized so that
-  they are taking values in $\cl{H}^* \times \cl{A}$.
-  Likewise the $T$-operator is generalized by defining
-  \begin{equation*}
-    TQ(h, a) \defeq r(ha) +
-    \gamma \sum_{s\in\cl{S}} \max_{a' \in \cl{A}} Q(has, a') P(s \mid ha)
-  \end{equation*}
-  The optimal Q-function $Q^*$ is defined as
-  the fixed point of the $T$ operator in
-  $\cl{L}_\infty(\cl{H}^* \times \cl{A})$.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Partial observability}
-  A function $\phi : \cl{H}^* \to \cl{X}$ is introduced
-  which maps a history to a new finite space $\cl{X}$.
-  The intuition here is that $x_n = \phi(h_{n-1} a_{n-1} s_n)$ is the
-  state $s_n$ as it is perceived by the agent.
-  This is called \defemph{partial observability}.
-  Using $\phi$ we are now considering a class of problems
-  which is wider than a 
-  history dependent decision process (HDP).
-  Namely a partially observable HDP or shortened: POHDP.
-  A kernel for the observable process is defined for each $h \in \cl{H}^*$
-  \begin{align*} p_h & : \cl{A} \leadsto \cl{X}
-    \\ p_h & (x' \mid a)
-    = \sum_{s:\phi(has)=x'} P(s \mid ha)
-  \end{align*}
-\end{frame}
-
-\begin{frame}
-  We can now consider yet another kind of Q-functions defined
-  on $\cl{X} \times \cl{A} \to \R$, which we will call \emph{partial} to avoid
-  confusion. The optimal partial Q-function $q_h^*$,
-  naturally dependent on a history $h \in \cl{H}^*$ and is defined by the equation
-  \begin{equation}
-    q_h^*(x, a) = r(h,a) + \gamma \sum_{x' \in \cl{X}} 
-    \max_{a' \in \cl{A}} q^*_h(x', a') p_h(x' \mid xa)
-  \end{equation}
-\end{frame}
-
-\begin{frame}
-  \frametitle{State-uniformity}
-  We can now introduce a central assumption:
-  \begin{block}{Assumption: State-uniformity}
-    For any $h,h' \in \cl{H}^*$ we have
-    \[ \phi(h) = \phi(h') \implies Q^*(h, \cdot) = Q^*(h', \cdot) \]
-  \end{block}
-  Under this assumption the process is called (by Majeed and Hutter)
-  a \emph{Q-Value uniform decision process} (QDP).
-  State-uniformity is important because of the following theorem:
-  \begin{thm}[Hutter, 2016]
-    Under the state-uniformity assumption we have
-    $q^*_{h'}(\phi(h), a) = Q^*(h, a)$ for any $h'\in \cl{H}^*$.
-  \end{thm}
 \end{frame}
 
 \begin{frame}
