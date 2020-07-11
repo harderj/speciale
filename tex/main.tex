@@ -1,52 +1,37 @@
-\documentclass{report}
+\documentclass{article}
 
 \input{preamble}
 
-\title{Theorical aspects of Q-learning}
+\title{On Q-iteration with uncountable state spaces}
 
 \author{Jacob Harder \\ University of Copenhagen}
 
 \begin{document}
 
-%\maketitle
-\input{frontpage}
-
+{\let\newpage\relax\maketitle}
 \subsection*{Abstract}
 \input{abstract}
 
-\newpage
-\renewcommand{\baselinestretch}{1.0}\normalsize
+\setcounter{tocdepth}{1}
 \tableofcontents
-\renewcommand{\baselinestretch}{1.3}\normalsize
-
 \newpage
-\chapter{Introduction}
+
+\section{Introduction}
 \input{introduction}
-%\subsection{Measure theory}
-%\input{measureTheory}
-\chapter{Decision models and value functions}
+
+\section{Decision models and value functions}
 \input{newDecision.tex}
 
-\chapter{Model-free algorithms}
-\input{hiddenDynamics}
-
-\section{Deep fitted Q-iteration} \label{sec:deepfitted}
-\subsection{Introduction}
-\input{introFan}
-\subsection{Proofs}
-\input{fanProofs}
-
-\chapter{Comparison and conclusion}
+\section{Conclusion}
 \input{conclusion}
 %appendices
-\setcounter{chapter}{0}% Enumerate by Appendices with 'A'
-\renewcommand{\thechapter}{\Alph{chapter}}%
-\chapter{Appendices}
-\input{appendices}
+\setcounter{section}{0}% Enumerate by Appendices with 'A'
+\renewcommand{\thesection}{\Alph{section}}%
 \newpage
-\section{Disambiguation}
+\section{Appendices}
+\input{appendices}
+\subsection{Disambiguation}
 \input{disambiguation}
-%bibliography
 \newpage
 \bibliography{bib}{}
 \end{document}

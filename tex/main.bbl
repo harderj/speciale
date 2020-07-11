@@ -1,16 +1,9 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
-
-\bibitem[Anthony and Bartlett(2002)]{AB02}
-Martin Anthony and Peter Bartlett.
-\newblock \emph{Neural Network Learning: Theoretical Foundations}.
-\newblock 01 2002.
-\newblock ISBN 978-0-521-57353-5.
-\newblock \doi{10.1017/CBO9780511624216}.
 
 \bibitem[{Barto} et~al.(1983){Barto}, {Sutton}, and {Anderson}]{BSA83}
 A.~G. {Barto}, R.~S. {Sutton}, and C.~W. {Anderson}.
@@ -38,12 +31,6 @@ George Cybenko.
 \newblock \emph{Mathematics of Control, Signals and Systems}, 2:\penalty0
   303--314, 1989.
 
-\bibitem[Even-dar and Mansour(2001)]{M03}
-Eyal Even-dar and Yishay Mansour.
-\newblock Learning rates for q-learning.
-\newblock volume~5, 04 2001.
-\newblock \doi{10.1007,3-540-44581-1-39}.
-
 \bibitem[Fan et~al.(2020+)Fan, Yang, Xie, and Wang]{F20}
 Jianqing Fan, Zhuoran Yang, Yuchen Xie, and Zhaoran Wang.
 \newblock A theoretical analysis of deep q-learning.
@@ -62,13 +49,6 @@ C.~Heitzinger.
 \newblock 2002.
 \newblock URL \url{https://books.google.dk/books?id=LpmxcQAACAAJ}.
 
-\bibitem[Jaakkola et~al.(1994)Jaakkola, Jordan, and Singh]{J94}
-Tommi Jaakkola, Michael Jordan, and Satinder Singh.
-\newblock On the convergence of stochastic iterative dynamic programming
-  algorithms.
-\newblock \emph{Neural Computation}, 6:\penalty0 1185--1201, 11 1994.
-\newblock \doi{10.1162/neco.1994.6.6.1185}.
-
 \bibitem[Kallenberg(2002)]{K02}
 Olav Kallenberg.
 \newblock \emph{Foundations of modern probability}.
@@ -78,26 +58,10 @@ Olav Kallenberg.
 \newblock \doi{10.1007/978-1-4757-4015-8}.
 \newblock URL \url{http://dx.doi.org/10.1007/978-1-4757-4015-8}.
 
-\bibitem[Kearns and Singh(1999)]{K99}
-Michael Kearns and Satinder Singh.
-\newblock Finite-sample convergence rates for q-learning and indirect
-  algorithms.
-\newblock \emph{Advances in Neural Information Processing}, 11, 04 1999.
-
 \bibitem[Lawvere(1962)]{L62}
 F.~William Lawvere.
 \newblock The category of probabilistic mappings.
 \newblock 1962.
-
-\bibitem[Majeed and Hutter(2018)]{MH18}
-Sultan~Javed Majeed and Marcus Hutter.
-\newblock On q-learning convergence for non-markov decision processes.
-\newblock In \emph{Proceedings of the Twenty-Seventh International Joint
-  Conference on Artificial Intelligence, {IJCAI-18}}, pages 2546--2552.
-  International Joint Conferences on Artificial Intelligence Organization, 7
-  2018.
-\newblock \doi{10.24963/ijcai.2018/353}.
-\newblock URL \url{https://doi.org/10.24963/ijcai.2018/353}.
 
 \bibitem[{Melo} and {Ribeiro}(2007)]{MR07}
 F.~S. {Melo} and M.~I. {Ribeiro}.
@@ -124,13 +88,6 @@ Anders Rønn-Nielsen and Ernst Hansen.
 \newblock 2014.
 \newblock ISBN 978-87-7078-980-6.
 
-\bibitem[Schmidt-Hieber(2017)]{SH17}
-Johannes Schmidt-Hieber.
-\newblock Nonparametric regression using deep neural networks with relu
-  activation function.
-\newblock \emph{ArXiv}, abs/1708.06633, 2017.
-\newblock URL \url{https://arxiv.org/abs/1708.06633v4}.
-
 \bibitem[Schäl(1975)]{S75}
 Manfred Schäl.
 \newblock On dynamic programming: Compactness of the space of policies.
@@ -141,26 +98,9 @@ Manfred Schäl.
 \newblock URL
   \url{http://www.sciencedirect.com/science/article/pii/0304414975900319}.
 
-\bibitem[Szepesvári(1997)]{S97}
-Csaba Szepesvári.
-\newblock The asymptotic convergence-rate of q-learning.
-\newblock 01 1997.
-
-\bibitem[Vershynin(2010)]{V10}
-Roman Vershynin.
-\newblock Introduction to the non-asymptotic analysis of random matrices.
-\newblock \emph{Compressed Sensing: Theory and Applications}, 11 2010.
-\newblock \doi{10.1017/CBO9780511794308.006}.
-
 \bibitem[Watkins(1989)]{W89}
 Christopher Watkins.
 \newblock Learning from delayed rewards.
 \newblock 01 1989.
-
-\bibitem[Watkins and Dayan(1992)]{WD92}
-Christopher Watkins and Peter Dayan.
-\newblock Technical note: Q-learning.
-\newblock \emph{Machine Learning}, 8:\penalty0 279--292, 05 1992.
-\newblock \doi{10.1007/BF00992698}.
 
 \end{thebibliography}

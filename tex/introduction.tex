@@ -1,117 +1,9 @@
-In this thesis we give an introduction to Q-learning and discuss
-convergence results of \emph{Q-learning} algorithms from its beginning in
-1989 \ncite{W89} to a result obtained in the preprint \mcite{F20}.
-The introduction includes fundamental theory of the underlying field of
-\emph{dynamic programming} and \emph{reinforcement learning} (RL)
-and related topics such as \emph{value iteration}.
 
-\section{Motivation}
-The topic was inspired by the performance of the algorithms
-implemented by \mcite{M15}.
-In \ncite{M15} it was shown how a single algorithm was able to achieve super
-human performances in a variety of problems, namely playing
-\emph{Atari 2600 video games},
-only using raw pixels and a reward (score) as input and a large number of
-interactions with the environment.
-The algorithm used in \ncite{M15} is based on a Q-learning
-algorithm called the \emph{deep Q-network} (DQN) algorithm.
-The success of DQN learning to play Atari was only the beginning.
-In the past 5 years variations of DQN combined with other techniques,
-has solved highly challenging and before unsolved problems,
-such as beating the best human players at the ancient board game \emph{go},
-and the previously best algorithms for playing chess, with an approach
-quite novel to ideas previously employed to such environments.
-Deep Q-learning is now a very active field of research and is
-being applied in numerous fields, including robotics.
-
-Despite the great empirical success, it
-seems\footnote{This is for example the opinion in \ncite{F20}}
-that the theoretical understanding is lacking.
-The purpose of this thesis is
-to investigate what has been proven
-about the convergence of algorithms similar to the DQN algorithm
-and what mathematical theory is relevant to establish such proofs.
-
-In the course of reading
-\mcite{F20} which claims to establish theoretical justification for
-the convergence of DQN to \emph{the optimal Q-function},
-it became clear that the background
-theory of dynamic programming
-was essential in order to understand the results of \ncite{F20} and related papers
-and be able to compare such results.
-Even questions as to in which settings optimal policies exist turns out to be
-a non-trivial question.
-Therefore in the end this thesis is partly about presenting the results of
-\ncite{F20} and similar papers.
-And partly to build the background theory necessary to understand and
-compare these results.
-
-This provides an introduction to the field of RL and Q-learning and sheds light 
-on the original question of what can be said about convergence of
-Q-learning algorithms. Finally we will discuss some of the many questions that
-still remain.
-
-\section{How to read this thesis}
-
-After this introductory chapter,
-in chapter 2 we will become more rigorous and
-present the background theory of decision processes and dynamic programming,
-which will give language and notation necessary for describing
-RL and Q-learning mathematically.
-The first part for chapter 2 (sections 2.1 and 2.2) is mainly based on two
-sources, namely \mcite{S75} and \mcite{BS07}.
-\ncite{S75} establishes general results of the existence and properties of
-optimal policies in a general history dependent (non-markovian)
-decision processes (HDPs).
-The more recent source \ncite{BS07} focus on the more standard setting
-of \emph{Markov decision processes} (MDPs),
-but in a way that is somewhat different from the present standard which
-is used in \ncite{F20}.
-In this thesis we use a combination of \ncite{S75} and \ncite{BS07} to
-build a framework which is similar to that of \ncite{BS07},
-but many proofs are changed and relies instead on results of \ncite{S75}.
-This way of building the theory is original to this thesis, and
-is done with the purpose of better suiting the later discussions
-of \ncite{F20} in particular.
-Section 2.1 og 2.2 will be used in all subsequent chapters
-to guarantee the existence of optimal policies, value functions
-and well definedness of various operators.
-
-The purpose of section 2.3 is to show how if one stays in the model-dependent
-setting instead of 'going model-free' as is traditional in RL, 
-one may easily establish results on convergence of value-iteration with
-Q-functions. We do this drawing on two results from approximation theory,
-namely the universal approximation theorem for artificial neural networks,
-and the approximation properties of Bernstein polynomials.
-
-Proceeding to chapter 3, the sections 3.1 and 3.2 is a survey a series of
-papers on convergence bounds for (model-free) RL algorithms.
-These two sections are based
-on the articles \mcite{WD92}, \mcite{J94}, \mcite{S97}, \mcite{MH18}
-and \mcite{MR07}.
-In this part of chapter 3, all proofs are omitted and only the results
-are presented.
-
-In section 3.3 the preprint \mcite{F20} is introduced
-and its results are proved 
-Also some minor mistakes are corrected leading to slightly
-different bounds. The mistakes will be pointed out in this section.
-In correspondance with the authors it was confirmed that the
-mistakes was indeed to be corrected in the next version.
-
-In the comparison and conclusion we briefly compare results we have covered
-in the thesis and discuss to what degree we are able to answer original questions
-on the theoretical understanding of the success of Q-learning.
-Finally we discuss which in directions one could
-investigate further extending what was covered in this thesis.
-
-\section{What is Reinforcement Learning?}
+\subsection{Reinforcement Learning}
 
 RL is a broad topic and a main branch of
-\emph{machine learning} alongside \emph{supervised} and \emph{unsupervised
-learning}. Because of its broadness it overlaps with other disciplines
-such as \emph{control theory} and dynamic programming.
-To understand RL, we will now briefly describe its roots in dynamic programming.
+machine learning. Because of its broadness it overlaps with other disciplines
+such as control theory and dynamic programming.
 
 In Reinforcement Learning, as in dynamic programming,
 we are concerned with finding an optimal policy
@@ -179,17 +71,12 @@ However RL usually refers to algorithms that
 are not merely value iterations, but instead work without
 directly using the transition and reward dynamics,
 and instead estimate value functions based only on sampling from the
-environment.
-Such algorithms are called \emph{model-free} as opposed to
-\emph{model-based} algorithms, that employ knowledge about the
-environment such as its transition distributions directly
-(such as pure dynamic programming).
-Thus most of the algorithms (e.g. DQN) we will discuss are model-free
-however we will also include a section on how \emph{model-dependent}
-approximative Q-learning may work. Whether such algorithms lie in the
-field of RL can be debated.
+environment. Such algorithms are called \emph{model-free}.
+We will not look at algorithms which are based on sampling, and instead focus
+on theoretical aspects assuming it is possible to use the transition dynamics
+directly.
 
-\section{What is Q-learning?}
+\subsection{Q-learning}
 
 A problem with value functions defined on the set of states $\cl{S}$ is that
 picking optimal actions require knowledge of the transition dynamics $P$.
@@ -201,7 +88,7 @@ Given a Q-function $Q$, picking best actions according to $Q$ now
 merely require maximization over $Q$ itself.
 Also it turns out that Q-functions is
 more convenient to work with computationally.
-In this thesis we show that value and policy iteration can be done
+In this paper we show that value and policy iteration can be done
 for Q-functions in a virtually identical manner, when the process dynamics
 are known.
 
@@ -221,17 +108,18 @@ stochastic approximations of the Bellman optimality equation.
 Q-functions in the attempt to improve the derived policy.
 \emph{Deep} Q-learning is then the subcategory of algorithms which
 uses deep neural networks as approximators for the Q-functions.
-We will see in this thesis how Q-functions are used to find optimal
+We will see in this paper how Q-functions are used to find optimal
 policies (strategies) for decision processes and how they work
 as the underlying \emph{knowledge} that drives the decisions of
 the agent. We will use a wide array of function classes in the attempt
 to approximate ideal Q-functions such as the policy evaluations and
 optimal Q-functions.
-All this will be made precise in chapter 2.
-Before starting on this we include a brief introduction to the basic
-concept and notation we are going to use throughout the thesis.
 
-\section{Basic concepts and notation}
+All this will be made precise in the next section.
+Before proceeding to this we include a brief introduction to the basic
+concept and notation we are going to use throughout the paper.
+
+\subsection{Basic concepts and notation}
 
 The real numbers $\R$ is endowed with
 the standard ordering with
@@ -259,14 +147,6 @@ The set of probability measures on $\cl{X}$ is denoted
 $\cl{P}(\Sigma_\cl{X})$ or $\cl{P}(\cl{X})$ when $\Sigma_\cl{X}$ is implicit
 (not to be confused with the powerset of $\cl{X}$
 which we denote $2^{\cl{X}}$).
-
-An $\cl{X}$-valued random variable $X : \Omega \to \cl{X}$ is a
-measurable function from \emph{the background probability space}
-measure space $(\Omega, \Sigma_\Omega, \Prob)$ into some measurable
-space $\cl{X}$.
-By abstract change of variable the \emph{distribution} of the random variable $X$
-is the image probability measure $\mu = X(\Prob) \in \cl{P}(\cl{X})$
-and we write $X \sim \mu$.
 
 When talking about functions $f_1, f_2, \dots : \cl{X} \to \R$
 limits are always understood pointwise, unless otherwise stated,
